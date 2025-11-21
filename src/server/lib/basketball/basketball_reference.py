@@ -10,7 +10,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from datetime import date
-from util.date_util import range_of_dates
 from lib.basketball.player import Player
 
 # Tuples matching 
@@ -43,7 +42,7 @@ _row_data_stat_types = {
 def get_url(date: date) -> str:
     """Returns url to basketball reference stats page for todays date"""
 
-    return f'https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=${date.month}&day={date.day}&year={date.year}'
+    return f'https://www.basketball-reference.com/friv/dailyleaders.fcgi?month={date.month}&day={date.day}&year={date.year}&type=all'
 
 # Create driver with necessary parameters
 def __create_driver() -> WebDriver:
@@ -87,35 +86,33 @@ def __parse_table_rows(driver: WebDriver, current_date: date, num: int = 100) ->
     """Parses top N table rows into a list of Player from basketball reference stats page"""
 
     rows = driver.find_elements(By.CSS_SELECTOR, '#all_stats tbody > tr[data-row]:not(.thead)')
+    print(f'Queried {len(rows)} rows from stats table')
     players: list[Player] = [__parse_table_row(row, current_date) for row in rows]
     return players
 
 # Fetch page at base url
-def get_data(start_date: date, end_date: date) -> Generator[(date, list[Player])]:
+def get_data(dates: list[date]) -> Generator[(date, list[Player])]:
     """Fetches data from basketball reference for a range of dates"""
 
-    if start_date > end_date:
-        raise Exception('start_date must be before end_date') 
-    
+    start_date = dates[0]
+    end_date = dates[-1]
     print(f'Fetching data from {start_date} to {end_date}')
 
-    print('------')
-    driver = __create_driver()
-    wait = WebDriverWait(driver, 10)
-
     # Fetch data for range of dates
-    for current_date in range_of_dates(start_date, end_date):
-        print(f'{current_date} ------')
+    for current_date in dates:
+        print(f'------ {current_date} ------')
         url = get_url(current_date)
 
         print(f'Fetching data from {url}')
+        driver = __create_driver()
+        wait = WebDriverWait(driver, 10)
         driver.get(url)
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#all_stats'))) # Wait until top 20 rows of table are loaded
         
         print(f'Querying data from table rows')
         players = __parse_table_rows(driver, current_date)
         print(f'Successfully fetched data for {len(players)} players')
+        driver.quit()
         yield (current_date, players)
             
-    driver.quit()
     print(f'Successfully fetched data from {start_date} to {end_date}')

@@ -1,8 +1,7 @@
 from lib.db.client import get_client
-from lib.basketball.player import Player
 
-class DatabaseTable():
-    """ Class for connecting to Supabase Table and performing modifications """
+class DatabaseTable[T]():
+    """Class for connecting to Supabase Table and performing modifications"""
     table_name: str = None
     table = None
 
@@ -12,8 +11,20 @@ class DatabaseTable():
         client = get_client()
         self.table = client.table(self.table_name)
 
-    def insert_players(self, players: list[Player]):
-        print(f'Inserting {len(players)} players to {self.table_name}')
-        table_objects: list[dict] = [player.to_dict() for player in players]
-        self.table.upsert(table_objects).execute()
-        print(f'Successfully inserted players to {self.table_name}')
+    def get_table(self):
+        return self.table
+
+    def insert(self, items: list[T] | T):
+        """Inserts a list of items or a single item to the table"""
+        try:
+            if isinstance(items, list):
+                print(f'Inserting {len(items)} items to {self.table_name}')
+                table_objects: list[dict] = [items.to_dict() for items in items]
+                self.table.upsert(table_objects).execute()
+                print(f'Successfully inserted {len(items)} items to {self.table_name}')
+            else:
+                print(f'Inserting 1 item to {self.table_name}')
+                self.table.upsert(items).execute()
+                print(f'Successfully inserted 1 item to {self.table_name}')
+        except:
+            raise Exception(f'Failed to insert items to {self.table_name}')

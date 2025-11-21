@@ -4,7 +4,7 @@ from supabase import create_client, Client
 __client: Client = None
 
 def get_client() -> Client:
-    """ Loads Supabase instance"""
+    """Loads and returns connection to Supabase instance"""
     global __client
     if __client == None:
         print('Connecting to Supabase')

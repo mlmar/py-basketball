@@ -26,52 +26,10 @@ class Player:
     pts: float
     plus_minus: float
     
-    def __init__(self,
-        player: str = None,
-        team_id: str = None,
-        opp_id: str = None,
-        mp: str = None,
-        fg: float = None,
-        fga: float = None,
-        fg_pct: float = None,
-        fg3: float = None,
-        fg3a: float = None,
-        fg3_pct: float = None,
-        ft: float = None,
-        fta: float = None,
-        ft_pct: float = None,
-        orb: float = None,
-        drb: float = None,
-        trb: float = None,
-        ast: float = None,
-        stl: float = None,
-        blk: float = None,
-        tov: float = None,
-        pts: float = None,
-        plus_minus: float = None):
-        
-        self.player = player
-        self.team_id = team_id
-        self.opp_id = opp_id
-        self.mp = mp
-        self.fg = fg
-        self.fga = fga
-        self.fg_pct = fg_pct
-        self.fg3 = fg3
-        self.fg3a = fg3a
-        self.fg3_pct = fg3_pct
-        self.ft = ft
-        self.fta = fta
-        self.ft_pct = ft_pct
-        self.orb = orb
-        self.drb = drb
-        self.trb = trb
-        self.ast = ast
-        self.stl = stl
-        self.blk = blk
-        self.tov = tov
-        self.pts = pts
-        self.plus_minus = plus_minus
+    def __init__(self, playerDict = None):
+        if playerDict != None:
+            self.from_dict(playerDict)
+
 
     def to_dict(self) -> dict:
         """Converts Player to dict object"""
@@ -100,6 +58,30 @@ class Player:
             'pts': self.pts, 
             'plus_minus': self.plus_minus
         }
+    
+    def from_dict(self, playerDict):
+        self.player = playerDict['player']
+        self.team_id = playerDict['team_id']
+        self.opp_id = playerDict['opp_id']
+        self.mp = playerDict['mp']
+        self.fg = playerDict['fg']
+        self.fga = playerDict['fga']
+        self.fg_pct = playerDict['fg_pct']
+        self.fg3 = playerDict['fg3']
+        self.fg3a = playerDict['fg3a']
+        self.fg3_pct = playerDict['fg3_pct']
+        self.ft = playerDict['ft']
+        self.fta = playerDict['fta']
+        self.ft_pct = playerDict['ft_pct']
+        self.orb = playerDict['orb']
+        self.drb = playerDict['drb']
+        self.trb = playerDict['trb']
+        self.ast = playerDict['ast']
+        self.stl = playerDict['stl']
+        self.blk = playerDict['blk']
+        self.tov = playerDict['tov']
+        self.pts = playerDict['pts']
+        self.plus_minus = playerDict['plus_minus']
     
     def __str__(self):
         return f'{self.player} ({self.pts}/{self.ast}/{self.trb})'
