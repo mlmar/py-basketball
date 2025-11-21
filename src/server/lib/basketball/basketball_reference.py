@@ -9,57 +9,34 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
-from pydantic import BaseModel
 from datetime import date
 from util.date_util import range_of_dates
+from lib.basketball.player import Player
 
-class PlayerData(BaseModel):
-    name: str
-    team: str
-    opponent: str
-    minutes_played: str
-    fg_made: float
-    fg_attempted: float
-    fg_pct: float
-    fg_3_made: float
-    fg_3_attempted: float
-    fg_3_pct: float
-    ft_made: float
-    ft_attempted: float
-    ft_pct: float
-    orb: float
-    drb: float
-    trb: float
-    assists: float
-    steals: float
-    blocks: float
-    turnovers: float
-    points: float
-    plus_minus: float
-
-_row_data_mapping = {
-    "name": "player",
-    "team": "team_id",
-    "opponent": "opp_id",
-    "minutes_played": "mp",
-    "fg_made": "fg",
-    "fg_attempted": "fga",
-    "fg_pct": "fg_pct",
-    "fg_3_made": "fg3",
-    "fg_3_attempted": "fg3a",
-    "fg_3_pct": "fg3_pct",
-    "ft_made": "ft",
-    "ft_attempted": "fta",
-    "ft_pct": "ft_pct",
-    "orb": "orb",
-    "drb": "drb",
-    "trb": "trb",
-    "assists": "ast",
-    "steals": "stl",
-    "blocks": "blk",
-    "turnovers": "tov",
-    "pointsts": "pts",
-    "plus_minus": "plus_minus"
+# Tuples matching 
+_row_data_stat_types = {
+    "player": str,
+    "team_id": str,
+    "opp_id": str,
+    "mp": str,
+    "fg": float,
+    "fga": float,
+    "fg_pct": float,
+    "fg3": float,
+    "fg3a": float,
+    "fg3_pct": float,
+    "ft": float,
+    "fta": float,
+    "ft_pct": float,
+    "orb": float,
+    "drb": float,
+    "trb": float,
+    "ast": float,
+    "stl": float,
+    "blk": float,
+    "tov": float,
+    "pts": float,
+    "plus_minus": float
 }
 
 # Retrieve base url
@@ -90,24 +67,31 @@ def __create_driver() -> WebDriver:
     driver = webdriver.Chrome(options=options)
     return driver
 
-# Parses html td element table row into a PlayerData object
-def __parse_table_row(row: WebElement) -> PlayerData:
-    """Parses a single table row into a PlayerData object from basketball reference stats table"""
+# Parses html td element table row into a Player object
+def __parse_table_row(row: WebElement, current_date: date) -> Player:
+    """Parses a single table row into a Player object from basketball reference stats table"""
 
-    playerData: PlayerData = {}
-    for key in _row_data_mapping:
-        playerData[key] = row.find_element(By.CSS_SELECTOR, f'[data-stat={_row_data_mapping[key]}]').get_attribute('innerText')
-    return playerData
+    player: Player = Player()
+    for key in _row_data_stat_types:
+        value = row.find_element(By.CSS_SELECTOR, f'td[data-stat={key}]').get_attribute('innerText')
+        type = _row_data_stat_types[key]
+        if value == '':
+            value = None
+        else:
+            value = type(value)
+        setattr(player, key, value) # Cast to correct data type
+    player.id = f'{str(current_date)}_{player.player}'
+    return player
 
-def __parse_table_rows(driver: WebDriver) -> list[PlayerData]:
-    """Parses table rows into a list of PlayerData from basketball reference stats page"""
+def __parse_table_rows(driver: WebDriver, current_date: date, num: int = 100) -> list[Player]:
+    """Parses top N table rows into a list of Player from basketball reference stats page"""
 
-    rows = driver.find_elements(By.CSS_SELECTOR, '[data-row]')
-    players: list[PlayerData] = [__parse_table_row(row) for row in rows]
+    rows = driver.find_elements(By.CSS_SELECTOR, '#all_stats tbody > tr[data-row]:not(.thead)')
+    players: list[Player] = [__parse_table_row(row, current_date) for row in rows]
     return players
 
 # Fetch page at base url
-def get_data(start_date: date, end_date: date) -> Generator[PlayerData]:
+def get_data(start_date: date, end_date: date) -> Generator[(date, list[Player])]:
     """Fetches data from basketball reference for a range of dates"""
 
     if start_date > end_date:
@@ -115,22 +99,23 @@ def get_data(start_date: date, end_date: date) -> Generator[PlayerData]:
     
     print(f'Fetching data from {start_date} to {end_date}')
 
-    print('Creating driver')
+    print('------')
     driver = __create_driver()
     wait = WebDriverWait(driver, 10)
 
     # Fetch data for range of dates
     for current_date in range_of_dates(start_date, end_date):
+        print(f'{current_date} ------')
         url = get_url(current_date)
 
         print(f'Fetching data from {url}')
         driver.get(url)
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-row]'))) # Wait until top 20 rows of table are loaded
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#all_stats'))) # Wait until top 20 rows of table are loaded
         
-        print(f'Waiting until table rows are present')
-        
-        print('Querying data from table rows')
-        yield __parse_table_rows(driver)
+        print(f'Querying data from table rows')
+        players = __parse_table_rows(driver, current_date)
+        print(f'Successfully fetched data for {len(players)} players')
+        yield (current_date, players)
             
     driver.quit()
     print(f'Successfully fetched data from {start_date} to {end_date}')
