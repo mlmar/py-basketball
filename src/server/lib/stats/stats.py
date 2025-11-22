@@ -9,13 +9,17 @@ from util.date_util import range_of_dates
 saved_dates_table = DatabaseTable[Player](SUPABASE_SAVED_DATES_TABLE)
 player_data_table = DatabaseTable[Player](SUPABASE_PLAYER_DATA_TABLE)
 
+def __get_start_end_dates(days: int) -> tuple[date, date]:
+    end_date = date.today() - timedelta(1)
+    start_date = end_date - timedelta(days - 1)
+    return (start_date, end_date)
+
 def refresh_stats(days: int):
     """
     Retrieves stats for the last N days.
     If necessary, scrape data from basketball reference and inserts to Supabase db.
     """
-    end_date = date.today() - timedelta(1)
-    start_date = end_date - timedelta(days - 1)
+    start_date, end_date = __get_start_end_dates(days)
 
     # Filter out existing dates
     all_dates: list[date] = list(range_of_dates(start_date, end_date))
@@ -37,16 +41,14 @@ def refresh_stats(days: int):
 def get_all(days: int):
     """Fetches all player stats from the last N days"""
     refresh_stats(days)
-    end_date = date.today() - timedelta(1)
-    start_date = end_date - timedelta(days - 1) 
+    start_date, end_date = __get_start_end_dates(days)
     response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).execute()
     return response.data
 
 def get_averages(days: int):
     """Fetches all player averages from the last N days"""
     refresh_stats(days)
-    end_date = date.today() - timedelta(1)
-    start_date = end_date - timedelta(days - 1) 
+    start_date, end_date = __get_start_end_dates(days)
     response = get_client().rpc('get_averages', {
         'start_date': str(start_date),
         'end_date': str(end_date)
@@ -56,8 +58,7 @@ def get_averages(days: int):
 def get_totals(days: int):
     """Fetches all player totals from the last N days"""
     refresh_stats(days)
-    end_date = date.today() - timedelta(1)
-    start_date = end_date - timedelta(days - 1) 
+    start_date, end_date = __get_start_end_dates(days)
     response = get_client().rpc('get_totals', {
         'start_date': str(start_date),
         'end_date': str(end_date)

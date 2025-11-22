@@ -1,5 +1,3 @@
-from datetime import date
-
 class Player:
     """ Player class for storing stats from basketball reference"""
     id: str
