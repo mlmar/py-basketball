@@ -39,8 +39,11 @@ _row_data_stat_types = {
 }
 
 # Retrieve base url
-def get_url(date: date) -> str:
+def get_url(date: date = None) -> str:
     """Returns url to basketball reference stats page for todays date"""
+
+    if date == None:
+        raise Exception('Date cannot be None')
 
     return f'https://www.basketball-reference.com/friv/dailyleaders.fcgi?month={date.month}&day={date.day}&year={date.year}&type=all'
 
