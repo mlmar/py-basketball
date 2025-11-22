@@ -1,88 +1,57 @@
-class Player:
-    """ Player class for storing stats from basketball reference"""
-    id: str
-    player: str
-    team_id: str
-    opp_id: str
-    mp: str
-    fg: float
-    fga: float
-    fg_pct: float
-    fg3: float
-    fg3a: float
-    fg3_pct: float
-    ft: float
-    fta: float
-    ft_pct: float
-    orb: float
-    drb: float
-    trb: float
-    ast: float
-    stl: float
-    blk: float
-    tov: float
-    pts: float
-    plus_minus: float
-    date: str
-    
-    def __init__(self, playerDict = None):
-        if playerDict != None:
-            self.from_dict(playerDict)
+from pydantic import BaseModel, RootModel, Field
+from typing import Optional
 
-    def to_dict(self) -> dict:
-        """Converts Player to dict object"""
-        return {
-            'id': self.id, 
-            'player': self.player, 
-            'team_id': self.team_id, 
-            'opp_id': self.opp_id, 
-            'mp': self.mp, 
-            'fg': self.fg, 
-            'fga': self.fga, 
-            'fg_pct': self.fg_pct, 
-            'fg3': self.fg3, 
-            'fg3a': self.fg3a, 
-            'fg3_pct': self.fg3_pct, 
-            'ft': self.ft, 
-            'fta': self.fta, 
-            'ft_pct': self.ft_pct, 
-            'orb': self.orb, 
-            'drb': self.drb, 
-            'trb': self.trb, 
-            'ast': self.ast, 
-            'stl': self.stl, 
-            'blk': self.blk, 
-            'tov': self.tov, 
-            'pts': self.pts, 
-            'plus_minus': self.plus_minus,
-            'date': self.date
-        }
+class Player(BaseModel):
+    """ Player class for storing stats from basketball reference"""
+    id: Optional[str] = None
+    player: Optional[str] = Field(description='Player Name')
+    team_id: Optional[str] = Field(description='Current Team Abbreviation (3 Letters)')
+    opp_id: Optional[str] = Field(description='Opponent Team Abbreviation (3 Letters)')
+    mp: Optional[str] = Field(description='Minutes played')
+    fg: Optional[float] = Field(description='Field Goals Made')
+    fga: Optional[float] = Field(description='Field Goals Attempted')
+    fg_pct: Optional[float] = Field(description='Field Goal Percentage in decimal format')
+    fg3: Optional[float] = Field(description='Three Pointers Made')
+    fg3a: Optional[float] = Field(description='Three Pointers Attempted')
+    fg3_pct: Optional[float] = Field(description='Three Pointers Percentage in decimal format')
+    ft: Optional[float] = Field(description='Free Throws Made')
+    fta: Optional[float] = Field(description='Free Throws Attempted')
+    ft_pct: Optional[float] = Field(description='Free Throw Percentage in decimal format')
+    orb: Optional[float] = Field(description='Offensive Rebounds')
+    drb: Optional[float] = Field(description='Defensive Rebounds')
+    trb: Optional[float] = Field(description='Total Rebounds (Offensive Rebounds + Defensive Rebounds)')
+    ast: Optional[float] = Field(description='Assists')
+    stl: Optional[float] = Field(description='Steals')
+    blk: Optional[float] = Field(description='Blocks')
+    tov: Optional[float] = Field(description='Turnovers')
+    pts: Optional[float] = Field(description='Points')
+    plus_minus: Optional[float] = Field(description='Plus Minus')
+    date: Optional[str] = None
+
+class ProjectedPlayer(BaseModel):
+    player: Player = Field(description='Player class for projected NBA player stats')
+    num_games: int = Field(description="Number of upcoming games for this player's team.")
+    opponents: list[str] = Field(description="List of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym")
+    game_dates: list[str] = Field(description="List of dates for this player's upcoming games")
+
+class ProjectedPlayerList(RootModel[list[ProjectedPlayer]]):
+    pass
+
+def print_player(player: Player) -> str:
+    """Print Player with format 'NAME (PTS/AST/TRB)'"""
+    return f"{player['name']} ({player['pts']}/{player['ast']}/{player['trb']})"
+
+def print_projected_player(projectedPlayer: ProjectedPlayer):
+    """Print Player name and projected stats"""
+    player: Player = projectedPlayer['player']
+
+    labels = ['FG%', 'FT%', 'PTS', '3PM', 'REB', 'AST', 'STL', 'BLK', 'TOV']
+    fields = ['fg_pct', 'ft', 'pts', 'fg3', 'trb', 'ast', 'stl', 'blk', 'tov']
     
-    def from_dict(self, playerDict):
-        self.id = playerDict['id']
-        self.player = playerDict['player']
-        self.team_id = playerDict['team_id']
-        self.opp_id = playerDict['opp_id']
-        self.mp = playerDict['mp']
-        self.fg = playerDict['fg']
-        self.fga = playerDict['fga']
-        self.fg_pct = playerDict['fg_pct']
-        self.fg3 = playerDict['fg3']
-        self.fg3a = playerDict['fg3a']
-        self.fg3_pct = playerDict['fg3_pct']
-        self.ft = playerDict['ft']
-        self.fta = playerDict['fta']
-        self.ft_pct = playerDict['ft_pct']
-        self.orb = playerDict['orb']
-        self.drb = playerDict['drb']
-        self.trb = playerDict['trb']
-        self.ast = playerDict['ast']
-        self.stl = playerDict['stl']
-        self.blk = playerDict['blk']
-        self.tov = playerDict['tov']
-        self.pts = playerDict['pts']
-        self.plus_minus = playerDict['plus_minus']
-        self.date = playerDict['date']
-    
-    def __str__(self):
-        return f'{self.player} ({self.pts}/{self.ast}/{self.trb})'
+    print(player['player'])
+    for label, field in zip(labels, fields):
+        print(f'\t{label}: {player[field]}')
+
+    print(f'\t# of Upcoming Games: {projectedPlayer['num_games']}')
+    print(f'\tUpcoming Opponents: {projectedPlayer['opponents']}')
+    print(f'\tUpcoming Games: {projectedPlayer['game_dates']}')

@@ -1,3 +1,5 @@
+protobuf==6.33.1
+pydantic==2.12.4
 python-dotenv==1.2.1
 selenium==4.38.0
 supabase==2.24.0

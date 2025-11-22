@@ -12,7 +12,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from datetime import date
 from lib.basketball.player import Player
 
-# Tuples matching 
+# Types matching
 _row_data_stat_types = {
     "player": str,
     "team_id": str,
@@ -73,7 +73,7 @@ def __create_driver() -> WebDriver:
 def __parse_table_row(row: WebElement, current_date: date) -> Player:
     """Parses a single table row into a Player object from basketball reference stats table"""
 
-    player: Player = Player()
+    player: Player = {}
     for key in _row_data_stat_types:
         value = row.find_element(By.CSS_SELECTOR, f'td[data-stat={key}]').get_attribute('innerText')
         type = _row_data_stat_types[key]
@@ -81,15 +81,18 @@ def __parse_table_row(row: WebElement, current_date: date) -> Player:
             value = None
         else:
             value = type(value)
-        setattr(player, key, value) # Cast to correct data type
-    player.id = f'{str(current_date)}_{player.player}'
-    player.date = str(current_date)
+        player[key] = value
+    player['id'] = f'{str(current_date)}_{player['player']}'
+    player['date'] = str(current_date)
     return player
 
 def __parse_table_rows(driver: WebDriver, current_date: date, num: int = 100) -> list[Player]:
     """Parses top N table rows into a list of Player from basketball reference stats page"""
 
     rows = driver.find_elements(By.CSS_SELECTOR, '#all_stats tbody > tr[data-row]:not(.thead)')
+    if len(rows) == 0:
+        return []
+    
     print(f'Queried {len(rows)} rows from stats table')
     players: list[Player] = [__parse_table_row(row, current_date) for row in rows]
     return players

@@ -29,38 +29,43 @@ def refresh_stats(days: int):
 
     print('Existing Dates: ', existing_dates)
     print('New Dates: ', [str(d) for d in new_dates])
-    print('------')
 
     # Insert data for newly saved dates
     if len(new_dates) > 0:
         for (current_date, players) in get_data(new_dates):
-            saved_dates_table.insert({ 'date': str(current_date) }) # Save the date
             player_data_table.insert(players) # Save new data
+            saved_dates_table.insert({ 'date': str(current_date) }) # Save the date
             print()
 
 def get_all(days: int):
     """Fetches all player stats from the last N days"""
+    print(f'Fetching all player stats from the last {days} days')
     refresh_stats(days)
     start_date, end_date = __get_start_end_dates(days)
     response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).execute()
+    print(f'Successfully queried database for player stats')
     return response.data
 
 def get_averages(days: int):
     """Fetches all player averages from the last N days"""
+    print(f'Fetching all player averages from the last {days} days')
     refresh_stats(days)
     start_date, end_date = __get_start_end_dates(days)
     response = get_client().rpc('get_averages', {
         'start_date': str(start_date),
         'end_date': str(end_date)
     }).execute()
+    print(f'Successfully queried database for player averages')
     return response.data
 
 def get_totals(days: int):
     """Fetches all player totals from the last N days"""
+    print(f'Fetching all player totals from the last {days} days')
     refresh_stats(days)
     start_date, end_date = __get_start_end_dates(days)
     response = get_client().rpc('get_totals', {
         'start_date': str(start_date),
         'end_date': str(end_date)
     }).execute()
+    print(f'Successfully queried database for player totals')
     return response.data

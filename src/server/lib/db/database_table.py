@@ -19,8 +19,7 @@ class DatabaseTable[T]():
         try:
             if isinstance(items, list):
                 print(f'Inserting {len(items)} items to {self.table_name}')
-                table_objects: list[dict] = [items.to_dict() for items in items]
-                self.table.upsert(table_objects).execute()
+                self.table.upsert(items).execute()
                 print(f'Successfully inserted {len(items)} items to {self.table_name}')
             else:
                 print(f'Inserting 1 item to {self.table_name}')
