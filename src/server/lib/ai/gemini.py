@@ -70,7 +70,7 @@ def get_analysis(data: list[Player], type: str, days: int):
                         final_answer += part.text
                         print(f'{part.text}', end='', flush=True)
 
-    print('------ Final Result ------')
+    print('\n\n------ Projections for underrated players for the next 7 days ------\n')
     result: ProjectedPlayerList = json.loads(final_answer)
     for projectedPlayer in result:
         print_projected_player(projectedPlayer)
