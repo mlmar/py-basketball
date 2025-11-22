@@ -43,7 +43,7 @@ def get_all(days: int):
     refresh_stats(days)
     start_date, end_date = __get_start_end_dates(days)
     response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).execute()
-    print(f'Successfully queried database for player stats')
+    print(f'Successfully queried database for player stats from {str(start_date)} to {str(end_date)}')
     return response.data
 
 def get_averages(days: int):
@@ -55,7 +55,7 @@ def get_averages(days: int):
         'start_date': str(start_date),
         'end_date': str(end_date)
     }).execute()
-    print(f'Successfully queried database for player averages')
+    print(f'Successfully queried database for player averages from {str(start_date)} to {str(end_date)}')
     return response.data
 
 def get_totals(days: int):
@@ -67,5 +67,5 @@ def get_totals(days: int):
         'start_date': str(start_date),
         'end_date': str(end_date)
     }).execute()
-    print(f'Successfully queried database for player totals')
+    print(f'Successfully queried database for player totals from {str(start_date)} to {str(end_date)}')
     return response.data
