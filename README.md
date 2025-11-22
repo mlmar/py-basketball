@@ -26,8 +26,10 @@ Objectives
   - [ ] Automation
     - [ ] Automate daily/weekly analysis for N days
   - [ ] fastapi routes for:
+    - [ ] Authentication -- require token to access routes
     - [ ] Serving front end application
     - [ ] Accessing player statistics
+    - [ ] Passing parameters for analysis
 
 ## Installation
 
