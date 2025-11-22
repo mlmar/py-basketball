@@ -2,5 +2,10 @@ from typing import Generator
 from datetime import date, timedelta
 
 def range_of_dates(start_date: date, end_date: date) -> Generator[date]:
+    if start_date > end_date: # Switch dates
+        temp_date = start_date
+        start_date = end_date
+        end_date = temp_date
+
     for n in range(int ((end_date - start_date).days) + 1):
         yield start_date + timedelta(n)

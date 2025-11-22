@@ -95,8 +95,11 @@ def __parse_table_rows(driver: WebDriver, current_date: date, num: int = 100) ->
     return players
 
 # Fetch page at base url
-def get_data(dates: list[date]) -> Generator[(date, list[Player])]:
+def get_data(dates: list[date] = []) -> Generator[(date, list[Player])]:
     """Fetches data from basketball reference for a range of dates"""
+
+    if len(dates) == 0:
+        return
 
     start_date = dates[0]
     end_date = dates[-1]

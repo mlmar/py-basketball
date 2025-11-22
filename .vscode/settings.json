@@ -1,4 +1,5 @@
 {
+  //https://docs.python.org/3/library/unittest.html
   "python.testing.unittestArgs": [
     "-v",
     "-s",
@@ -9,5 +10,6 @@
     "./src/server"
   ],
   "python.testing.pytestEnabled": false,
-  "python.testing.unittestEnabled": true
+  "python.testing.unittestEnabled": true,
+  "python.REPL.enableREPLSmartSend": false
 }
