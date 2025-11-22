@@ -25,11 +25,11 @@ class Player:
     tov: float
     pts: float
     plus_minus: float
+    date: str
     
     def __init__(self, playerDict = None):
         if playerDict != None:
             self.from_dict(playerDict)
-
 
     def to_dict(self) -> dict:
         """Converts Player to dict object"""
@@ -56,10 +56,12 @@ class Player:
             'blk': self.blk, 
             'tov': self.tov, 
             'pts': self.pts, 
-            'plus_minus': self.plus_minus
+            'plus_minus': self.plus_minus,
+            'date': self.date
         }
     
     def from_dict(self, playerDict):
+        self.id = playerDict['id']
         self.player = playerDict['player']
         self.team_id = playerDict['team_id']
         self.opp_id = playerDict['opp_id']
@@ -82,6 +84,7 @@ class Player:
         self.tov = playerDict['tov']
         self.pts = playerDict['pts']
         self.plus_minus = playerDict['plus_minus']
+        self.date = playerDict['date']
     
     def __str__(self):
         return f'{self.player} ({self.pts}/{self.ast}/{self.trb})'

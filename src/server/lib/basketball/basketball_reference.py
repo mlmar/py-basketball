@@ -80,6 +80,7 @@ def __parse_table_row(row: WebElement, current_date: date) -> Player:
             value = type(value)
         setattr(player, key, value) # Cast to correct data type
     player.id = f'{str(current_date)}_{player.player}'
+    player.date = str(current_date)
     return player
 
 def __parse_table_rows(driver: WebDriver, current_date: date, num: int = 100) -> list[Player]:
