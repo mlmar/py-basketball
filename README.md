@@ -16,8 +16,8 @@ Objectives
   - [ ] Use AI to analyse player data and create projects
     - [x] Google Gemini
       - [ ] Determine work around for January 2025 knowledge cut off
-      - [ ] Use different AI API?
-      - [ ] Feed entire season data set and schedule (Will have to deal with API Limits)
+      - [ ] Feed entire season data set for all players and schedule (Will need to workaround API Limits)
+        - [ ] Use different AI API?
     - [x] Feed statistics from the last N days
     - [x] Get projected statistics for the next N days
     - [x] Incorporate upcoming NBA schedule

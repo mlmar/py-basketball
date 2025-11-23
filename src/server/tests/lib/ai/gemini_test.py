@@ -5,10 +5,11 @@ from lib.ai import gemini
 class TestGemini(unittest.TestCase):
     def test_get_analysis(self):
         """get_analysis() returns a response with 10 players"""
-        days = 5
+        days = 10
         averages = stats.get_averages(days)
-        response = gemini.get_analysis(averages, 'averages', days)
-        self.assertEqual(len(response), 10)
+        num_players = 5
+        response = gemini.get_analysis(averages, 'averages', days, num_players)
+        self.assertEqual(len(response), num_players)
 
 if __name__ == '__main__':
     unittest.main()

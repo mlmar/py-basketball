@@ -33,6 +33,7 @@ class ProjectedPlayer(BaseModel):
     num_games: int = Field(description="Number of upcoming games for this player's team.")
     opponents: list[str] = Field(description="List of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym")
     game_dates: list[str] = Field(description="List of dates for this player's upcoming games")
+    analysis: str = Field(description="1-2 sentences describing the why the predicted stat line is accurate")
 
 class ProjectedPlayerList(RootModel[list[ProjectedPlayer]]):
     pass
@@ -41,17 +42,24 @@ def print_player(player: Player) -> str:
     """Print Player with format 'NAME (PTS/AST/TRB)'"""
     return f"{player['name']} ({player['pts']}/{player['ast']}/{player['trb']})"
 
-def print_projected_player(projectedPlayer: ProjectedPlayer):
+def print_projected_player(projectedPlayer: ProjectedPlayer, actualPlayer: Player):
     """Print Player name and projected stats"""
     player: Player = projectedPlayer['player']
 
     labels = ['FG%', 'FT%', 'PTS', '3PM', 'REB', 'AST', 'STL', 'BLK', 'TOV']
     fields = ['fg_pct', 'ft', 'pts', 'fg3', 'trb', 'ast', 'stl', 'blk', 'tov']
     
-    print(player['player'])
+    if actualPlayer:
+        print(player['player'])
+        print('Average Stats:')
+        for label, field in zip(labels, fields):
+            print(f'\t{label}: {actualPlayer[field]}')
+
+    print('Predicted Stats:')
     for label, field in zip(labels, fields):
         print(f'\t{label}: {player[field]}')
 
-    print(f'\t# of Upcoming Games: {projectedPlayer['num_games']}')
-    print(f'\tUpcoming Opponents: {projectedPlayer['opponents']}')
-    print(f'\tUpcoming Games: {projectedPlayer['game_dates']}')
+    print(f'# of Upcoming Games:\n\t{projectedPlayer['num_games']}')
+    print(f'Upcoming Opponents:\n\t{projectedPlayer['opponents']}')
+    print(f'Upcoming Games:\n\t{projectedPlayer['game_dates']}')
+    print(f'Analysis:\n\t{projectedPlayer['analysis']}')

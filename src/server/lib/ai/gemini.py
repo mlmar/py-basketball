@@ -1,42 +1,54 @@
 import json
+from unicodedata import normalize
 from datetime import date
 from lib.ai.client import get_client
 from lib.basketball.player import Player, ProjectedPlayerList, print_projected_player
 from service.nba_cdn_service import get_nba_schedule
 from google.genai import types
 
-def get_analysis(data: list[Player], type: str, days: int):
+def get_analysis(data: list[Player], type: str, past_days: int, num_players: int = 5, future_days: int = 7):
     prompt = f"""
     Today is {str(date.today())}.
-    The first data set contains NBA players and their {type} from the last {days} days. 
-    The second data set contains the NBA game schedule for remainder of the season.
-    Determine the 10 most underrated players based on this data set, and prioritize non all stars.
-    For each underrated player, project or determine the following for the next 7 days: (
-        Project their average stats where:
-            mp = Minutes played
-            fg = Field Goals Made
-            fga = Field Goals Attempted
-            fg_pct = Field Goal Percentage in decimal format
-            fg3 = Three Pointers Made
-            fg3a = Three Pointers Attempted
-            fg3_pct = Three Pointers Percentage in decimal format
-            ft = Free Throws Made
-            fta = Free Throws Attempted
-            ft_pct = Free Throw Percentage in decimal format
-            orb = Offensive Rebounds
-            drb = Defensive Rebounds
-            trb = Total Rebounds (Offensive Rebounds + Defensive Rebounds)
-            ast = Assists
-            stl = Steals
-            blk = Blocks
-            tov = Turnovers
-            pts = Points
-            plus_minus = Plus Minus 
-        num_games = Based on the provided NBA game schedule data set, determine the number of upcoming games for this player's team.
-        opponents = Based on the provided NBA game schedule data set, determine the exact list of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym.
-        game_dates = Based on the provided NBA game schedule data set, determine the exact list of dates for this player's upcoming games
-    
-    )
+    Here are 2 data sets:
+        The first data set contains NBA players and their stat {type} from the last {past_days} days. 
+        The second data set contains the NBA game schedule for remainder of the season.
+
+    Determine a list of the {num_players} most underrated players based on these data sets,
+    and accurately project their average stats over the next {future_days} days.
+    Accurately generate new data based on this requirements.
+    Consider the {type} stats of each player from the last {past_days} days from the first data set in comparison to their career averages.
+    Consider their number upcoming of games and the difficulty of upcoming opponents from the second data set.
+    Prioritize non all stars.
+
+    Format the upcoming games for the next {future_days} days as follows:
+        num_games = Based on the provided NBA game schedule data set, the number of upcoming games for this player's team.
+        opponents = Based on the provided NBA game schedule data set, the exact list of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym.
+        game_dates = Based on the provided NBA game schedule data set, the exact list of dates for this player's upcoming games
+
+    The newly generated stats should be formatted as follows:
+        mp = Minutes played
+        fg = Field Goals Made
+        fga = Field Goals Attempted
+        fg_pct = Field Goal Percentage in decimal format
+        fg3 = Three Pointers Made
+        fg3a = Three Pointers Attempted
+        fg3_pct = Three Pointers Percentage in decimal format
+        ft = Free Throws Made
+        fta = Free Throws Attempted
+        ft_pct = Free Throw Percentage in decimal format
+        orb = Offensive Rebounds
+        drb = Defensive Rebounds
+        trb = Total Rebounds (Offensive Rebounds + Defensive Rebounds)
+        ast = Assists
+        stl = Steals
+        blk = Blocks
+        tov = Turnovers
+        pts = Points
+        plus_minus = Plus Minus 
+
+    analysis = 1-2 sentences describing why the predicted stat average is accurate for their upcoming games.
+
+    Third:
     Respond in valid JSON format without new line characters.
     """
 
@@ -70,10 +82,12 @@ def get_analysis(data: list[Player], type: str, days: int):
                         final_answer += part.text
                         print(f'{part.text}', end='', flush=True)
 
-    print('\n\n------ Projections for underrated players for the next 7 days ------\n')
+    print('\n\n------ Projections for underrated players for the next {future_days} days ------\n')
     result: ProjectedPlayerList = json.loads(final_answer)
     for projectedPlayer in result:
-        print_projected_player(projectedPlayer)
+        # Find actual player by normalizing it and comparing it to original list
+        actualPlayer = next((x for x in data if normalize('NFD', x['player']) == normalize('NFD', projectedPlayer['player']['player'])), None)
+        print_projected_player(projectedPlayer, actualPlayer)
         print()
 
     return result
