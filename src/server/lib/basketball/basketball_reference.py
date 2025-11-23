@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.common.exceptions import TimeoutException
 from datetime import date
 from lib.basketball.player import Player
 
@@ -115,9 +116,14 @@ def get_data(dates: list[date] = []) -> Generator[(date, list[Player])]:
 
         print(f'Fetching data from {url}')
         driver = __create_driver()
-        wait = WebDriverWait(driver, 10)
-        driver.get(url)
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#all_stats'))) # Wait until top 20 rows of table are loaded
+        try:
+            wait = WebDriverWait(driver, 10)
+            driver.get(url)
+            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#all_stats'))) # Wait until top 20 rows of table are loaded
+        except TimeoutException:
+            print(f'No data found for {current_date}')
+            yield (current_date, None)
+            continue
         
         print(f'Querying data from table rows')
         players = __parse_table_rows(driver, current_date)

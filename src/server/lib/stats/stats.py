@@ -33,8 +33,9 @@ def refresh_stats(days: int):
     # Insert data for newly saved dates
     if len(new_dates) > 0:
         for (current_date, players) in get_data(new_dates):
-            player_data_table.insert(players) # Save new data
-            saved_dates_table.insert({ 'date': str(current_date) }) # Save the date
+            if players is not None:
+                player_data_table.insert(players) # Save new data
+                saved_dates_table.insert({ 'date': str(current_date) }) # Save the date
             print()
 
 def get_all(days: int):
