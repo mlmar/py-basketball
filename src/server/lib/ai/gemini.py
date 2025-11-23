@@ -46,7 +46,7 @@ def get_analysis(data: list[Player], type: str, past_days: int, num_players: int
         pts = Points
         plus_minus = Plus Minus 
 
-    analysis = 1-2 sentences describing why the predicted stat average is accurate for their upcoming games.
+    analysis = 1-3 sentences describing the why the predicted stat line is accurate and recent trends
 
     Third:
     Respond in valid JSON format without new line characters.

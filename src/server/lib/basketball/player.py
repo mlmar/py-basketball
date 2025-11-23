@@ -33,7 +33,7 @@ class ProjectedPlayer(BaseModel):
     num_games: int = Field(description="Number of upcoming games for this player's team.")
     opponents: list[str] = Field(description="List of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym")
     game_dates: list[str] = Field(description="List of dates for this player's upcoming games")
-    analysis: str = Field(description="1-2 sentences describing the why the predicted stat line is accurate")
+    analysis: str = Field(description="1-3 sentences describing the why the predicted stat line is accurate and recent trends")
 
 class ProjectedPlayerList(RootModel[list[ProjectedPlayer]]):
     pass
