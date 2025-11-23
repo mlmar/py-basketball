@@ -1,12 +1,8 @@
-from lib.stats.stats import get_all, get_averages, get_totals
-from lib.ai.gemini import get_analysis
+from fastapi import FastAPI
+from api.routes import stats_routes, auth_routes
+from api.auth import auth_middleware
 
-days = int(input('Last N Days (Excluding today, max of 10): '))
-days = min(days, 10)
-
-# get_all(days)
-averages = get_averages(days)
-# get_totals(days)
-print('------')
-
-get_analysis(averages, 'averages', days)
+app = FastAPI()
+app.middleware('http')(auth_middleware)
+app.include_router(auth_routes.router)
+app.include_router(stats_routes.router)

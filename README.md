@@ -26,7 +26,7 @@ Objectives
   - [ ] Automation
     - [ ] Automate daily/weekly analysis for N days
   - [ ] fastapi routes for:
-    - [ ] Authentication -- require token to access routes
+    - [ ] Authentication -- require Supabase JWT token to access routes
     - [ ] Serving front end application
     - [ ] Accessing player statistics
     - [ ] Passing parameters for analysis
@@ -48,4 +48,22 @@ SUPABASE_SAVED_DATES_TABLE=YOUR_SUPABASE_SAVED_DATES_TABLE_HERE
 SUPABASE_PLAYER_DATA_TABLE=YOUR_SUPABASE_PLAYER_DATA_TABLE_HERE
 GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
 PYTHONPATH=./src/server
+```
+
+Supabase connection strings are required for authentication and data retrieval.
+
+## Run
+
+Makefile Support
+
+```bash
+cd src/server
+make run
+```
+
+Or
+
+```bash
+cd src/server
+fastapi dev main.py
 ```

@@ -3,7 +3,7 @@ from lib.db.database_table import DatabaseTable
 from lib.db.client import get_client
 from lib.basketball.player import Player
 from lib.basketball.basketball_reference import get_data
-from lib.config import SUPABASE_SAVED_DATES_TABLE, SUPABASE_PLAYER_DATA_TABLE
+from config import SUPABASE_SAVED_DATES_TABLE, SUPABASE_PLAYER_DATA_TABLE
 from util.date_util import range_of_dates
 
 saved_dates_table = DatabaseTable[Player](SUPABASE_SAVED_DATES_TABLE)

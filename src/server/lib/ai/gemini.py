@@ -61,7 +61,7 @@ def get_analysis(data: list[Player], type: str, days: int):
     final_answer = ''
     # Print out response stream thoughts
     for chunk in response_stream:
-        if chunk.candidates[0].content.parts != None:
+        if chunk.candidates[0].content.parts is not None:
             for part in chunk.candidates[0].content.parts:
                 if part.text:
                     if part.thought:
@@ -75,3 +75,5 @@ def get_analysis(data: list[Player], type: str, days: int):
     for projectedPlayer in result:
         print_projected_player(projectedPlayer)
         print()
+
+    return result

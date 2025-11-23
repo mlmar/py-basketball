@@ -15,7 +15,7 @@ def get_nba_schedule(start_date: date = None) -> list[GameDay]:
     """Returns minimal and parsed NBA game schedule after the start_date"""
     response = nba_cdn_service.get('/scheduleLeagueV2.json')
     game_days = response['leagueSchedule']['gameDates']
-    if start_date != None: # Filter by start date
+    if start_date is not None: # Filter by start date
         return [__get_game_day_info(game_day) for game_day in game_days if __game_date_from_str(game_day['gameDate']) >= start_date]
     else: # Filter by end date
         return [__get_game_day_info(game_day) for game_day in game_days]

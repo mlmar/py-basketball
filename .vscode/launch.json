@@ -2,6 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python: FastAPI",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["main:app", "--reload"],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
       "name": "Python: main.py",
       "type": "debugpy",
       "request": "launch",

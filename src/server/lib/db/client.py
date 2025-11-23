@@ -1,4 +1,4 @@
-from lib.config import SUPABASE_URL, SUPABASE_KEY
+from config import SUPABASE_URL, SUPABASE_KEY
 from supabase import create_client, Client
 
 __client: Client = None
