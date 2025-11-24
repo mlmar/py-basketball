@@ -30,6 +30,6 @@ def get_totals(days: int, current_user: dict = Depends(get_current_user)):
 
 @router.get('/analysis')
 def get_analysis(days: int, current_user: dict = Depends(get_current_user)):
-    averages = get_averages(days)
+    data = stats.get_all(days)
     days = min(days, 10)
-    return gemini.get_analysis(averages, 'averages', days)
+    return gemini.get_analysis(data, days)

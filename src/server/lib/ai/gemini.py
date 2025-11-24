@@ -6,17 +6,17 @@ from lib.basketball.player import Player, ProjectedPlayerList, print_projected_p
 from service.nba_cdn_service import get_nba_schedule
 from google.genai import types
 
-def get_analysis(data: list[Player], type: str, past_days: int, num_players: int = 5, future_days: int = 7):
+def get_analysis(data: list[Player], past_days: int, num_players: int = 5, future_days: int = 7):
     prompt = f"""
     Today is {str(date.today())}.
     Here are 2 data sets:
-        The first data set contains NBA players and their stat {type} from the last {past_days} days. 
+        The first data set contains NBA players and their statlines from the last {past_days} days. 
         The second data set contains the NBA game schedule for remainder of the season.
 
     Determine a list of the {num_players} most underrated players based on these data sets,
     and accurately project their average stats over the next {future_days} days.
     Accurately generate new data based on this requirements.
-    Consider the {type} stats of each player from the last {past_days} days from the first data set in comparison to their career averages.
+    Consider the statlines of each player from the last {past_days} days from the first data set in comparison to their career stats.
     Consider their number upcoming of games and the difficulty of upcoming opponents from the second data set.
     Prioritize non all stars.
 
@@ -77,7 +77,7 @@ def get_analysis(data: list[Player], type: str, past_days: int, num_players: int
             for part in chunk.candidates[0].content.parts:
                 if part.text:
                     if part.thought:
-                        print(f'[Thinking]: {part.text}', end='\n', flush=True)
+                        print(f'[Thinking]: {part.text}', end='', flush=True)
                     else:
                         final_answer += part.text
                         print(f'{part.text}', end='', flush=True)

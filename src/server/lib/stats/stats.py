@@ -43,7 +43,7 @@ def get_all(days: int):
     print(f'Fetching all player stats from the last {days} days')
     refresh_stats(days)
     start_date, end_date = __get_start_end_dates(days)
-    response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).execute()
+    response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).order('player').execute()
     print(f'Successfully queried database for player stats from {str(start_date)} to {str(end_date)}')
     return response.data
 

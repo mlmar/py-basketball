@@ -6,9 +6,9 @@ class TestGemini(unittest.TestCase):
     def test_get_analysis(self):
         """get_analysis() returns a response with 10 players"""
         days = 10
-        averages = stats.get_averages(days)
-        num_players = 5
-        response = gemini.get_analysis(averages, 'averages', days, num_players)
+        data = stats.get_all(days)
+        num_players = 10
+        response = gemini.get_analysis(data, days, num_players)
         self.assertEqual(len(response), num_players)
 
 if __name__ == '__main__':
