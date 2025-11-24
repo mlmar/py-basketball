@@ -1,5 +1,5 @@
 import json
-from unicodedata import normalize
+# from unicodedata import normalize
 from datetime import date
 from lib.ai.client import get_client
 from lib.basketball.player import Player, ProjectedPlayerList, print_projected_player
@@ -15,7 +15,7 @@ def get_analysis(data: list[Player], past_days: int, num_players: int = 5, futur
 
     Determine a list of the {num_players} most underrated players based on these data sets,
     and accurately project their average stats over the next {future_days} days.
-    Accurately generate new data based on this requirements.
+    Accurately generate new data based on these requirements and do more than take the average of the last 10 day
     Consider the statlines of each player from the last {past_days} days from the first data set in comparison to their career stats.
     Consider their number upcoming of games and the difficulty of upcoming opponents from the second data set.
     Prioritize non all stars.
@@ -86,8 +86,8 @@ def get_analysis(data: list[Player], past_days: int, num_players: int = 5, futur
     result: ProjectedPlayerList = json.loads(final_answer)
     for projectedPlayer in result:
         # Find actual player by normalizing it and comparing it to original list
-        actualPlayer = next((x for x in data if normalize('NFD', x['player']) == normalize('NFD', projectedPlayer['player']['player'])), None)
-        print_projected_player(projectedPlayer, actualPlayer)
+        # actualPlayer = next((x for x in data if normalize('NFD', x['player']) == normalize('NFD', projectedPlayer['player']['player'])), None)
+        print_projected_player(projectedPlayer)
         print()
 
     return result
