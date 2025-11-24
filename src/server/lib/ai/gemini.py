@@ -82,7 +82,7 @@ def get_analysis(data: list[Player], past_days: int, num_players: int = 5, futur
                         final_answer += part.text
                         print(f'{part.text}', end='', flush=True)
 
-    print('\n\n------ Projections for underrated players for the next {future_days} days ------\n')
+    print(f'\n\n------ Projections for underrated players for the next {future_days} days ------\n')
     result: ProjectedPlayerList = json.loads(final_answer)
     for projectedPlayer in result:
         # Find actual player by normalizing it and comparing it to original list

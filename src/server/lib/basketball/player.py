@@ -49,8 +49,8 @@ def print_projected_player(projectedPlayer: ProjectedPlayer, actualPlayer: Playe
     labels = ['FG%', 'FT%', 'PTS', '3PM', 'REB', 'AST', 'STL', 'BLK', 'TOV']
     fields = ['fg_pct', 'ft', 'pts', 'fg3', 'trb', 'ast', 'stl', 'blk', 'tov']
     
+    print(player['player'])
     if actualPlayer:
-        print(player['player'])
         print('Average Stats:')
         for label, field in zip(labels, fields):
             print(f'\t{label}: {actualPlayer[field]}')
