@@ -15,7 +15,7 @@ def get_analysis(data: list[Player], past_days: int, num_players: int = 5, futur
 
     Determine a list of the {num_players} most underrated players based on these data sets,
     and accurately project their average stats over the next {future_days} days.
-    Accurately generate new data based on these requirements and do more than take the average of the last 10 day
+    Accurately generate new data based on these requirements. Do not simply take the average of the last 10 days.
     Consider the statlines of each player from the last {past_days} days from the first data set in comparison to their career stats.
     Consider their number upcoming of games and the difficulty of upcoming opponents from the second data set.
     Prioritize non all stars.
@@ -77,7 +77,7 @@ def get_analysis(data: list[Player], past_days: int, num_players: int = 5, futur
             for part in chunk.candidates[0].content.parts:
                 if part.text:
                     if part.thought:
-                        print(f'[Thinking]: {part.text}', end='', flush=True)
+                        print(f'[Thinking]: {part.text}', end='\n', flush=True)
                     else:
                         final_answer += part.text
                         print(f'{part.text}', end='', flush=True)
