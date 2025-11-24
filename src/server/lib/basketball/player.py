@@ -42,7 +42,7 @@ def print_player(player: Player) -> str:
     """Print Player with format 'NAME (PTS/AST/TRB)'"""
     return f"{player['name']} ({player['pts']}/{player['ast']}/{player['trb']})"
 
-def print_projected_player(projectedPlayer: ProjectedPlayer, actualPlayer: Player):
+def print_projected_player(projectedPlayer: ProjectedPlayer, actualPlayer: Player = None):
     """Print Player name and projected stats"""
     player: Player = projectedPlayer['player']
 
