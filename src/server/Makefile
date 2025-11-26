@@ -1,2 +1,2 @@
 run:
-	fastapi dev main.py
+	fastapi dev ./src/server/main.py --port 3300

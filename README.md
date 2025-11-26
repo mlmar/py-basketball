@@ -56,7 +56,7 @@ PYTHONPATH=./src/server
 
 Supabase connection strings are required for authentication and data retrieval.
 
-## Run
+## Run Server
 
 Makefile Support
 
@@ -69,5 +69,12 @@ Or
 
 ```bash
 cd src/server
-fastapi dev main.py
+fastapi dev main.py --port 3300
+```
+
+## Run Client
+
+```bash
+cd src/client
+npm run dev
 ```

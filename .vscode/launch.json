@@ -6,7 +6,7 @@
       "type": "debugpy",
       "request": "launch",
       "module": "uvicorn",
-      "args": ["main:app", "--reload"],
+      "args": ["main:app", "--reload", "--port", "3300"],
       "console": "integratedTerminal",
       "justMyCode": true
     },
@@ -17,6 +17,13 @@
       "program": "${workspaceFolder}/src/server/main.py",
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src/client"
     }
   ]
 }
