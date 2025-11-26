@@ -5,7 +5,6 @@ Objectives
 - [ ] Frontend
   - [ ] [React](https://react.dev/learn)
   - [ ] [TypeScript](typescriptlang.org/cheatsheets/)
-  - [ ] [Mantine UI](https://mantine.dev/core/package/)
   - [ ] [@tanstack/tanstack-router](https://tanstack.com/router/latest)
   - [ ] [@tanstack/query](https://tanstack.com/query/latest)
   - [ ] [zustand](https://github.com/pmndrs/zustand)
@@ -14,6 +13,7 @@ Objectives
     - [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=11&day=17&year=2025)
   - [x] External Services
     - [x] Retrieve upcoming NBA schedule for the next N days
+    - [x] Retrieve player stats from NBA API
   - [x] Supabase
     - [x] player_data table - Saved player statistics
     - [x] saved_dates table - Indicates which dates have already been scraped
