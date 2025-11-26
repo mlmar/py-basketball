@@ -9,9 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WaiverRouteRouteImport } from './routes/waiver/route'
+import { Route as TestRouteRouteImport } from './routes/test/route'
 import { Route as SignupRouteRouteImport } from './routes/signup/route'
 import { Route as LoginRouteRouteImport } from './routes/login/route'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 
+const WaiverRouteRoute = WaiverRouteRouteImport.update({
+  id: '/waiver',
+  path: '/waiver',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestRouteRoute = TestRouteRouteImport.update({
+  id: '/test',
+  path: '/test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRouteRoute = SignupRouteRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -22,35 +35,66 @@ const LoginRouteRoute = LoginRouteRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
+  '/test': typeof TestRouteRoute
+  '/waiver': typeof WaiverRouteRoute
 }
 export interface FileRoutesByTo {
+  '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
+  '/test': typeof TestRouteRoute
+  '/waiver': typeof WaiverRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
+  '/test': typeof TestRouteRoute
+  '/waiver': typeof WaiverRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/signup'
+  fullPaths: '/dashboard' | '/login' | '/signup' | '/test' | '/waiver'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/signup'
-  id: '__root__' | '/login' | '/signup'
+  to: '/dashboard' | '/login' | '/signup' | '/test' | '/waiver'
+  id: '__root__' | '/dashboard' | '/login' | '/signup' | '/test' | '/waiver'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  DashboardRouteRoute: typeof DashboardRouteRoute
   LoginRouteRoute: typeof LoginRouteRoute
   SignupRouteRoute: typeof SignupRouteRoute
+  TestRouteRoute: typeof TestRouteRoute
+  WaiverRouteRoute: typeof WaiverRouteRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/waiver': {
+      id: '/waiver'
+      path: '/waiver'
+      fullPath: '/waiver'
+      preLoaderRoute: typeof WaiverRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test': {
+      id: '/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -65,12 +109,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  DashboardRouteRoute: DashboardRouteRoute,
   LoginRouteRoute: LoginRouteRoute,
   SignupRouteRoute: SignupRouteRoute,
+  TestRouteRoute: TestRouteRoute,
+  WaiverRouteRoute: WaiverRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
