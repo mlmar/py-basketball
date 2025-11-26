@@ -42,6 +42,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install.
 
 ```bash
 pip install -r src/server/requirements.txt
+npm install --prefix ./src/client
 ```
 
 Set up the .env file in the project directory with the folllowing contents:
@@ -78,6 +79,5 @@ fastapi dev main.py --port 3300
 
 ```bash
 cd src/client
-npm install
 npm run dev
 ```
