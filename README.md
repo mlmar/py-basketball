@@ -3,11 +3,12 @@
 Objectives
 
 - [ ] Frontend
-  - [ ] React
-  - [ ] TypeScript
-  - [ ] @tanstack/tanstack-router
-  - [ ] @tanstack/query
-  - [ ] zustand
+  - [ ] [React](https://react.dev/learn)
+  - [ ] [TypeScript](typescriptlang.org/cheatsheets/)
+  - [ ] [Mantine UI](https://mantine.dev/core/package/)
+  - [ ] [@tanstack/tanstack-router](https://tanstack.com/router/latest)
+  - [ ] [@tanstack/query](https://tanstack.com/query/latest)
+  - [ ] [zustand](https://github.com/pmndrs/zustand)
 - [ ] Backend
   - [ ] Selenium
     - [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=11&day=17&year=2025)
@@ -69,6 +70,7 @@ Or
 
 ```bash
 cd src/server
+pip install -r requirements.txt
 fastapi dev main.py --port 3300
 ```
 
@@ -76,5 +78,6 @@ fastapi dev main.py --port 3300
 
 ```bash
 cd src/client
+npm install
 npm run dev
 ```

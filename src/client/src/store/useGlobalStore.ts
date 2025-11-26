@@ -1,15 +1,15 @@
-import { create } from 'zustand';
+import { createStoreInstance } from '@/store/createStoreInstance';
 
 type GlobalStore = {
-    example: string | null;
-    setExample: (prop: string) => void;
-};
+    example: string,
+    setExample: (prop: string) => void
+}
 
-export const useGlobalStore = create<GlobalStore>((set) => {
+export const [GlobalStoreProvider, useGlobalStore] = createStoreInstance<GlobalStore>((set) => {
     return {
-        example: null,
-        setExample: (prop: string) => {
+        example: '',
+        setExample: (prop) => {
             set({ example: prop });
         }
-    };
-});
+    }
+})

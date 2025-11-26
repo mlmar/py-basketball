@@ -9,27 +9,69 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteRouteImport } from './routes/signup/route'
+import { Route as LoginRouteRouteImport } from './routes/login/route'
 
-export interface FileRoutesByFullPath {}
-export interface FileRoutesByTo {}
+const SignupRouteRoute = SignupRouteRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRouteRoute = LoginRouteRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/login': typeof LoginRouteRoute
+  '/signup': typeof SignupRouteRoute
+}
+export interface FileRoutesByTo {
+  '/login': typeof LoginRouteRoute
+  '/signup': typeof SignupRouteRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/login': typeof LoginRouteRoute
+  '/signup': typeof SignupRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths: '/login' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/login' | '/signup'
+  id: '__root__' | '/login' | '/signup'
   fileRoutesById: FileRoutesById
 }
-export interface RootRouteChildren {}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+export interface RootRouteChildren {
+  LoginRouteRoute: typeof LoginRouteRoute
+  SignupRouteRoute: typeof SignupRouteRoute
 }
 
-const rootRouteChildren: RootRouteChildren = {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  LoginRouteRoute: LoginRouteRoute,
+  SignupRouteRoute: SignupRouteRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
