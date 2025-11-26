@@ -3,7 +3,11 @@
 Objectives
 
 - [ ] Frontend
-  - [ ] Angular
+  - [ ] React
+  - [ ] TypeScript
+  - [ ] @tanstack/tanstack-router
+  - [ ] @tanstack/query
+  - [ ] zustand
 - [ ] Backend
   - [ ] Selenium
     - [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=11&day=17&year=2025)
