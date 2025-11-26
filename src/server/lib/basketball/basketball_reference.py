@@ -87,7 +87,7 @@ def __parse_table_row(row: WebElement, current_date: date) -> Player:
     player['date'] = str(current_date)
     return player
 
-def __parse_table_rows(driver: WebDriver, current_date: date, num: int = 100) -> list[Player]:
+def __parse_table_rows(driver: WebDriver, current_date: date) -> list[Player]:
     """Parses top N table rows into a list of Player from basketball reference stats page"""
 
     rows = driver.find_elements(By.CSS_SELECTOR, '#all_stats tbody > tr[data-row]:not(.thead)')

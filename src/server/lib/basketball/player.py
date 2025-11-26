@@ -40,7 +40,7 @@ class ProjectedPlayerList(RootModel[list[ProjectedPlayer]]):
 
 def print_player(player: Player) -> str:
     """Print Player with format 'NAME (PTS/AST/TRB)'"""
-    return f"{player['name']} ({player['pts']}/{player['ast']}/{player['trb']})"
+    print(f"{player['player']} ({player['pts']}/{player['ast']}/{player['trb']})")
 
 def print_projected_player(projectedPlayer: ProjectedPlayer, actualPlayer: Player = None):
     """Print Player name and projected stats"""
