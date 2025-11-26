@@ -45,7 +45,7 @@ pip install -r src/server/requirements.txt
 npm install --prefix ./src/client
 ```
 
-Set up the .env file in the project directory with the folllowing contents:
+Set up the .env file in the server directory with the folllowing contents:
 
 ```properties
 SUPABASE_URL=YOUR_SUPABASE_URL_HERE
