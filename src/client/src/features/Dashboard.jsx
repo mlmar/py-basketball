@@ -1,177 +1,94 @@
-// src/features/WaiverBoard.jsx
-import { useState } from "react";
+// features/Dashboard.jsx
 import "./HomePage.css";
-import { Link } from "@tanstack/react-router";
 
-const ALL_ROLES_FILTERS = ["ALL","PTS", "FG%", "FTS", "3PM", "stocks", "boards", "assists","TOs"];
-
-const TRENDING_FILTERS = [
-  "ALL",
-  "Hot",
-  "Cold",
-  "+ Minutes",
-  "- Minutes",
-  "Injuries",
-];
-
-export function WaiverBoard() {
-  // dummy data for now – I’ll swap this out for real backend stats later
-  const waiverList = [
-    { name: "Player A", team: "MIA", role: "3PM / scoring wing" },
-    { name: "Player B", team: "OKC", role: "stocks streamer (STL + BLK)" },
-    { name: "Player C", team: "NYK", role: "boards + FG% big" },
-    { name: "Player D", team: "MEM", role: "points + assists guard" },
-    { name: "Player E", team: "SAC", role: "3PM + points, low TOs" },
-  ];
-
-  const trendingPlayers = [
+function Dashboard() {
+  // rough waiver board data until this is wired to the backend
+  const waiverBoard = [
     {
-      name: "Player F",
-      team: "ORL",
-      tag: "Hot",
-      note: "Minutes and usage both climbing.",
+      name: "Player A",
+      team: "MIA",
+      role: "3PM / scoring",
+      note: "Hot from deep last few games.",
     },
     {
-      name: "Player G",
-      team: "CHI",
-      tag: "Cold",
-      note: "Shot volume same but shots not falling.",
+      name: "Player B",
+      team: "OKC",
+      role: "stocks",
+      note: "Nice steals + blocks streamer.",
     },
     {
-      name: "Player H",
-      team: "NOP",
-      tag: "+ Minutes",
-      note: "Moved into starting lineup last 3 games.",
+      name: "Player C",
+      team: "NYK",
+      role: "boards",
+      note: "Solid rebounds without killing FG%.",
     },
     {
-      name: "Player I",
-      team: "DEN",
-      tag: "- Minutes",
-      note: "Losing run with second unit.",
-    },
-    {
-      name: "Player J",
-      team: "PHX",
-      tag: "Injuries",
-      note: "Getting a bump while starter is out.",
+      name: "Player D",
+      team: "SAC",
+      role: "assists",
+      note: "Low-end PG for dimes when I need them.",
     },
   ];
-
-  // simple filters so I can quickly sort by what I’m looking for
-  const [activeRoleFilter, setActiveRoleFilter] = useState("ALL");
-  const [activeTrendFilter, setActiveTrendFilter] = useState("ALL");
-
-  const filteredWaiverList = waiverList.filter((p) =>
-    activeRoleFilter === "ALL"
-      ? true
-      : p.role.toLowerCase().includes(activeRoleFilter.toLowerCase())
-  );
-
-  const filteredTrending = trendingPlayers.filter((p) =>
-    activeTrendFilter === "ALL"
-      ? true
-      : p.tag.toLowerCase().includes(activeTrendFilter.toLowerCase())
-  );
 
   return (
     <div className="app">
-      {/* top bar */}
-      <header className="section">
-        <div
-          style={{ display: "flex", justifyContent: "space-between", gap: 12 }}
+      {/* simple top nav so I can bounce back to the homepage */}
+      <nav className="top-nav">
+        <button
+          className="btn tiny"
+          onClick={() => (window.location.href = "/")}
         >
-          <Link to="/" className="btn tiny">
-            ← Home
-          </Link>
-          <span className="tiny-text">Waiver board – placeholder build</span>
-        </div>
+          ← Back to home
+        </button>
+      </nav>
 
+      {/* top section */}
+      <header className="section">
         <h1 className="logo">WaiverWarrior</h1>
-        <p className="tagline">Full Waiver Board</p>
+        <p className="tagline">Dashboard (early build)</p>
         <p className="subtext">
-          Big-picture view of possible adds. I’ll hook this into live data
-          later.
+          Spot where I&apos;m going to plug in live stats, matchup tracking, and
+          AI calls from the backend.
         </p>
       </header>
 
-      {/* main grid: all targets + trending box */}
+      {/* main grid */}
       <section className="section grid-2">
-        {/* All Waiver Targets */}
-        <div className="card" style={{ borderColor: "rgba(37, 99, 235, 0.7)" }}>
+        <div className="card">
           <div className="card-header">
-            <h2>All Waiver Targets (mock)</h2>
-            <span className="card-badge">early version</span>
+            <h2>Today&apos;s Games</h2>
+            <span className="card-badge">schedule</span>
           </div>
           <p className="section-sub">
-            Right now this is just hardcoded. Goal is to swap it with real
-            backend results and filters (team, position, categories).
+            This card will pull in upcoming games once the API is hooked up.
           </p>
-
-          {/* role filter row */}
-          <div className="chips-row filter-row">
-            {ALL_ROLES_FILTERS.map((label) => (
-              <button
-                key={label}
-                className={
-                  "filter-pill" +
-                  (activeRoleFilter === label ? " filter-pill-active" : "")
-                }
-                onClick={() => setActiveRoleFilter(label)}
-              >
-                {label === "ALL" ? "All roles" : label}
-              </button>
-            ))}
-          </div>
-
-          <ul className="list">
-            {filteredWaiverList.map((p) => (
-              <li key={p.name} className="list-item">
-                <div>
-                  <p className="list-title">
-                    {p.name} <span className="list-team">• {p.team}</span>
-                  </p>
-                  <p className="list-note">{p.role}</p>
-                </div>
-                <button className="btn tiny">Shortlist</button>
-              </li>
-            ))}
-          </ul>
         </div>
 
-        {/* Trending section */}
-        <div className="card trending-card">
+        <div className="card">
           <div className="card-header">
-            <h2>Trending Players</h2>
-            <span className="card-badge trending-badge">trending filters</span>
+            <h2>Category Tracker</h2>
+            <span className="card-badge secondary">beta</span>
           </div>
           <p className="section-sub">
-            Quick scan for hot, cold, and injury-boost guys. For now this is
-            all mock data.
+            Placeholder for charts showing how my team is doing in each cat.
+          </p>
+        </div>
+      </section>
+
+      {/* waiver board preview */}
+      <section className="section">
+        <div className="card">
+          <div className="card-header">
+            <h2>Waiver Board</h2>
+            <span className="card-badge">my notes</span>
+          </div>
+          <p className="section-sub">
+            Early version of my waiver list. I&apos;ll swap this out for real
+            data once the backend is plugged in.
           </p>
 
-          {/* trending filters */}
-          <div className="filter-block trending-filter-row">
-            <p className="filter-label">Trending filters</p>
-            <div className="filter-pill-row">
-              {TRENDING_FILTERS.map((label) => (
-                <button
-                  key={label}
-                  className={
-                    "filter-pill" +
-                    (activeTrendFilter === label
-                      ? " filter-pill-active-trend"
-                      : "")
-                  }
-                  onClick={() => setActiveTrendFilter(label)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <ul className="list">
-            {filteredTrending.map((p) => (
+            {waiverBoard.map((p) => (
               <li key={p.name} className="list-item">
                 <div>
                   <p className="list-title">
@@ -179,16 +96,25 @@ export function WaiverBoard() {
                   </p>
                   <p className="list-note">{p.note}</p>
                 </div>
-                <span className="pill soft">{p.tag}</span>
+                <span className="pill soft">{p.role}</span>
               </li>
             ))}
           </ul>
+
+          <button
+            className="btn fullwidth"
+            onClick={() => (window.location.href = "/waiver")}
+          >
+            Open Full Waiver Board
+          </button>
         </div>
       </section>
 
       <footer className="footer">
-        <p>WaiverWarrior · full board mock v0.1</p>
+        <p>WaiverWarrior · dashboard v0.1</p>
       </footer>
     </div>
   );
 }
+
+export default Dashboard;
