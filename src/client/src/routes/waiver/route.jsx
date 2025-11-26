@@ -1,9 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from "@tanstack/react-router";
+import { WaiverBoard } from "~/src/features/WaiverBoard";
 
-export const Route = createFileRoute('/waiver')({
-    component: RouteComponent
+export const Route = createFileRoute("/waiver")({
+  component: WaiverBoard,
 });
-
-function RouteComponent() {
-    return <div>Hello "/waiver"!</div>; // or improt whatever component here
-}
