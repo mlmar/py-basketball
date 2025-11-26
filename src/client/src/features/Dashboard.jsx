@@ -1,13 +1,34 @@
-import "../App.css";
-import { Link } from "react-router-dom";
+// src/features/Dashboard.jsx
+import "./HomePage.css";
+import { Link } from "@tanstack/react-router";
 
-function Dashboard() {
+export function Dashboard() {
   // rough waiver board data until I hook this up to the backend
   const waiverBoard = [
-    { name: "Player A", team: "MIA", role: "3PM / scoring", note: "Hot from deep last few games." },
-    { name: "Player B", team: "OKC", role: "stocks", note: "Nice steals + blocks streamer." },
-    { name: "Player C", team: "NYK", role: "boards", note: "Solid rebounds without killing FG%." },
-    { name: "Player D", team: "SAC", role: "assists", note: "Low-end PG for dimes when I need them." },
+    {
+      name: "Player A",
+      team: "MIA",
+      role: "3PM / scoring",
+      note: "Hot from deep last few games.",
+    },
+    {
+      name: "Player B",
+      team: "OKC",
+      role: "stocks",
+      note: "Nice steals + blocks streamer.",
+    },
+    {
+      name: "Player C",
+      team: "NYK",
+      role: "boards",
+      note: "Solid rebounds without killing FG%.",
+    },
+    {
+      name: "Player D",
+      team: "SAC",
+      role: "assists",
+      note: "Low-end PG for dimes when I need them.",
+    },
   ];
 
   return (
@@ -24,8 +45,8 @@ function Dashboard() {
         <h1 className="logo">WaiverWarrior</h1>
         <p className="tagline">Dashboard (early build)</p>
         <p className="subtext">
-          Spot where I’m going to plug in live stats, matchup tracking, and AI
-          calls from the backend.
+          Spot where I&apos;m going to plug in live stats, matchup tracking, and
+          AI calls from the backend.
         </p>
       </header>
 
@@ -52,42 +73,38 @@ function Dashboard() {
         </div>
       </section>
 
-      {/* waiver board section */}
+      {/* small waiver preview */}
       <section className="section">
-  <div className="card">
-    <div className="card-header">
-      <h2>Waiver Board</h2>
-      <span className="card-badge">my notes</span>
-    </div>
-
-    <p className="section-sub">
-      Early version of my waiver list. I’ll swap this out for real data once the backend is plugged in.
-    </p>
-
-    <ul className="list">
-      {waiverBoard.map((p) => (
-        <li key={p.name} className="list-item">
-          <div>
-            <p className="list-title">
-              {p.name} <span className="list-team">• {p.team}</span>
-            </p>
-            <p className="list-note">{p.note}</p>
+        <div className="card">
+          <div className="card-header">
+            <h2>Waiver Board</h2>
+            <span className="card-badge">my notes</span>
           </div>
-          <span className="pill soft">{p.role}</span>
-        </li>
-      ))}
-    </ul>
+          <p className="section-sub">
+            Early version of my waiver list. I&apos;ll swap this out for real
+            data once the backend is plugged in.
+          </p>
 
-    {/* button I added to open the full waiver board */}
-    <button
-      className="btn fullwidth"
-      onClick={() => (window.location.href = "/waiver")}
-    >
-      View Full Waiver Board
-    </button>
-  </div>
-</section>
+          <ul className="list">
+            {waiverBoard.map((p) => (
+              <li key={p.name} className="list-item">
+                <div>
+                  <p className="list-title">
+                    {p.name} <span className="list-team">• {p.team}</span>
+                  </p>
+                  <p className="list-note">{p.note}</p>
+                </div>
+                <span className="pill soft">{p.role}</span>
+              </li>
+            ))}
+          </ul>
 
+          {/* button to go to full waiver board */}
+          <Link to="/waiver" className="btn tiny">
+            Open full waiver board
+          </Link>
+        </div>
+      </section>
 
       <footer className="footer">
         <p>WaiverWarrior · dashboard v0.1</p>
@@ -95,5 +112,3 @@ function Dashboard() {
     </div>
   );
 }
-
-export default Dashboard;
