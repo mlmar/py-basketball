@@ -1,19 +1,9 @@
-// src/features/HomePage.jsx
+// features/HomePage.jsx
 import "./HomePage.css";
-import { Link } from "@tanstack/react-router";
 
-export function HomePage() {
-  // placeholder data until I hook real stats
-  const categories = [
-    "PTS",
-    "REB",
-    "AST",
-    "STL",
-    "BLK",
-    "3PM",
-    "FG%",
-    "FT%",
-  ];
+function HomePage() {
+  // placeholder data
+  const categories = ["PTS", "REB", "AST", "STL", "BLK", "3PM", "FG%", "FT%"];
 
   const waiverTargets = [
     { name: "Player A", team: "MIA", note: "Trending upward • strong 3PM" },
@@ -42,10 +32,12 @@ export function HomePage() {
           </p>
 
           <div className="hero-buttons">
-            {/* go to dashboard */}
-            <Link to="/dashboard" className="btn primary">
+            <button
+              className="btn primary"
+              onClick={() => (window.location.href = "/dashboard")}
+            >
               Open Dashboard
-            </Link>
+            </button>
 
             <button className="btn ghost">Add Matchup</button>
           </div>
@@ -115,10 +107,12 @@ export function HomePage() {
             ))}
           </ul>
 
-          {/* go to full waiver board */}
-          <Link to="/waiver" className="btn fullwidth">
+          <button
+            className="btn fullwidth"
+            onClick={() => (window.location.href = "/waiver")}
+          >
             View Full Waiver Board
-          </Link>
+          </button>
         </div>
 
         <div className="card">
@@ -145,3 +139,5 @@ export function HomePage() {
     </div>
   );
 }
+
+export default HomePage;
