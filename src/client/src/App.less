@@ -1,0 +1,41 @@
+html,
+body,
+#root,
+.app {
+    .flex-col();
+    height: 100%;
+    width: 100%;
+    background: var(--bg);
+}
+
+* {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    .flex;
+    flex-direction: column;
+}
+
+.flex-align-middle {
+    align-items: middle;
+}
+
+.flex-align-end {
+    align-items: end;
+}
+
+.flex-justify-center {
+    justify-content: center;
+}
+
+.flex-justify-end {
+    justify-content: end;
+}

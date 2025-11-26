@@ -1,12 +1,25 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
+import tanstackRouter from '@tanstack/router-plugin/vite'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
     server: {
         port: 3000,
     },
-    plugins: [react()],
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src'),
+        },
+    },
+    plugins: [
+        tanstackRouter({
+            target: 'react',
+            autoCodeSplitting: true,
+        }),
+        react()
+    ],
     test: {
         environment: 'jsdom',
         globals: true, // Enables global access to Vitest APIs like `describe`, `it`, `expect`

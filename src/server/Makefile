@@ -1,2 +1,3 @@
 run:
-	fastapi dev ./src/server/main.py --port 3300
+	pip install -r ./requirements.txt
+	fastapi dev ./main.py --port 3300

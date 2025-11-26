@@ -10,8 +10,12 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@mantine/core": "^8.3.9",
+        "@mantine/hooks": "^8.3.9",
         "@tanstack/react-query": "^5.90.11",
         "@tanstack/react-router": "^1.139.6",
+        "@tanstack/react-router-devtools": "^1.139.6",
+        "@tanstack/router-plugin": "^1.139.6",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "zustand": "^5.0.8"
@@ -29,6 +33,7 @@
         "eslint-plugin-react-hooks": "^7.0.1",
         "eslint-plugin-react-refresh": "^0.4.24",
         "globals": "^16.5.0",
+        "less": "^4.4.2",
         "typescript": "~5.9.3",
         "typescript-eslint": "^8.46.4",
         "vite": "^7.2.4",
