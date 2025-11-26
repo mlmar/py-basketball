@@ -1,46 +1,49 @@
-// src/pages/WaiverBoard.jsx
+// features/WaiverBoard.jsx
 import { useState } from "react";
-import "../App.css";
+import "./HomePage.css";
 
 function WaiverBoard() {
-  // --- mock data for the main waiver board ---
+  // simple mock data for now – this will be replaced by backend data later
   const waiverList = [
     {
       name: "Player A",
       team: "MIA",
       role: "3PM / scoring wing",
-      pos: ["SG", "SF"],
-      cats: ["3PM", "PTS"],
+      positions: ["SG", "SF"],
+      cats: ["3PM", "PTS", "FG%"],
     },
     {
       name: "Player B",
       team: "OKC",
       role: "stocks streamer (STL + BLK)",
-      pos: ["PG"],
+      positions: ["SG"],
       cats: ["STL", "BLK"],
     },
     {
       name: "Player C",
       team: "NYK",
       role: "boards + FG% big",
-      pos: ["PF", "C"],
+      positions: ["PF", "C"],
       cats: ["REB", "FG%"],
     },
     {
       name: "Player D",
       team: "MEM",
       role: "points + assists guard",
-      pos: ["PG"],
+      positions: ["PG"],
       cats: ["PTS", "AST"],
     },
     {
       name: "Player E",
       team: "SAC",
       role: "3PM + points, low TOs",
-      pos: ["SG"],
+      positions: ["SG"],
       cats: ["3PM", "PTS", "TO"],
     },
   ];
+
+  const [activePos, setActivePos] = useState("ALL");
+  const [activeCat, setActiveCat] = useState("ALL");
 
   const positionOptions = ["ALL", "PG", "SG", "SF", "PF", "C", "G", "F"];
   const categoryOptions = [
@@ -56,71 +59,64 @@ function WaiverBoard() {
     "TO",
   ];
 
-  const [posFilter, setPosFilter] = useState("ALL");
-  const [catFilter, setCatFilter] = useState("ALL");
-
-  const filteredWaiverList = waiverList.filter((p) => {
-    const matchesPos =
-      posFilter === "ALL" || p.pos.includes(posFilter) || // G/F as catch-all
-      (posFilter === "G" && (p.pos.includes("PG") || p.pos.includes("SG"))) ||
-      (posFilter === "F" && (p.pos.includes("SF") || p.pos.includes("PF")));
-    const matchesCat = catFilter === "ALL" || p.cats.includes(catFilter);
-    return matchesPos && matchesCat;
+  const filteredWaivers = waiverList.filter((p) => {
+    const posMatch =
+      activePos === "ALL" || p.positions?.includes(activePos as never);
+    const catMatch =
+      activeCat === "ALL" || p.cats?.includes(activeCat as never);
+    return posMatch && catMatch;
   });
 
-  // --- mock data for trending section ---
-  const trendingFilters = [
-    { id: "ALL", label: "All" },
-    { id: "SCORING", label: "Scoring heater" },
-    { id: "MINUTES", label: "Minutes +/-" },
-    { id: "INJURY", label: "Injury fill-in" },
-    { id: "USAGE", label: "Usage bump" },
-    { id: "STOCKS", label: "Stocks run" },
-    { id: "3PM", label: "+3PM" },
-    { id: "EFFICIENCY", label: "Efficient" },
-
+  // trending area – mock data + trend filters
+  const trendFilters = [
+    { label: "All", value: "ALL" },
+    { label: "+ Minutes", value: "minutes_up" },
+    { label: "Usage bump", value: "usage" },
+    { label: "Injury fill-in", value: "injury" },
+    { label: "Hot stocks (STL/BLK)", value: "stocks" },
   ];
 
-  const [activeTrendingFilter, setActiveTrendingFilter] = useState("ALL");
+  const [activeTrend, setActiveTrend] = useState("ALL");
 
   const trendingPlayers = [
     {
       name: "Player F",
       team: "LAL",
-      blurb: "Last 3: 22 PTS, 4 REB, 3.7 3PM in 30+ minutes.",
-      tags: ["SCORING", "MINUTES", "USAGE", "3PM"],
+      note: "Last 3: 22 PTS, 4 REB, 3.7 3PM",
+      tags: ["minutes_up", "usage"],
     },
     {
       name: "Player G",
       team: "ORL",
-      blurb: "Stuffing stocks: 2.2 STL, 1.5 BLK recently.",
-      tags: ["STOCKS", "USAGE"],
+      note: "Stuffing stocks: 2.2 STL, 1.5 BLK recently",
+      tags: ["stocks"],
     },
     {
       name: "Player H",
       team: "CHI",
-      blurb: "Efficient big: 64% FG, solid boards, minutes creeping up.",
-      tags: ["MINUTES", "USAGE", "EFFICIENCY"],
+      note: "Efficient big: 64% FG, solid boards",
+      tags: ["minutes_up"],
     },
     {
       name: "Player I",
       team: "DAL",
-      blurb: "Injury fill-in logging starter minutes at guard.",
-      tags: ["INJURY", "MINUTES", "USAGE"],
+      note: "Injury replacement getting starter run",
+      tags: ["injury", "minutes_up"],
     },
   ];
 
-  const filteredTrending = trendingPlayers.filter((p) =>
-    activeTrendingFilter === "ALL"
-      ? true
-      : p.tags.includes(activeTrendingFilter)
-  );
+  const filteredTrending =
+    activeTrend === "ALL"
+      ? trendingPlayers
+      : trendingPlayers.filter((p) => p.tags.includes(activeTrend));
 
   return (
     <div className="app">
       {/* top bar */}
       <header className="section">
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+        <div
+          style={{ display: "flex", justifyContent: "space-between", gap: 12 }}
+        >
           <button
             className="btn tiny"
             onClick={() => (window.location.href = "/")}
@@ -133,14 +129,14 @@ function WaiverBoard() {
         <h1 className="logo">WaiverWarrior</h1>
         <p className="tagline">Full Waiver Board</p>
         <p className="subtext">
-          Big-picture view of possible adds. I’ll hook this into live data
+          Big-picture view of possible adds. I&apos;ll hook this into live data
           later.
         </p>
       </header>
 
-      {/* --- All Waiver Targets --- */}
+      {/* main waiver board */}
       <section className="section">
-        <div className="card">
+        <div className="card waiver-card">
           <div className="card-header">
             <h2>All Waiver Targets (mock)</h2>
             <span className="card-badge">early version</span>
@@ -150,8 +146,8 @@ function WaiverBoard() {
             backend results and add proper filters (team, position, categories).
           </p>
 
-          {/* position + category filters */}
           <div className="filter-block">
+            {/* positions */}
             <div className="filter-row-line">
               <span className="filter-label">Positions</span>
               <div className="filter-pill-row">
@@ -160,9 +156,9 @@ function WaiverBoard() {
                     key={pos}
                     className={
                       "filter-pill" +
-                      (posFilter === pos ? " filter-pill-active" : "")
+                      (activePos === pos ? " filter-pill-active" : "")
                     }
-                    onClick={() => setPosFilter(pos)}
+                    onClick={() => setActivePos(pos)}
                   >
                     {pos}
                   </button>
@@ -170,6 +166,7 @@ function WaiverBoard() {
               </div>
             </div>
 
+            {/* categories */}
             <div className="filter-row-line">
               <span className="filter-label">Categories</span>
               <div className="filter-pill-row">
@@ -178,9 +175,9 @@ function WaiverBoard() {
                     key={cat}
                     className={
                       "filter-pill" +
-                      (catFilter === cat ? " filter-pill-active" : "")
+                      (activeCat === cat ? " filter-pill-active" : "")
                     }
-                    onClick={() => setCatFilter(cat)}
+                    onClick={() => setActiveCat(cat)}
                   >
                     {cat}
                   </button>
@@ -190,7 +187,7 @@ function WaiverBoard() {
           </div>
 
           <ul className="list">
-            {filteredWaiverList.map((p) => (
+            {filteredWaivers.map((p) => (
               <li key={p.name} className="list-item">
                 <div>
                   <p className="list-title">
@@ -205,7 +202,7 @@ function WaiverBoard() {
         </div>
       </section>
 
-      {/* --- Trending Players --- */}
+      {/* trending section */}
       <section className="section">
         <div className="card trending-card">
           <div className="card-header">
@@ -213,26 +210,29 @@ function WaiverBoard() {
             <span className="card-badge trending-badge">trending</span>
           </div>
           <p className="section-sub">
-            Quick look at players on a heater. Eventually this will come from
-            recent game logs + your league settings.
+            Quick look at players on a heater. Eventually this will pull from
+            recent game logs and your league settings.
           </p>
 
           <div className="filter-block trending-filter-row">
-            <div className="filter-pill-row">
-              {trendingFilters.map((f) => (
-                <button
-                  key={f.id}
-                  className={
-                    "filter-pill" +
-                    (activeTrendingFilter === f.id
-                      ? " filter-pill-active-trend"
-                      : "")
-                  }
-                  onClick={() => setActiveTrendingFilter(f.id)}
-                >
-                  {f.label}
-                </button>
-              ))}
+            <div className="filter-row-line">
+              <span className="filter-label">Trending filters</span>
+              <div className="filter-pill-row">
+                {trendFilters.map((f) => (
+                  <button
+                    key={f.value}
+                    className={
+                      "filter-pill" +
+                      (activeTrend === f.value
+                        ? " filter-pill-active-trend"
+                        : "")
+                    }
+                    onClick={() => setActiveTrend(f.value)}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -243,7 +243,7 @@ function WaiverBoard() {
                   <p className="list-title">
                     {p.name} <span className="list-team">• {p.team}</span>
                   </p>
-                  <p className="list-note">{p.blurb}</p>
+                  <p className="list-note">{p.note}</p>
                 </div>
                 <button className="btn tiny">Watch</button>
               </li>
