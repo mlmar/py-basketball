@@ -2,7 +2,7 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "~/*": ["src/*"]
+            "@/*": ["src/*"]
         }
     },
     "include": ["src", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.less", "**/*.css", "src/test"]

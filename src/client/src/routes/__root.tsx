@@ -9,7 +9,6 @@ export const Route = createRootRoute({
 function RootComponent() {
     return (
         <>
-            <header>Website Header</header>
             <Outlet />
         </>
     );
