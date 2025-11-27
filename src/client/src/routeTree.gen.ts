@@ -14,6 +14,7 @@ import { Route as TestRouteRouteImport } from './routes/test/route'
 import { Route as SignupRouteRouteImport } from './routes/signup/route'
 import { Route as LoginRouteRouteImport } from './routes/login/route'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
+import { Route as AnalysisRouteRouteImport } from './routes/analysis/route'
 
 const WaiverRouteRoute = WaiverRouteRouteImport.update({
   id: '/waiver',
@@ -40,8 +41,14 @@ const DashboardRouteRoute = DashboardRouteRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnalysisRouteRoute = AnalysisRouteRouteImport.update({
+  id: '/analysis',
+  path: '/analysis',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/analysis': typeof AnalysisRouteRoute
   '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
@@ -49,6 +56,7 @@ export interface FileRoutesByFullPath {
   '/waiver': typeof WaiverRouteRoute
 }
 export interface FileRoutesByTo {
+  '/analysis': typeof AnalysisRouteRoute
   '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
@@ -57,6 +65,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/analysis': typeof AnalysisRouteRoute
   '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
@@ -65,13 +74,27 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/dashboard' | '/login' | '/signup' | '/test' | '/waiver'
+  fullPaths:
+    | '/analysis'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/test'
+    | '/waiver'
   fileRoutesByTo: FileRoutesByTo
-  to: '/dashboard' | '/login' | '/signup' | '/test' | '/waiver'
-  id: '__root__' | '/dashboard' | '/login' | '/signup' | '/test' | '/waiver'
+  to: '/analysis' | '/dashboard' | '/login' | '/signup' | '/test' | '/waiver'
+  id:
+    | '__root__'
+    | '/analysis'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/test'
+    | '/waiver'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AnalysisRouteRoute: typeof AnalysisRouteRoute
   DashboardRouteRoute: typeof DashboardRouteRoute
   LoginRouteRoute: typeof LoginRouteRoute
   SignupRouteRoute: typeof SignupRouteRoute
@@ -116,10 +139,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analysis': {
+      id: '/analysis'
+      path: '/analysis'
+      fullPath: '/analysis'
+      preLoaderRoute: typeof AnalysisRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  AnalysisRouteRoute: AnalysisRouteRoute,
   DashboardRouteRoute: DashboardRouteRoute,
   LoginRouteRoute: LoginRouteRoute,
   SignupRouteRoute: SignupRouteRoute,
