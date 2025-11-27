@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "deque-systems.vscode-axe-linter",
+    "waderyan.gitblame",
+    "esbenp.prettier-vscode",
+    "ms-python.vscode-pylance",
+    "ms-python.python",
+    "ms-python.debugpy",
+    "ms-python.vscode-python-envs"
+  ]
+}
