@@ -1,5 +1,5 @@
 // features/HomePage.jsx
-import './HomePage.css';
+import './HomePage.less';
 
 export function HomePage() {
     // placeholder data

@@ -41,6 +41,9 @@ def refresh_stats(days: int):
 def get_all(days: int):
     """Fetches all player stats from the last N days"""
     print(f'Fetching all player stats from the last {days} days')
+    if days <= 0:
+        return []
+    
     refresh_stats(days)
     start_date, end_date = __get_start_end_dates(days)
     response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).order('player').execute()
@@ -50,7 +53,11 @@ def get_all(days: int):
 def get_averages(days: int):
     """Fetches all player averages from the last N days"""
     print(f'Fetching all player averages from the last {days} days')
+    if days <= 0:
+        return []
+    
     refresh_stats(days)
+
     start_date, end_date = __get_start_end_dates(days)
     response = get_client().rpc('get_averages', {
         'start_date': str(start_date),
@@ -62,7 +69,11 @@ def get_averages(days: int):
 def get_totals(days: int):
     """Fetches all player totals from the last N days"""
     print(f'Fetching all player totals from the last {days} days')
+    if days <= 0:
+        return []
+    
     refresh_stats(days)
+    
     start_date, end_date = __get_start_end_dates(days)
     response = get_client().rpc('get_totals', {
         'start_date': str(start_date),

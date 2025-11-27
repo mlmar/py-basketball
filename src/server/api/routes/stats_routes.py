@@ -18,18 +18,21 @@ from lib.ai import gemini
 
 router = APIRouter()
 
+#  current_user: dict = Depends(get_current_user)
 @router.get('/averages/{days}')
-def get_averages(days: int, current_user: dict = Depends(get_current_user)):
+def get_averages(days: int,):
     days = min(days, 10)
     return stats.get_averages(days)
 
+#  current_user: dict = Depends(get_current_user)
 @router.get('/totals/{days}')
-def get_totals(days: int, current_user: dict = Depends(get_current_user)):
+def get_totals(days: int,):
     days = min(days, 10)
     return stats.get_totals(days)
 
+#  current_user: dict = Depends(get_current_user)
 @router.get('/analysis')
-def get_analysis(days: int, current_user: dict = Depends(get_current_user)):
+def get_analysis(days: int,):
     data = stats.get_all(days)
     days = min(days, 10)
     return gemini.get_analysis(data, days)
