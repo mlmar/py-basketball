@@ -42,10 +42,17 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install.
 
 ```bash
 pip install -r src/server/requirements.txt
+pip install
 npm install --prefix ./src/client
 ```
 
-Set up the .env file in the server directory with the folllowing contents:
+Create an env file in the root directory with the following contents:
+
+```
+PYTHONPATH=./src/server
+```
+
+Create an.env file in the server directory with the folllowing contents:
 
 ```properties
 SUPABASE_URL=YOUR_SUPABASE_URL_HERE
@@ -53,7 +60,6 @@ SUPABASE_KEY=YOUR_SUPABASE_KEY_HERE
 SUPABASE_SAVED_DATES_TABLE=YOUR_SUPABASE_SAVED_DATES_TABLE_HERE
 SUPABASE_PLAYER_DATA_TABLE=YOUR_SUPABASE_PLAYER_DATA_TABLE_HERE
 GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
-PYTHONPATH=.
 ```
 
 Supabase connection strings are required for authentication and data retrieval.
