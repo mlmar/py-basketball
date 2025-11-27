@@ -13,19 +13,38 @@ def __get_players(current_date: date):
     ).get_data_frames()[0]
 
     games_df = games_df[games_df['GAME_DATE'] == str(current_date)]
-    game_ids = games_df['GAME_ID'].unique()
+    games_df = games_df[['GAME_ID', 'MATCHUP']]
+    game_ids = games_df['GAME_ID']
+    matchups = games_df['MATCHUP']
 
+    fetched_game_ids: str = []
     all_players: Player = []
 
-    for game_id in game_ids:
+    for index, game_id in enumerate(game_ids):
+        if game_id in fetched_game_ids:
+            continue # skip games that have already been fetched
+
+        fetched_game_ids.append(game_id)
+
         print('Fetching game:', game_id)
 
-        boxscore = BoxScoreTraditionalV3(game_id=game_id).get_data_frames()[0]
+        matchup_str = matchups.iloc[index];
+        team1, symbol, team2 = matchup_str.split(' ') # split match up to get opponent id
+        matchup = {}
+        matchup[team1] = team2
+        matchup[team2] = team1
+
+        players: int = 0
+        result = BoxScoreTraditionalV3(game_id=game_id).get_data_frames()
+        boxscore = result[0]
         for index, item in enumerate(boxscore['gameId']):
             data = boxscore.iloc[index].to_dict();
             player: Player = __parse_table_row(data, current_date)
+            player['opp_id'] = matchup[player['team_id']]
             all_players.append(player)
+            players = players + 1
 
+        print(f'Successfully fetched {players} players for {matchup_str} on {str(current_date)}')
         time.sleep(0.6)  # NBA API rate limit protection
     
     return all_players
