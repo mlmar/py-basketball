@@ -25,4 +25,13 @@ export class StatsService {
         const response = await HTTPService.get<{ days: number }, ProjectedPlayer[]>(STATS_SERVICE_URL + '/analysis');
         return response;
     }
+
+    /**
+     * Retrieves most recent trending analysis
+     * @returns 
+     */
+    static async getTrendingAnalysis(): Promise<ProjectedPlayer[]> {
+        const response = await HTTPService.get<{ days: number }, ProjectedPlayer[]>(STATS_SERVICE_URL + '/trending-analysis');
+        return response;
+    }
 }

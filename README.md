@@ -3,11 +3,19 @@
 Objectives
 
 - [ ] Frontend
-  - [ ] [React](https://react.dev/learn)
-  - [ ] [TypeScript](typescriptlang.org/cheatsheets/)
-  - [ ] [@tanstack/tanstack-router](https://tanstack.com/router/latest)
-  - [ ] [@tanstack/query](https://tanstack.com/query/latest)
-  - [ ] [zustand](https://github.com/pmndrs/zustand)
+  - Libraries
+    - [ ] [React](https://react.dev/learn)
+    - [ ] [TypeScript](typescriptlang.org/cheatsheets/)
+    - [ ] [@tanstack/tanstack-router](https://tanstack.com/router/latest)
+    - [ ] [@tanstack/query](https://tanstack.com/query/latest)
+    - [ ] [zustand](https://github.com/pmndrs/zustand)
+  - [ ] Yahoo API
+    - [ ] Prompt user for login
+    - [ ] Show list of trending players based on league settings
+  - [ ] Generic
+    - [ ] Watching players (tracking trends for specific player)
+    - [ ] Show list of trending players (top performing based on criteria) in the NBA
+    - [ ] Watching players (tracking trends for specific player)
 - [ ] Backend
   - [ ] Selenium
     - [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=11&day=17&year=2025)
@@ -30,11 +38,16 @@ Objectives
       - [x] Get list of opponents for next N days
   - [ ] Automation
     - [ ] Automate daily/weekly analysis for N days
+    - [ ] Pull data once per day and cache pervious analysis results
   - [ ] fastapi routes for:
     - [ ] Authentication -- require Supabase JWT token to access routes
     - [ ] Serving front end application
     - [ ] Accessing player statistics
-    - [ ] Passing parameters for analysis
+      - [x] Projected players for the next N days
+      - [x] Player averages from last N days
+      - [ ] Trending players from last N days
+    - [ ] Passing specific criteria for analysis
+      - [ ] Dependent on API rate limits (Too much data?)
 
 ## Installation
 

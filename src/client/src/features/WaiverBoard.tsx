@@ -1,6 +1,6 @@
 // features/WaiverBoard.jsx
 import { useState } from 'react';
-import './HomePage.css';
+import './HomePage.less';
 
 export function WaiverBoard() {
     // simple mock data for now – this will be replaced by backend data later

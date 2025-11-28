@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WaiverRouteRouteImport } from './routes/waiver/route'
+import { Route as TrendingRouteRouteImport } from './routes/trending/route'
 import { Route as TestRouteRouteImport } from './routes/test/route'
 import { Route as SignupRouteRouteImport } from './routes/signup/route'
 import { Route as LoginRouteRouteImport } from './routes/login/route'
@@ -19,6 +20,11 @@ import { Route as AnalysisRouteRouteImport } from './routes/analysis/route'
 const WaiverRouteRoute = WaiverRouteRouteImport.update({
   id: '/waiver',
   path: '/waiver',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrendingRouteRoute = TrendingRouteRouteImport.update({
+  id: '/trending',
+  path: '/trending',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TestRouteRoute = TestRouteRouteImport.update({
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
   '/test': typeof TestRouteRoute
+  '/trending': typeof TrendingRouteRoute
   '/waiver': typeof WaiverRouteRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
   '/test': typeof TestRouteRoute
+  '/trending': typeof TrendingRouteRoute
   '/waiver': typeof WaiverRouteRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRouteRoute
   '/signup': typeof SignupRouteRoute
   '/test': typeof TestRouteRoute
+  '/trending': typeof TrendingRouteRoute
   '/waiver': typeof WaiverRouteRoute
 }
 export interface FileRouteTypes {
@@ -80,9 +89,17 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/test'
+    | '/trending'
     | '/waiver'
   fileRoutesByTo: FileRoutesByTo
-  to: '/analysis' | '/dashboard' | '/login' | '/signup' | '/test' | '/waiver'
+  to:
+    | '/analysis'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/test'
+    | '/trending'
+    | '/waiver'
   id:
     | '__root__'
     | '/analysis'
@@ -90,6 +107,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/test'
+    | '/trending'
     | '/waiver'
   fileRoutesById: FileRoutesById
 }
@@ -99,6 +117,7 @@ export interface RootRouteChildren {
   LoginRouteRoute: typeof LoginRouteRoute
   SignupRouteRoute: typeof SignupRouteRoute
   TestRouteRoute: typeof TestRouteRoute
+  TrendingRouteRoute: typeof TrendingRouteRoute
   WaiverRouteRoute: typeof WaiverRouteRoute
 }
 
@@ -109,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/waiver'
       fullPath: '/waiver'
       preLoaderRoute: typeof WaiverRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trending': {
+      id: '/trending'
+      path: '/trending'
+      fullPath: '/trending'
+      preLoaderRoute: typeof TrendingRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/test': {
@@ -155,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRouteRoute: LoginRouteRoute,
   SignupRouteRoute: SignupRouteRoute,
   TestRouteRoute: TestRouteRoute,
+  TrendingRouteRoute: TrendingRouteRoute,
   WaiverRouteRoute: WaiverRouteRoute,
 }
 export const routeTree = rootRouteImport
