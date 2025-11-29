@@ -88,13 +88,12 @@ def get_totals(days: int):
     print(f'Successfully queried database for player totals from {str(start_date)} to {str(end_date)}')
     return response.data
 
-most_recent_data = None # Store most recent data locally
-
+most_recent_analysis_data = None # Store most recent data locally
 def get_projected_analysis():
     """Gets most recent analysis or runs today's if it does not exist"""
-    global most_recent_data
-    if most_recent_data is not None:
-        return most_recent_data
+    global most_recent_analysis_data
+    if most_recent_analysis_data is not None and len(most_recent_analysis_data) > 0:
+        return most_recent_analysis_data
 
     today = str(date.today())
     days = 10
@@ -121,7 +120,7 @@ def get_projected_analysis():
                 'date': today,
                 'status': 'COMPLETE'
             })
-            most_recent_data = result;
+            most_recent_analysis_data = result;
         except:
             # Update status if failed
             analysis_status_table.insert({
@@ -136,18 +135,19 @@ def get_projected_analysis():
         if date_response.data is not None or len(date_response.data) > 0:
             recent_date = date_response.data[0]['date']
             results = analysis_data_table.get_table().select('*').eq('date', recent_date).execute()
-            most_recent_data = [json.loads(row['player']) for row in results.data]
-            return most_recent_data
+            most_recent_analysis_data = [json.loads(row['player']) for row in results.data]
+            return most_recent_analysis_data
         else:
             return []
     else:
         return []
 
+most_recent_trending_data = None # Store most recent data locally
 def get_trending_analysis():
     """Gets most recent trending analysis or runs today's if it does not exist"""
-    global most_recent_data
-    if most_recent_data is not None:
-        return most_recent_data
+    global most_recent_trending_data
+    if most_recent_trending_data is not None:
+        return most_recent_trending_data
 
     today = str(date.today())
     days = 10
@@ -174,7 +174,7 @@ def get_trending_analysis():
                 'date': str(date.today()),
                 'status': 'COMPLETE'
             })
-            most_recent_data = result;
+            most_recent_trending_data = result;
         except:
             # Update status if failed
             trending_analysis_data_table.insert({
@@ -189,8 +189,8 @@ def get_trending_analysis():
         if date_response.data is not None or len(date_response.data) > 0:
             recent_date = date_response.data[0]['date']
             results = trending_analysis_data_table.get_table().select('*').eq('date', recent_date).execute()
-            most_recent_data = [json.loads(row['player']) for row in results.data]
-            return most_recent_data
+            most_recent_trending_data = [json.loads(row['player']) for row in results.data]
+            return most_recent_trending_data
         else:
             return []
     else:
