@@ -90,7 +90,7 @@ def get_totals(days: int):
 
 most_recent_data = None # Store most recent data locally
 
-def get_analysis():
+def get_projected_analysis():
     """Gets most recent analysis or runs today's if it does not exist"""
     global most_recent_data
     if most_recent_data is not None:
@@ -110,7 +110,7 @@ def get_analysis():
         })
 
         try:
-            result = gemini.get_analysis(data, days)
+            result = gemini.get_projected_analysis(data, days)
             for projectedPlayer in result:
                 analysis_data_table.insert({
                     'date': today,
@@ -121,13 +121,14 @@ def get_analysis():
                 'date': today,
                 'status': 'COMPLETE'
             })
+            most_recent_data = result;
         except:
             # Update status if failed
             analysis_status_table.insert({
                 'date': today,
                 'status': 'FAILED'
             })
-        most_recent_data = result;
+
         return result
     elif status_response.data[0]['status'] == 'PROCESSING' or status_response.data[0]['status']  == 'COMPLETE':
         # If day has been processsed or completed then pull from the most recent data set
@@ -157,23 +158,30 @@ def get_trending_analysis():
 
         # If today has not been processed, then start processing the data
         trending_analysis_status_table.insert({
-            'date': str(date.today()),
+            'date': today,
             'status': 'PROCESSING'
         })
 
-        result = gemini.get_trending_analysis(data, days)
-        for projectedPlayer in result:
+        try:
+            result = gemini.get_trending_analysis(data, days)
+            for projectedPlayer in result:
+                trending_analysis_data_table.insert({
+                    'date': today,
+                    'player': json.dumps(projectedPlayer)
+                }) # Save anaylsis data
+
+            trending_analysis_status_table.insert({
+                'date': str(date.today()),
+                'status': 'COMPLETE'
+            })
+            most_recent_data = result;
+        except:
+            # Update status if failed
             trending_analysis_data_table.insert({
                 'date': today,
-                'player': json.dumps(projectedPlayer)
-            }) # Save anaylsis data
-
-        trending_analysis_status_table.insert({
-            'date': str(date.today()),
-            'status': 'COMPLETE'
-        })
+                'status': 'FAILED'
+            })
         
-        most_recent_data = result;
         return result
     elif status_response.data[0]['status'] == 'PROCESSING' or status_response.data[0]['status']  == 'COMPLETE':
         # If day has been processsed or completed then pull from the most recent data set

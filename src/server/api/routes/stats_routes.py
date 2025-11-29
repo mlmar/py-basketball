@@ -19,8 +19,8 @@ def get_totals(days: int,):
 
 #  current_user: dict = Depends(get_current_user)
 @router.get('/analysis')
-def get_analysis():
-    return stats.get_analysis()
+def get_projected_analysis():
+    return stats.get_projected_analysis()
 
 #  current_user: dict = Depends(get_current_user)
 @router.get('/trending-analysis')

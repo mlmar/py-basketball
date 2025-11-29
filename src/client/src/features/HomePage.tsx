@@ -1,5 +1,5 @@
 // features/HomePage.jsx
-import './HomePage.less';
+import { Matchup } from '@/features/Matchup';
 
 export function HomePage() {
     // placeholder data
@@ -33,32 +33,13 @@ export function HomePage() {
                     </div>
                 </div>
 
-                <div className='hero-card'>
-                    <h2>This Week&apos;s Matchup</h2>
-                    <p className='matchup-label'>Overview</p>
-
-                    <div className='matchup-score'>
-                        <div>
-                            <span className='matchup-name'>You</span>
-                            <span className='matchup-record'>5–3</span>
-                        </div>
-                        <div>
-                            <span className='matchup-name enemy'>Opponent</span>
-                            <span className='matchup-record'>3–5</span>
-                        </div>
-                    </div>
-
-                    <p className='tiny-text'>
-                        Target categories: <strong>FG%</strong>, <strong>AST</strong>, <strong>3PM</strong>,{' '}
-                        <strong>STL</strong>.
-                    </p>
-                </div>
+                <Matchup />
             </header>
 
             {/* categories */}
             <section className='section'>
                 <h2>Category Snapshot</h2>
-                <p className='section-sub'>A quick glance at the matchups you&apos;re aiming to control.</p>
+                <p className='section-sub'>A quick glance at the matchups you're aiming to control.</p>
 
                 <div className='chips-row'>
                     {categories.map((cat) => (

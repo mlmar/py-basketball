@@ -1,6 +1,4 @@
 // features/Dashboard.jsx
-import './HomePage.less';
-
 export function Dashboard() {
     // rough waiver board data until this is wired to the backend
     const waiverBoard = [
