@@ -7,20 +7,20 @@ import json
 import asyncio
 import traceback
 
-analysis_status_table = DatabaseTable(config.SUPABASE_ANALYSIS_STATUS_TABLE)
-analysis_data_table = DatabaseTable(config.SUPABASE_ANALYSIS_DATA_TABLE)
+projected_analysis_status_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE)
+projected_analysis_data_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE)
 trending_analysis_status_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE)
 trending_analysis_data_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE)
 
 # PROJECTED ANALYSIS
 def get_projected_analysis():
     """Gets most recent analysis and runs today's if it does not exist"""
-    result = __get_latest_result(analysis_status_table, analysis_data_table)
+    result = __get_latest_result(projected_analysis_status_table, projected_analysis_data_table)
     today = str(date.today())
-    status = __get_status(analysis_status_table, today)
+    status = __get_status(projected_analysis_status_table, today)
     if status is None:
         # If today has not been processed, then start processing the data
-        analysis_status_table.insert({
+        projected_analysis_status_table.insert({
             'date': today,
             'status': 'PROCESSING'
         })
@@ -39,19 +39,19 @@ def run_projected_analysis():
     try:
         result = gemini.get_projected_analysis(data, days)
         for projectedPlayer in result:
-            analysis_data_table.insert({
+            projected_analysis_data_table.insert({
                 'date': today,
                 'player': json.dumps(projectedPlayer)
             }) # Save anaylsis data
 
-        analysis_status_table.insert({
+        projected_analysis_status_table.insert({
             'date': today,
             'status': 'COMPLETE'
         })
     except:
         # Update status if failed
         error_str = traceback.format_exc()
-        analysis_status_table.insert({
+        projected_analysis_status_table.insert({
             'date': today,
             'status': 'FAILED',
             'log': error_str
