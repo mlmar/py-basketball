@@ -32,11 +32,10 @@ def run_projected_analysis():
     """Runs projected analysis and updates today's status"""
     today = str(date.today())
     days = 10
-    data = stats.get_all(days)
-
     result = []
 
     try:
+        data = stats.get_all(days, True)
         result = gemini.get_projected_analysis(data, days)
         for projectedPlayer in result:
             projected_analysis_data_table.insert({
@@ -79,11 +78,10 @@ def run_trending_analysis():
     """Runs trending analysis and updates today's status"""
     today = str(date.today())
     days = 10
-    data = stats.get_all(days)
-
     result = []
 
     try:
+        data = stats.get_all(days, True)
         result = gemini.get_trending_analysis(data, days)
         for projectedPlayer in result:
             trending_analysis_data_table.insert({

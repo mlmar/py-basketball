@@ -3,6 +3,7 @@ from lib.db.database_table import DatabaseTable
 from lib.db.client import get_client
 from lib.basketball.player import Player
 from lib.basketball.nba import get_data
+from lib.stats.excluded_players import get_excluded_players
 from util.date_util import range_of_dates
 import config
 
@@ -38,7 +39,7 @@ def refresh_stats(days: int):
                 saved_dates_table.insert({ 'date': str(current_date) }) # Save the date
             print()
 
-def get_all(days: int):
+def get_all(days: int, exclude: bool = False):
     """Fetches all player stats from the last N days"""
     print(f'Fetching all player stats from the last {days} days')
     if days <= 0:
@@ -48,9 +49,12 @@ def get_all(days: int):
     start_date, end_date = __get_start_end_dates(days)
     response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).order('player').execute()
     print(f'Successfully queried database for player stats from {str(start_date)} to {str(end_date)}')
+    
+    if exclude:
+        return __filter_excluded_players(response.data)
     return response.data
 
-def get_averages(days: int):
+def get_averages(days: int, exclude: bool = False):
     """Fetches all player averages from the last N days"""
     print(f'Fetching all player averages from the last {days} days')
     if days <= 0:
@@ -64,9 +68,12 @@ def get_averages(days: int):
         'end_date': str(end_date)
     }).execute()
     print(f'Successfully queried database for player averages from {str(start_date)} to {str(end_date)}')
+
+    if exclude:
+        return __filter_excluded_players(response.data)
     return response.data
 
-def get_totals(days: int):
+def get_totals(days: int, exclude: bool = False):
     """Fetches all player totals from the last N days"""
     print(f'Fetching all player totals from the last {days} days')
     if days <= 0:
@@ -80,4 +87,11 @@ def get_totals(days: int):
         'end_date': str(end_date)
     }).execute()
     print(f'Successfully queried database for player totals from {str(start_date)} to {str(end_date)}')
+
+    if exclude:
+        return __filter_excluded_players(response.data)
     return response.data
+
+def __filter_excluded_players(data: Player) -> list[Player]:
+    excluded_players = get_excluded_players()
+    return [row for row in data if row['player'] not in excluded_players]
