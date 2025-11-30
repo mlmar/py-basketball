@@ -12,10 +12,10 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
     
     prompt = f"""
     Today is {str(date.today())}.
-    Here are 2 data sets:
+    Here are 3 data sets:
         The first data set contains NBA players and their statlines from the last {past_days} days. 
         The second data set contains a list of NBA players to exclude from the analysis and output.
-        The third data set contains the NBA game schedule for remainder of the season.
+        The third data set contains the NBA game schedule for the next {future_days} days.
 
     Determine a list of the {num_players} most underrated players based on these data sets,
     and accurately project their average stats over the next {future_days} days.
@@ -57,7 +57,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
     print(prompt)
     client = get_client()
     all_stars = get_all_stars()
-    nba_schedule = get_nba_schedule(date.today())
+    nba_schedule = get_nba_schedule(date.today(), future_days)
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[
@@ -85,10 +85,10 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
 
     prompt = f"""
     Today is {str(date.today())}.
-    Here are 2 data sets:
+    Here are 3 data sets:
         The first data set contains NBA players and their statlines from the last {past_days} days. 
         The second data set contains a list of NBA players to exclude from the analysis and output.
-        The third data set contains the NBA game schedule for remainder of the season.
+        The third data set contains the NBA game schedule for the next {future_days} days.
 
     Determine a list of the top {num_players} performing players from the last {past_days} days, excluding all stars.
 
@@ -111,7 +111,7 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
 
     client = get_client()
     all_stars = get_all_stars()
-    nba_schedule = get_nba_schedule(date.today())
+    nba_schedule = get_nba_schedule(date.today(), future_days)
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[

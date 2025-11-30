@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import date, datetime
 from service.service import Service
+from util.date_util import calc_date
 
 class Game(BaseModel):
     away_team: str
@@ -11,12 +12,13 @@ class GameDay(BaseModel):
     games: list[Game]
 
 nba_cdn_service = Service('https://cdn.nba.com/static/json/staticData')
-def get_nba_schedule(start_date: date = None) -> list[GameDay]:
+def get_nba_schedule(start_date: date = None, num_days: int = 7) -> list[GameDay]:
     """Returns minimal and parsed NBA game schedule after the start_date"""
     response = nba_cdn_service.get('/scheduleLeagueV2.json')
     game_days = response['leagueSchedule']['gameDates']
+    end_date = calc_date(start_date, num_days)
     if start_date is not None: # Filter by start date
-        return [__get_game_day_info(game_day) for game_day in game_days if __game_date_from_str(game_day['gameDate']) >= start_date]
+        return [__get_game_day_info(game_day) for game_day in game_days if __game_date_from_str(game_day['gameDate']) >= start_date and __game_date_from_str(game_day['gameDate']) <= end_date]
     else: # Filter by end date
         return [__get_game_day_info(game_day) for game_day in game_days]
 

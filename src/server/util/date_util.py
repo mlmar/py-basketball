@@ -9,3 +9,6 @@ def range_of_dates(start_date: date, end_date: date) -> Generator[date]:
 
     for n in range(int ((end_date - start_date).days) + 1):
         yield start_date + timedelta(n)
+
+def calc_date(start_date: date, num_days: int) -> date:
+    return start_date + timedelta(num_days)
