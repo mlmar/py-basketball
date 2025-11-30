@@ -2,7 +2,6 @@ import json
 # from unicodedata import normalize
 from datetime import date
 from lib.ai.client import get_client
-from lib.basketball.basketball_reference import get_all_stars
 from lib.basketball.player import Player, ProjectedPlayerList, print_projected_player, TrendingPlayerList, print_trending_player
 from lib.stats.excluded_players import get_excluded_players
 from service.nba_cdn_service import get_nba_schedule
@@ -19,7 +18,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
         The third data set contains the NBA game schedule for the next {future_days} days.
 
     Determine a list of the {num_players} most underrated players based on these data sets,
-    and accurately project their average stats over the next {future_days} days.
+    and accurately project their average stats over the next {future_days} days, ignoiring the players in the second data set.
     Accurately generate new data based on these requirements. Do not simply take the average of the last 10 days.
     Consider the statlines of each player from the last {past_days} days from the first data set in comparison to their career stats.
     Consider their number upcoming of games and the difficulty of upcoming opponents from the second data set.
@@ -92,7 +91,7 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
         The second data set contains a list of NBA players to exclude from the analysis and output.
         The third data set contains the NBA game schedule for the next {future_days} days.
 
-    Determine a list of the top {num_players} performing players from the last {past_days} days, excluding all stars.
+    Determine a list of the top {num_players} performing players from the last {past_days} days, ignoring the players in the second data set.
 
     Format the upcoming games for the next {future_days} days as follows:
         num_games = Based on the provided NBA game schedule data set, the number of upcoming games for this player's team.
