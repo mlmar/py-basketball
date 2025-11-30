@@ -4,6 +4,7 @@ from datetime import date
 from lib.ai.client import get_client
 from lib.basketball.basketball_reference import get_all_stars
 from lib.basketball.player import Player, ProjectedPlayerList, print_projected_player, TrendingPlayerList, print_trending_player
+from lib.stats.excluded_players import get_excluded_players
 from service.nba_cdn_service import get_nba_schedule
 from google.genai import types
 
@@ -57,13 +58,13 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
 
     print(prompt)
     client = get_client()
-    all_stars = get_all_stars()
+    excluded_players = get_excluded_players()
     nba_schedule = get_nba_schedule(date.today(), future_days)
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[
             json.dumps(data),
-            json.dumps(all_stars),
+            json.dumps(excluded_players),
             json.dumps(nba_schedule),
             prompt
         ],
@@ -113,13 +114,13 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
     print(prompt)
 
     client = get_client()
-    all_stars = get_all_stars()
+    excluded_players = get_excluded_players()
     nba_schedule = get_nba_schedule(date.today(), future_days)
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[
             json.dumps(data),
-            json.dumps(all_stars),
+            json.dumps(excluded_players),
             json.dumps(nba_schedule),
             prompt
         ],

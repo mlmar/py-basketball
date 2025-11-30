@@ -1,6 +1,5 @@
 from pydantic import BaseModel, RootModel, Field
 from typing import Optional
-from enum import Enum
 
 class BasePlayer(BaseModel):
     """ Player class for storing stats"""
