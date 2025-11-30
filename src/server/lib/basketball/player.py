@@ -1,19 +1,16 @@
 from pydantic import BaseModel, RootModel, Field
 from typing import Optional
+from enum import Enum
 
 class BasePlayer(BaseModel):
-    """ Player class for storing stats from basketball reference"""
+    """ Player class for storing stats"""
     id: Optional[str] = None
     player: Optional[str] = Field(description='Player Name')
     team_id: Optional[str] = Field(description='Current Team Abbreviation (3 Letters)')
     opp_id: Optional[str] = Field(description='Opponent Team Abbreviation (3 Letters)')
 
 class Player(BasePlayer):
-    """ Player class for storing stats from basketball reference"""
-    id: Optional[str] = None
-    player: Optional[str] = Field(description='Player Name')
-    team_id: Optional[str] = Field(description='Current Team Abbreviation (3 Letters)')
-    opp_id: Optional[str] = Field(description='Opponent Team Abbreviation (3 Letters)')
+    """ Player class for storing stats"""
     mp: Optional[str] = Field(description='Minutes played')
     fg: Optional[float] = Field(description='Field Goals Made')
     fga: Optional[float] = Field(description='Field Goals Attempted')
@@ -35,29 +32,22 @@ class Player(BasePlayer):
     plus_minus: Optional[float] = Field(description='Plus Minus')
     date: Optional[str] = None
 
+def print_player(player: Player) -> str:
+    """Print Player with format 'NAME (PTS/AST/TRB)'"""
+    print(f"{player['player']} ({player['pts']}/{player['ast']}/{player['trb']})")
+
+
+# Projection
 class ProjectedPlayer(BaseModel):
     player: Player = Field(description='Player class for projected NBA player stats')
     num_games: int = Field(description="Number of upcoming games for this player's team.")
     opponents: list[str] = Field(description="List of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym")
     game_dates: list[str] = Field(description="List of dates for this player's upcoming games")
     analysis: str = Field(description="1-3 sentences describing the why the predicted stat line is accurate and recent trends")
-    
+    tags: list[str] = Field(description="List of player tags where 'minutes_up' = an increase in minutes, 'stocks' = an high steal and/or block total", examples=['minutes_up', 'stocks'])
+
 class ProjectedPlayerList(RootModel[list[ProjectedPlayer]]):
     pass
-
-class TrendingPlayer(BaseModel):
-    player: BasePlayer = Field(description='Player class for projected NBA player stats')
-    num_games: int = Field(description="Number of upcoming games for this player's team.")
-    opponents: list[str] = Field(description="List of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym")
-    game_dates: list[str] = Field(description="List of dates for this player's upcoming games")
-    analysis: str = Field(description="1-3 sentences describing the why the predicted stat line is accurate and recent trends")
-    
-class TrendingPlayerList(RootModel[list[TrendingPlayer]]):
-    pass
-
-def print_player(player: Player) -> str:
-    """Print Player with format 'NAME (PTS/AST/TRB)'"""
-    print(f"{player['player']} ({player['pts']}/{player['ast']}/{player['trb']})")
 
 def print_projected_player(projectedPlayer: ProjectedPlayer, actualPlayer: Player = None):
     """Print Player name and projected stats"""
@@ -80,6 +70,18 @@ def print_projected_player(projectedPlayer: ProjectedPlayer, actualPlayer: Playe
     print(f'Upcoming Opponents:\n\t{projectedPlayer['opponents']}')
     print(f'Upcoming Games:\n\t{projectedPlayer['game_dates']}')
     print(f'Analysis:\n\t{projectedPlayer['analysis']}')
+
+# Trennding 
+class TrendingPlayer(BaseModel):
+    player: BasePlayer = Field(description='Player class for projected NBA player stats')
+    num_games: int = Field(description="Number of upcoming games for this player's team.")
+    opponents: list[str] = Field(description="List of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym")
+    game_dates: list[str] = Field(description="List of dates for this player's upcoming games")
+    analysis: str = Field(description="1-3 sentences describing the why the predicted stat line is accurate and recent trends")
+    tags: list[str] = Field(description="List of player tags where 'minutes_up' = an increase in minutes, 'stocks' = an high steal and/or block total", examples=['minutes_up', 'stocks'])
+    
+class TrendingPlayerList(RootModel[list[TrendingPlayer]]):
+    pass
 
 def print_trending_player(projectedPlayer: TrendingPlayer, actualPlayer: Player = None):
     """Print Player name and projected stats"""

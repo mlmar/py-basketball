@@ -12,7 +12,7 @@ type useProjectedAnalysisResult = {
  * @returns 
  */
 export function useProjectedAnalysis(): useProjectedAnalysisResult {
-    const { data, isLoading, isError } = useQuery({
+    const { data = [], isLoading, isError } = useQuery({
         queryKey: ['stats-analysis'],
         queryFn: async () => await StatsService.getProjectedAnalysis(),
         staleTime: Infinity,

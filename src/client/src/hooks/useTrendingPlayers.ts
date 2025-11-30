@@ -12,7 +12,7 @@ type useTrendingPlayersResult = {
  * @returns 
  */
 export function useTrendingplayers(limit: number = 20): useTrendingPlayersResult {
-    const { data, isLoading, isError } = useQuery({
+    const { data = [], isLoading, isError } = useQuery({
         queryKey: ['stats-analysis', limit],
         queryFn: async () => await StatsService.getTrendingAnalysis(),
         staleTime: Infinity,

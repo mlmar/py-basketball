@@ -18,7 +18,7 @@ def get_projected_analysis():
     result = __get_latest_result(projected_analysis_status_table, projected_analysis_data_table)
     today = str(date.today())
     status = __get_status(projected_analysis_status_table, today)
-    if status is None:
+    if status not in ['PROCESSING','COMPLETE']:
         # If today has not been processed, then start processing the data
         projected_analysis_status_table.insert({
             'date': today,
@@ -65,7 +65,7 @@ def get_trending_analysis():
     result = __get_latest_result(trending_analysis_status_table, trending_analysis_data_table)
     today = str(date.today())
     status = __get_status(trending_analysis_status_table, today)
-    if status is None:
+    if status not in ['PROCESSING','COMPLETE']:
         # If today has not been processed, then start processing the data
         trending_analysis_status_table.insert({
             'date': today,

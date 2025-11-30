@@ -50,6 +50,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
         plus_minus = Plus Minus 
 
     analysis = 1-3 sentences describing the why the predicted stat line is accurate and recent trends
+    tags = List of player tags where 'minutes_up' = an increase in minutes, 'stocks' = an high steal and/or block total
 
     Respond in valid JSON format without new line characters.
     """
@@ -103,6 +104,8 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
         "Stuffing stocks: 2.2 STL, 1.5 BLK recently"
         "Efficient big: 64% FG, solid boards"
         "Injury replacement getting starter run"
+
+    tags = List of player tags where 'minutes_up' = an increase in minutes, 'stocks' = an high steal and/or block total
 
     Respond in valid JSON format without new line characters.
     """

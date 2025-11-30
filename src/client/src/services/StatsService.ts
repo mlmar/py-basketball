@@ -1,6 +1,7 @@
 import { Config } from "@/services/Config";
 import { HTTPService } from "@/services/HTTPService";
 import type { ProjectedPlayer } from "@/services/types/ProjectedPlayer";
+import type { TrendingPlayer } from "@/services/types/TrendingPlayer";
 
 const STATS_SERVICE_URL = Config.SERVER_URL;
 
@@ -30,8 +31,8 @@ export class StatsService {
      * Retrieves most recent trending analysis
      * @returns 
      */
-    static async getTrendingAnalysis(): Promise<ProjectedPlayer[]> {
-        const response = await HTTPService.get<{ days: number }, ProjectedPlayer[]>(STATS_SERVICE_URL + '/trending-analysis');
+    static async getTrendingAnalysis(): Promise<TrendingPlayer[]> {
+        const response = await HTTPService.get<{ days: number }, TrendingPlayer[]>(STATS_SERVICE_URL + '/trending-analysis');
         return response;
     }
 }
