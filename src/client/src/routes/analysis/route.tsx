@@ -1,4 +1,4 @@
-import { useStatsAnalysis } from '@/hooks/useStatsAnalysis';
+import { useProjectedAnalysis } from '@/hooks/useProjectedAnalysis';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/analysis')({
@@ -9,7 +9,7 @@ export const Route = createFileRoute('/analysis')({
  * Sample route for rendering analysis
  */
 function RouteComponent() {
-    const { data, isLoading, isError } = useStatsAnalysis();
+    const { data, isLoading, isError } = useProjectedAnalysis();
 
     return (
         <main className='flex-col'>

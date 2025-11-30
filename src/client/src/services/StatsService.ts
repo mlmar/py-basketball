@@ -21,8 +21,8 @@ export class StatsService {
      * Retrieves most recent analysis
      * @returns 
      */
-    static async getAnalysis(): Promise<ProjectedPlayer[]> {
-        const response = await HTTPService.get<{ days: number }, ProjectedPlayer[]>(STATS_SERVICE_URL + '/analysis');
+    static async getProjectedAnalysis(): Promise<ProjectedPlayer[]> {
+        const response = await HTTPService.get<{ days: number }, ProjectedPlayer[]>(STATS_SERVICE_URL + '/projected-analysis');
         return response;
     }
 

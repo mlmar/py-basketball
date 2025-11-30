@@ -1,7 +1,7 @@
 import { StatsService } from "@/services/StatsService";
 import { useQuery } from "@tanstack/react-query";
 
-type UseStatsAnalysisResult = {
+type useTrendingPlayersResult = {
     data: Awaited<ReturnType<typeof StatsService.getTrendingAnalysis>> | undefined,
     isLoading: boolean,
     isError: boolean
@@ -11,7 +11,7 @@ type UseStatsAnalysisResult = {
  * Retrieves most recent trending player analysis 
  * @returns 
  */
-export function useTrendingplayers(limit: number = 20): UseStatsAnalysisResult {
+export function useTrendingplayers(limit: number = 20): useTrendingPlayersResult {
     const { data, isLoading, isError } = useQuery({
         queryKey: ['stats-analysis', limit],
         queryFn: async () => await StatsService.getTrendingAnalysis(),

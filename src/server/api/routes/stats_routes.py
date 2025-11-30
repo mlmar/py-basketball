@@ -18,7 +18,7 @@ def get_totals(days: int,):
     return stats.get_totals(days)
 
 #  current_user: dict = Depends(get_current_user)
-@router.get('/analysis')
+@router.get('/projected-analysis')
 async def get_projected_analysis():
     return analysis.get_projected_analysis()
 
