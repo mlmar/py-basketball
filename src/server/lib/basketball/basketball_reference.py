@@ -71,7 +71,7 @@ def __create_driver() -> WebDriver:
     return driver
 
 # Parses html td element table row into a Player object
-def __parse_table_row(row: WebElement, current_date: date) -> Player:
+def __parse_stat_table_row(row: WebElement, current_date: date) -> Player:
     """Parses a single table row into a Player object from basketball reference stats table"""
 
     player: Player = {}
@@ -87,15 +87,15 @@ def __parse_table_row(row: WebElement, current_date: date) -> Player:
     player['date'] = str(current_date)
     return player
 
-def __parse_table_rows(driver: WebDriver, current_date: date) -> list[Player]:
-    """Parses top N table rows into a list of Player from basketball reference stats page"""
+def __parse_stat_table_rows(driver: WebDriver, current_date: date) -> list[Player]:
+    """Parses table rows into a list of Player from basketball reference stats page"""
 
     rows = driver.find_elements(By.CSS_SELECTOR, '#all_stats tbody > tr[data-row]:not(.thead)')
     if len(rows) == 0:
         return []
     
     print(f'Queried {len(rows)} rows from stats table')
-    players: list[Player] = [__parse_table_row(row, current_date) for row in rows]
+    players: list[Player] = [__parse_stat_table_row(row, current_date) for row in rows]
     return players
 
 # Fetch page at base url
@@ -126,9 +126,60 @@ def get_data(dates: list[date] = []) -> Generator[(date, list[Player])]:
             continue
         
         print(f'Querying data from table rows')
-        players = __parse_table_rows(driver, current_date)
+        players = __parse_stat_table_rows(driver, current_date)
         print(f'Successfully fetched data for {len(players)} players')
         driver.quit()
         yield (current_date, players)
             
     print(f'Successfully fetched data from {start_date} to {end_date}')
+
+
+def __parse_all_star_table_rows(driver: WebDriver) -> list[str]:
+    """Parses table rows into a list of player names from basketball reference"""
+
+    rows = driver.find_elements(By.CSS_SELECTOR, 'tbody > tr:not(.thead) > th[data-stat=player]')
+    if len(rows) == 0:
+        return []
+    
+    print(f'Queried {len(rows)} rows from stats table')
+    return [row.get_attribute('innerText') for row in rows]
+
+def get_all_stars() -> list[str]:
+    """Gets list of all stars from the past N years"""
+    today = date.today();
+    result: list[str] = []
+
+    urls = [
+        'https://www.basketball-reference.com/allstar/202502162NBA.html',
+        'https://www.basketball-reference.com/allstar/202502161NBA.html'
+        'https://www.basketball-reference.com/allstar/202502160NBA.html',
+        'https://www.basketball-reference.com/allstar/NBA_2024.html',
+        'https://www.basketball-reference.com/allstar/NBA_2023.html',
+        'https://www.basketball-reference.com/allstar/NBA_2022.html'
+        'https://www.basketball-reference.com/allstar/NBA_2021.html'
+    ]
+
+    for url in urls:
+        # Fetch data for range of dates
+        print(f'------ Fetching all stars from {url} ------')
+
+        print(f'Fetching data from {url}')
+        driver = __create_driver()
+        try:
+            wait = WebDriverWait(driver, 10)
+            driver.get(url)
+            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-stat=player]'))) # Wait until top 20 rows of table are loaded
+        except TimeoutException:
+            print(f'No data found for {url}')
+            continue
+        
+        print(f'Querying data from table rows')
+        player_names = __parse_all_star_table_rows(driver)
+        print(f'Successfully fetched data for {len(player_names)} player_names')
+        for player_name in player_names:
+            if player_name not in result:
+                result.append(player_name)
+                
+        driver.quit()
+
+    return result;

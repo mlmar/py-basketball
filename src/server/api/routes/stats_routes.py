@@ -1,7 +1,7 @@
 """Routes for retrieving player statistics"""
 from fastapi import APIRouter, Depends
 from api.auth import get_current_user
-from lib.stats import stats
+from lib.stats import stats, analysis
 
 router = APIRouter()
 
@@ -19,10 +19,10 @@ def get_totals(days: int,):
 
 #  current_user: dict = Depends(get_current_user)
 @router.get('/analysis')
-def get_projected_analysis():
-    return stats.get_projected_analysis()
+async def get_projected_analysis():
+    return analysis.get_projected_analysis()
 
 #  current_user: dict = Depends(get_current_user)
 @router.get('/trending-analysis')
-def get_trending_analysis():
-    return stats.get_trending_analysis()
+async def get_trending_analysis():
+    return analysis.get_trending_analysis()

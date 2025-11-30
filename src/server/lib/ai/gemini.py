@@ -2,6 +2,7 @@ import json
 # from unicodedata import normalize
 from datetime import date
 from lib.ai.client import get_client
+from lib.basketball.basketball_reference import get_all_stars
 from lib.basketball.player import Player, ProjectedPlayerList, print_projected_player, TrendingPlayerList, print_trending_player
 from service.nba_cdn_service import get_nba_schedule
 from google.genai import types
@@ -13,14 +14,14 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
     Today is {str(date.today())}.
     Here are 2 data sets:
         The first data set contains NBA players and their statlines from the last {past_days} days. 
-        The second data set contains the NBA game schedule for remainder of the season.
+        The second data set contains a list of NBA players to exclude from the analysis and output.
+        The third data set contains the NBA game schedule for remainder of the season.
 
     Determine a list of the {num_players} most underrated players based on these data sets,
     and accurately project their average stats over the next {future_days} days.
     Accurately generate new data based on these requirements. Do not simply take the average of the last 10 days.
     Consider the statlines of each player from the last {past_days} days from the first data set in comparison to their career stats.
     Consider their number upcoming of games and the difficulty of upcoming opponents from the second data set.
-    Prioritize non all stars.
 
     Format the upcoming games for the next {future_days} days as follows:
         num_games = Based on the provided NBA game schedule data set, the number of upcoming games for this player's team.
@@ -55,11 +56,13 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
 
     print(prompt)
     client = get_client()
+    all_stars = get_all_stars()
     nba_schedule = get_nba_schedule(date.today())
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[
             json.dumps(data),
+            json.dumps(all_stars),
             json.dumps(nba_schedule),
             prompt
         ],
@@ -70,7 +73,11 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
         },
     )
     result, final_answer = __parse_response_stream(response_stream)
-    print_projected_players(result)
+    for projected_player in result:
+        # Find actual player by normalizing it and comparing it to original list
+        # actualPlayer = next((x for x in data if normalize('NFD', x['player']) == normalize('NFD', projected_player['player']['player'])), None)
+        print_projected_player(projected_player)
+        print()
     return result
 
 def get_trending_analysis(data: list[Player], past_days: int, num_players: int = 20, future_days: int = 7):
@@ -80,7 +87,8 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
     Today is {str(date.today())}.
     Here are 2 data sets:
         The first data set contains NBA players and their statlines from the last {past_days} days. 
-        The second data set contains the NBA game schedule for remainder of the season.
+        The second data set contains a list of NBA players to exclude from the analysis and output.
+        The third data set contains the NBA game schedule for remainder of the season.
 
     Determine a list of the top {num_players} performing players from the last {past_days} days, excluding all stars.
 
@@ -102,11 +110,14 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
     print(prompt)
 
     client = get_client()
+    all_stars = get_all_stars()
     nba_schedule = get_nba_schedule(date.today())
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[
             json.dumps(data),
+            json.dumps(all_stars),
+            json.dumps(nba_schedule),
             prompt
         ],
         config={

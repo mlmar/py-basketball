@@ -1,7 +1,7 @@
 import unittest
 from datetime import date
 
-from lib.basketball.basketball_reference import get_url, get_data
+from lib.basketball.basketball_reference import get_url, get_data, get_all_stars
 from util.date_util import range_of_dates
 
 class TestBasketballReference(unittest.TestCase):
@@ -24,7 +24,12 @@ class TestBasketballReference(unittest.TestCase):
         for (current_date, players) in get_data(dates):
             self.assertIsNotNone(current_date)
             self.assertTrue(len(players) > 0)
-
+    
+    def test_get_all_stars(self):
+        """get_all_stars() returns a list of player names"""
+        player_names = get_all_stars()
+        self.assertTrue(None not in player_names)
+        self.assertTrue(len(player_names) > 0)
 
 if __name__ == '__main__':
     unittest.main()

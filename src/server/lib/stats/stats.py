@@ -3,17 +3,11 @@ from lib.db.database_table import DatabaseTable
 from lib.db.client import get_client
 from lib.basketball.player import Player
 from lib.basketball.nba import get_data
-from lib.ai import gemini
 from util.date_util import range_of_dates
 import config
-import json
 
 saved_dates_table = DatabaseTable[Player](config.SUPABASE_SAVED_DATES_TABLE)
 player_data_table = DatabaseTable[Player](config.SUPABASE_PLAYER_DATA_TABLE)
-analysis_status_table = DatabaseTable(config.SUPABASE_ANALYSIS_STATUS_TABLE)
-analysis_data_table = DatabaseTable(config.SUPABASE_ANALYSIS_DATA_TABLE)
-trending_analysis_status_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE)
-trending_analysis_data_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE)
 
 def __get_start_end_dates(days: int) -> tuple[date, date]:
     end_date = date.today() - timedelta(1)
@@ -87,111 +81,3 @@ def get_totals(days: int):
     }).execute()
     print(f'Successfully queried database for player totals from {str(start_date)} to {str(end_date)}')
     return response.data
-
-most_recent_analysis_data = None # Store most recent data locally
-def get_projected_analysis():
-    """Gets most recent analysis or runs today's if it does not exist"""
-    global most_recent_analysis_data
-    if most_recent_analysis_data is not None and len(most_recent_analysis_data) > 0:
-        return most_recent_analysis_data
-
-    today = str(date.today())
-    days = 10
-
-    status_response = analysis_status_table.get_table().select('status').eq('date', today).execute()
-    if status_response.data is None or len(status_response.data) == 0:
-        data = get_all(days)
-
-        # If today has not been processed, then start processing the data
-        analysis_status_table.insert({
-            'date': today,
-            'status': 'PROCESSING'
-        })
-
-        try:
-            result = gemini.get_projected_analysis(data, days)
-            for projectedPlayer in result:
-                analysis_data_table.insert({
-                    'date': today,
-                    'player': json.dumps(projectedPlayer)
-                }) # Save anaylsis data
-
-            analysis_status_table.insert({
-                'date': today,
-                'status': 'COMPLETE'
-            })
-            most_recent_analysis_data = result;
-        except:
-            # Update status if failed
-            analysis_status_table.insert({
-                'date': today,
-                'status': 'FAILED'
-            })
-
-        return result
-    elif status_response.data[0]['status'] == 'PROCESSING' or status_response.data[0]['status']  == 'COMPLETE':
-        # If day has been processsed or completed then pull from the most recent data set
-        date_response = analysis_status_table.get_table().select('date').not_.is_('status', 'FAILED').order('date', desc=True).limit(1).execute()
-        if date_response.data is not None or len(date_response.data) > 0:
-            recent_date = date_response.data[0]['date']
-            results = analysis_data_table.get_table().select('*').eq('date', recent_date).execute()
-            most_recent_analysis_data = [json.loads(row['player']) for row in results.data]
-            return most_recent_analysis_data
-        else:
-            return []
-    else:
-        return []
-
-most_recent_trending_data = None # Store most recent data locally
-def get_trending_analysis():
-    """Gets most recent trending analysis or runs today's if it does not exist"""
-    global most_recent_trending_data
-    if most_recent_trending_data is not None:
-        return most_recent_trending_data
-
-    today = str(date.today())
-    days = 10
-
-    status_response = trending_analysis_status_table.get_table().select('status').eq('date', today).execute()
-    if status_response.data is None or len(status_response.data) == 0:
-        data = get_all(days)
-
-        # If today has not been processed, then start processing the data
-        trending_analysis_status_table.insert({
-            'date': today,
-            'status': 'PROCESSING'
-        })
-
-        try:
-            result = gemini.get_trending_analysis(data, days)
-            for projectedPlayer in result:
-                trending_analysis_data_table.insert({
-                    'date': today,
-                    'player': json.dumps(projectedPlayer)
-                }) # Save anaylsis data
-
-            trending_analysis_status_table.insert({
-                'date': str(date.today()),
-                'status': 'COMPLETE'
-            })
-            most_recent_trending_data = result;
-        except:
-            # Update status if failed
-            trending_analysis_data_table.insert({
-                'date': today,
-                'status': 'FAILED'
-            })
-        
-        return result
-    elif status_response.data[0]['status'] == 'PROCESSING' or status_response.data[0]['status']  == 'COMPLETE':
-        # If day has been processsed or completed then pull from the most recent data set
-        date_response = analysis_status_table.get_table().select('date').order('date', desc=True).limit(1).execute()
-        if date_response.data is not None or len(date_response.data) > 0:
-            recent_date = date_response.data[0]['date']
-            results = trending_analysis_data_table.get_table().select('*').eq('date', recent_date).execute()
-            most_recent_trending_data = [json.loads(row['player']) for row in results.data]
-            return most_recent_trending_data
-        else:
-            return []
-    else:
-        return []
