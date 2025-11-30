@@ -2,21 +2,35 @@
 
 Objectives
 
--   [ ] Frontend
+-   Frontend
+
     -   Libraries
-        -   [ ] [React](https://react.dev/learn)
-        -   [ ] [TypeScript](typescriptlang.org/cheatsheets/)
-        -   [ ] [@tanstack/tanstack-router](https://tanstack.com/router/latest)
-        -   [ ] [@tanstack/query](https://tanstack.com/query/latest)
-        -   [ ] [zustand](https://github.com/pmndrs/zustand)
-    -   [ ] Yahoo API
-        -   [ ] Prompt user for login
-        -   [ ] Show list of trending players based on league settings
-    -   Interactive
-        -   [ ] Watching players (tracking trends for specific player)
-        -   [ ] List of trending players in the NBA
-            -   [ ] Filter based on criteria
--   [ ] Backend
+        -   [React](https://react.dev/learn)
+        -   [TypeScript](typescriptlang.org/cheatsheets/)
+        -   [@tanstack/tanstack-router](https://tanstack.com/router/latest) - Routing
+        -   [@tanstack/query](https://tanstack.com/query/latest) - Data retrieval
+        -   [zustand](https://github.com/pmndrs/zustand) - Global state
+    -   Features
+        -   [ ] Sign up page
+        -   [ ] Login page
+        -   [ ] Home page
+        -   Generic features
+            -   [ ] Watching players (tracking trends for specific players)
+                -   [ ] Render playerlist
+                -   [ ] Call backend service for updating watchlist
+            -   [ ] List of trending players in the NBA
+                -   [ ] Filter selector
+                -   [ ] Call backend service for updating filters
+        -   Yahoo API
+            -   [ ] Prompt user to connect Yahoo account
+            -   [ ] Show current matchup
+            -   [ ] Show list of trending players based on league settings
+            -   [ ] Dashboard
+                -   [ ] Today's games
+                -   [ ] Waiver board
+                -   [ ] Category tracker
+
+-   Backend
     -   Selenium
         -   [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=11&day=17&year=2025) for player stats
         -   [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/allstar/202502162NBA.html) for list of all stars
@@ -31,7 +45,7 @@ Objectives
         -   [x] trending_analysis_status table - Save process status for trending analysis
         -   [x] trending_analysis_data table - Save data for trending analysis
         -   [x] Supabase functions for grabbing all/average/totals of player stats from the last N days
-    -   [ ] Use AI to analyse player data and create projects
+    -   [ ] Use AI for player analysis (trends and projections)
         -   [x] Google Gemini
             -   [ ] Determine work around for January 2025 knowledge cut off
                 -   [x] Pull list of all stars for recent years
@@ -39,6 +53,13 @@ Objectives
                 -   [ ] Use different AI API?
         -   [x] Feed statistics from the last N days
         -   [x] Get projected statistics for the next N days
+        -   [x] Get trending players from the past N days
+            -   [ ] Add parameters for filters
+            -   [ ] Player tags
+                -   [ ] Injury
+                -   [ ] Minutes Up
+                -   [ ] Stocks
+                -   [ ] Usage
         -   [x] Incorporate upcoming NBA schedule
             -   [x] Get number of games for next N days
             -   [x] Get list of opponents for next N days
@@ -53,12 +74,12 @@ Objectives
             -   [x] Player averages from last N days
             -   [x] ProjectedAnalysis for the next N days
             -   [x] Trending players from last N days
-        -   [ ] Passing specific criteria for analysis
-            -   [ ] Dependent on API rate limits (Too much data?)
+        -   [ ] Passing specific criteria for analysis (Dependent on API rate limits (Too much data?))
         -   [ ] Personalized analysis for current user
-            -   [ ] User watch list
+            -   [ ] Watch list
     -   [ ] Yahoo API
         -   [ ] Link user account to Yahoo fantasy league
+            -   [ ] OAuth and Yahoo Developer API
         -   [ ] Exclude highest rostered players from analysis
         -   [ ] Analyze current user matchup
 
