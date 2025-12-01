@@ -9,7 +9,12 @@ def get_excluded_players() -> list[str]:
     excluded_players_response = excluded_players_table.get_table().select('name').execute()
     if excluded_players_response.data is None or len(excluded_players_response.data) == 0:
         player_names = get_all_stars()
-        excluded_players_table.insert([{ 'name': unicodedata.normalize('NFKD', name) } for name in player_names])
+        excluded_players_table.insert([{ 'name': __normalize(name) } for name in player_names])
         return player_names
     
     return [row['name'] for row in excluded_players_response.data]
+
+def __normalize(name: str) -> str:
+    normalized_text = unicodedata.normalize('NFKD', name)
+    ascii_text = "".join([c for c in normalized_text if not unicodedata.combining(c)])
+    return ascii_text
