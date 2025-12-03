@@ -1,3 +1,4 @@
+import { Main } from '@/components/Main';
 import { HomePage } from '@/features/HomePage';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
 
@@ -8,8 +9,8 @@ export const Route = createRootRoute({
 
 function RootComponent() {
     return (
-        <>
+        <Main>
             <Outlet />
-        </>
+        </Main>
     );
 }

@@ -1,4 +1,10 @@
 // features/WaiverBoard.jsx
+import { BackButton } from '@/components/BackButton';
+import { Card } from '@/components/Card';
+import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
+import { Section } from '@/components/Section';
+import { TrendingPlayers } from '@/features/TrendingPlayers';
 import { useState } from 'react';
 
 export function WaiverBoard() {
@@ -53,74 +59,31 @@ export function WaiverBoard() {
         return posMatch && catMatch;
     });
 
-    // trending area – mock data + trend filters
-    const trendFilters = [
-        { label: 'All', value: 'ALL' },
-        { label: '+ Minutes', value: 'minutes_up' },
-        { label: 'Usage bump', value: 'usage' },
-        { label: 'Injury fill-in', value: 'injury' },
-        { label: 'Hot stocks (STL/BLK)', value: 'stocks' }
-    ];
-
-    const [activeTrend, setActiveTrend] = useState('ALL');
-
-    const trendingPlayers = [
-        {
-            name: 'Player F',
-            team: 'LAL',
-            note: 'Last 3: 22 PTS, 4 REB, 3.7 3PM',
-            tags: ['minutes_up', 'usage']
-        },
-        {
-            name: 'Player G',
-            team: 'ORL',
-            note: 'Stuffing stocks: 2.2 STL, 1.5 BLK recently',
-            tags: ['stocks']
-        },
-        {
-            name: 'Player H',
-            team: 'CHI',
-            note: 'Efficient big: 64% FG, solid boards',
-            tags: ['minutes_up']
-        },
-        {
-            name: 'Player I',
-            team: 'DAL',
-            note: 'Injury replacement getting starter run',
-            tags: ['injury', 'minutes_up']
-        }
-    ];
-
-    const filteredTrending =
-        activeTrend === 'ALL' ? trendingPlayers : trendingPlayers.filter((p) => p.tags.includes(activeTrend));
-
     return (
-        <div className='app'>
+        <>
             {/* top bar */}
-            <header className='section'>
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-                    <button className='btn tiny' onClick={() => (window.location.href = '/')}>
-                        ← Home
-                    </button>
+            <Header className='section'>
+                <Header.TopNav>
+                    <BackButton>Home</BackButton>
                     <span className='tiny-text'>Waiver board – placeholder build</span>
-                </div>
+                </Header.TopNav>
 
-                <h1 className='logo'>WaiverWarrior</h1>
-                <p className='tagline'>Full Waiver Board</p>
-                <p className='subtext'>Big-picture view of possible adds. I&apos;ll hook this into live data later.</p>
-            </header>
+                <Header.Logo>WaiverWarrior</Header.Logo>
+                <Header.Tagline>Full Waiver Board</Header.Tagline>
+                <Header.Subtext>Big-picture view of possible adds. I'll hook this into live data later.</Header.Subtext>
+            </Header>
 
             {/* main waiver board */}
-            <section className='section'>
-                <div className='card waiver-card'>
-                    <div className='card-header'>
+            <Section>
+                <Card className='waiver-card'>
+                    <Card.Header>
                         <h2>All Waiver Targets (mock)</h2>
-                        <span className='card-badge'>early version</span>
-                    </div>
-                    <p className='section-sub'>
+                        <Card.Badge>early version</Card.Badge>
+                    </Card.Header>
+                    <Section.Sub>
                         Right now this is just hardcoded. Plan is to swap this for real backend results and add proper
                         filters (team, position, categories).
-                    </p>
+                    </Section.Sub>
 
                     <div className='filter-block'>
                         {/* positions */}
@@ -169,59 +132,15 @@ export function WaiverBoard() {
                             </li>
                         ))}
                     </ul>
-                </div>
-            </section>
+                </Card>
+            </Section>
 
             {/* trending section */}
-            <section className='section'>
-                <div className='card trending-card'>
-                    <div className='card-header'>
-                        <h2>Trending Players (mock)</h2>
-                        <span className='card-badge trending-badge'>trending</span>
-                    </div>
-                    <p className='section-sub'>
-                        Quick look at players on a heater. Eventually this will pull from recent game logs and your
-                        league settings.
-                    </p>
+            <TrendingPlayers limit={5} />
 
-                    <div className='filter-block trending-filter-row'>
-                        <div className='filter-row-line'>
-                            <span className='filter-label'>Trending filters</span>
-                            <div className='filter-pill-row'>
-                                {trendFilters.map((f) => (
-                                    <button
-                                        key={f.value}
-                                        className={
-                                            'filter-pill' + (activeTrend === f.value ? ' filter-pill-active-trend' : '')
-                                        }
-                                        onClick={() => setActiveTrend(f.value)}
-                                    >
-                                        {f.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    <ul className='list'>
-                        {filteredTrending.map((p) => (
-                            <li key={p.name} className='list-item'>
-                                <div>
-                                    <p className='list-title'>
-                                        {p.name} <span className='list-team'>• {p.team}</span>
-                                    </p>
-                                    <p className='list-note'>{p.note}</p>
-                                </div>
-                                <button className='btn tiny'>Watch</button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </section>
-
-            <footer className='footer'>
+            <Footer>
                 <p>WaiverWarrior · full board mock v0.1</p>
-            </footer>
-        </div>
+            </Footer>
+        </>
     );
 }

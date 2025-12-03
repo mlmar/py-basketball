@@ -11,7 +11,7 @@ function RouteComponent() {
     const { data, isLoading, isError } = useStatsAverages(days);
 
     return (
-        <main className='flex-col'>
+        <>
             <section>
                 Days:
                 <input type='number' value={days || ''} onChange={(event) => setDays(parseInt(event.target.value))} />
@@ -21,6 +21,6 @@ function RouteComponent() {
             {data?.map((player) => {
                 return JSON.stringify(player);
             })}
-        </main>
+        </>
     );
 }

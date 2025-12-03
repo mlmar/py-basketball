@@ -2,7 +2,7 @@ import { StatsService } from "@/services/StatsService";
 import { useQuery } from "@tanstack/react-query";
 
 type useTrendingPlayersResult = {
-    data: Awaited<ReturnType<typeof StatsService.getTrendingAnalysis>> | undefined,
+    data: Awaited<ReturnType<typeof StatsService.getTrendingAnalysis>>,
     isLoading: boolean,
     isError: boolean
 }

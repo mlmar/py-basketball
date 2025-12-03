@@ -1,6 +1,8 @@
+import { Hero } from '@/components/Hero';
+
 export function Matchup() {
     return (
-        <div className='hero-card'>
+        <Hero.Card>
             <h2>This Week's Matchup</h2>
             <p className='matchup-label'>Overview</p>
 
@@ -16,9 +18,9 @@ export function Matchup() {
             </div>
 
             <p className='tiny-text'>
-                Target categories: <strong>FG%</strong>, <strong>AST</strong>, <strong>3PM</strong>,{' '}
-                <strong>STL</strong>.
+                Target categories: <strong>FG%</strong>, <strong>AST</strong>, <strong>3PM</strong>,<strong>STL</strong>
+                .
             </p>
-        </div>
+        </Hero.Card>
     );
 }

@@ -1,3 +1,5 @@
+import { Card } from '@/components/Card';
+import { Section } from '@/components/Section';
 import { useTrendingplayers } from '@/hooks/useTrendingPlayers';
 import type { ProjectedPlayer } from '@/services/types/ProjectedPlayer';
 import { Fragment, useState } from 'react';
@@ -29,16 +31,16 @@ export function TrendingPlayers({ limit }: TrendingPlayersProps) {
     const { data, isLoading } = useTrendingplayers(limit);
 
     return (
-        <section className='section'>
-            <div className='card trending-card'>
-                <div className='card-header'>
+        <Section>
+            <Card className='trending-card'>
+                <Card.Header>
                     <h2>Trending Players (mock)</h2>
-                    <span className='card-badge trending-badge'>trending</span>
-                </div>
-                <p className='section-sub'>
+                    <Card.Badge className='trending-badge'>trending</Card.Badge>
+                </Card.Header>
+                <Section.Sub>
                     Quick look at players on a heater. Eventually this will pull from recent game logs and your league
                     settings.
-                </p>
+                </Section.Sub>
 
                 <div className='filter-block trending-filter-row'>
                     <div className='filter-row-line'>
@@ -61,19 +63,20 @@ export function TrendingPlayers({ limit }: TrendingPlayersProps) {
 
                 <ul className='list'>
                     {isLoading && 'Trending players are loading'}
-                    {data?.map((projectedPlayer) => {
+                    {data.map((projectedPlayer) => {
                         return (
                             <li className='list-item' key={projectedPlayer.player.player}>
                                 <section>
                                     <p className='list-note'> {projectedPlayer.player.player} </p>
                                     <p className='list-title'> {projectedPlayer.analysis} </p>
                                 </section>
+                                <button className='btn tiny'>Watch</button>
                             </li>
                         );
                     })}
                 </ul>
-            </div>
-        </section>
+            </Card>
+        </Section>
     );
 }
 

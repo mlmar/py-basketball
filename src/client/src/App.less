@@ -11,16 +11,7 @@ body,
         'Segoe UI',
         sans-serif;
     background: radial-gradient(circle at top left, #111827, #020617 50%, #000000);
-}
-
-.app {
-    .flex-col;
-    .flex-fill;
-    height: 100%;
-    width: 100%;
-    margin: 0 auto;
-    margin: 0;
-    padding: 1.5em 15% 2.5em;
+    overflow: auto;
 }
 
 :root {
@@ -41,6 +32,8 @@ body,
     padding: 0;
     box-sizing: border-box;
 }
+
+/* flex classes */
 
 .flex {
     display: flex;
@@ -71,6 +64,22 @@ body,
     flex: 1 1;
 }
 
+.flex-space-between {
+    justify-content: space-between;
+}
+
+/* app */
+
+.app {
+    .flex-col;
+    .flex-fill;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    margin: 0;
+    padding: 1.5em 15% 2.5em;
+}
+
 /* --- hero --- */
 
 .hero {
@@ -79,6 +88,28 @@ body,
     gap: 1.5em;
     align-items: center;
     margin-bottom: 2em;
+
+    /* --- hero card --- */
+
+    .hero-card {
+        background: radial-gradient(circle at top, #1f2937, #020617 70%);
+        border-radius: 1.125em;
+        padding: 1em 1.125em;
+        border: 0.063em solid rgba(55, 65, 81, 0.9);
+        box-shadow: 0 1em 2.813em rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-card h2 {
+        margin: 0 0 0.25em;
+        font-size: 1.05rem;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 0.625em;
+        margin-bottom: 0.5em;
+        flex-wrap: wrap;
+    }
 }
 
 .logo {
@@ -99,13 +130,6 @@ body,
     font-size: 0.9rem;
     color: #9ca3af;
     max-width: 26.25em;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 0.625em;
-    margin-bottom: 0.5em;
-    flex-wrap: wrap;
 }
 
 /* --- buttons / pills --- */
@@ -173,21 +197,6 @@ body,
     margin-top: 0.25em;
 }
 
-/* --- hero card --- */
-
-.hero-card {
-    background: radial-gradient(circle at top, #1f2937, #020617 70%);
-    border-radius: 1.125em;
-    padding: 1em 1.125em;
-    border: 0.063em solid rgba(55, 65, 81, 0.9);
-    box-shadow: 0 1em 2.813em rgba(0, 0, 0, 0.6);
-}
-
-.hero-card h2 {
-    margin: 0 0 0.25em;
-    font-size: 1.05rem;
-}
-
 .matchup-label {
     font-size: 0.8rem;
     color: #9ca3af;
@@ -225,17 +234,17 @@ body,
 
 .section {
     margin-bottom: 1.875em;
-}
 
-.section h2 {
-    margin: 0 0 0.25em;
-    font-size: 1.1rem;
-}
+    h2 {
+        margin: 0 0 0.25em;
+        font-size: 1.1rem;
+    }
 
-.section-sub {
-    margin: 0 0 0.75em;
-    font-size: 0.85rem;
-    color: #9ca3af;
+    .section-sub {
+        margin: 0 0 0.75em;
+        font-size: 0.85rem;
+        color: #9ca3af;
+    }
 }
 
 /* --- chips (home page snapshot) --- */
@@ -449,13 +458,13 @@ body,
 @media (max-width: 56.25em) {
     .hero {
         grid-template-columns: minmax(0, 1fr);
+
+        .hero-card {
+            order: -1;
+        }
     }
 
     .grid-2 {
         grid-template-columns: minmax(0, 1fr);
-    }
-
-    .hero-card {
-        order: -1;
     }
 }

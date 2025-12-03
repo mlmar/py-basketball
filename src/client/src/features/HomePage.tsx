@@ -1,5 +1,10 @@
 // features/HomePage.jsx
+import { Card } from '@/components/Card';
+import { Footer } from '@/components/Footer';
+import { Hero } from '@/components/Hero';
+import { Section } from '@/components/Section';
 import { Matchup } from '@/features/Matchup';
+import { Link } from '@tanstack/react-router';
 
 export function HomePage() {
     // placeholder data
@@ -14,9 +19,9 @@ export function HomePage() {
     const mySquad = ['Tyler Herro', 'Darius Garland', 'Steven Nguyen', 'Grayson Allen', 'Ajay Mitchell'];
 
     return (
-        <div className='app'>
+        <>
             {/* hero section */}
-            <header className='hero'>
+            <Hero>
                 <div>
                     <h1 className='logo'>WaiverWarrior</h1>
                     <p className='tagline'>Dominate the wire. Win the week.</p>
@@ -25,21 +30,20 @@ export function HomePage() {
                     </p>
 
                     <div className='hero-buttons'>
-                        <button className='btn primary' onClick={() => (window.location.href = '/dashboard')}>
-                            Open Dashboard
-                        </button>
-
+                        <Link to='/dashboard'>
+                            <button className='btn primary'>Open Dashboard</button>
+                        </Link>
                         <button className='btn ghost'>Add Matchup</button>
                     </div>
                 </div>
 
                 <Matchup />
-            </header>
+            </Hero>
 
             {/* categories */}
-            <section className='section'>
+            <Section>
                 <h2>Category Snapshot</h2>
-                <p className='section-sub'>A quick glance at the matchups you're aiming to control.</p>
+                <Section.Sub>A quick glance at the matchups you're aiming to control.</Section.Sub>
 
                 <div className='chips-row'>
                     {categories.map((cat) => (
@@ -49,16 +53,16 @@ export function HomePage() {
                         </div>
                     ))}
                 </div>
-            </section>
+            </Section>
 
             {/* waiver + roster */}
-            <section className='section grid-2'>
-                <div className='card'>
-                    <div className='card-header'>
+            <Section className='grid-2'>
+                <Card>
+                    <Card.Header>
                         <h2>Waiver Targets</h2>
-                        <span className='card-badge'>trending</span>
-                    </div>
-                    <p className='section-sub'>Players worth monitoring or adding based on recent performance.</p>
+                        <Card.Badge>trending</Card.Badge>
+                    </Card.Header>
+                    <Section.Sub>Players worth monitoring or adding based on recent performance.</Section.Sub>
 
                     <ul className='list'>
                         {waiverTargets.map((p) => (
@@ -74,17 +78,17 @@ export function HomePage() {
                         ))}
                     </ul>
 
-                    <button className='btn fullwidth' onClick={() => (window.location.href = '/waiver')}>
-                        View Full Waiver Board
-                    </button>
-                </div>
+                    <Link to='/waiver'>
+                        <button className='btn fullwidth'>View Full Waiver Board</button>
+                    </Link>
+                </Card>
 
-                <div className='card'>
-                    <div className='card-header'>
+                <Card>
+                    <Card.Header>
                         <h2>My Squad</h2>
-                        <span className='card-badge secondary'>overview</span>
-                    </div>
-                    <p className='section-sub'>Quick look at your roster.</p>
+                        <Card.Badge className='secondary'>overview</Card.Badge>
+                    </Card.Header>
+                    <Section.Sub>Quick look at your roster.</Section.Sub>
 
                     <ul className='list'>
                         {mySquad.map((name) => (
@@ -94,13 +98,13 @@ export function HomePage() {
                             </li>
                         ))}
                     </ul>
-                </div>
-            </section>
+                </Card>
+            </Section>
 
-            <footer className='footer'>
+            <Footer>
                 <p>WaiverWarrior.</p>
-            </footer>
-        </div>
+            </Footer>
+        </>
     );
 }
 

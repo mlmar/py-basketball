@@ -1,3 +1,10 @@
+import { BackButton } from '@/components/BackButton';
+import { Card } from '@/components/Card';
+import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
+import { Section } from '@/components/Section';
+import { Link } from '@tanstack/react-router';
+
 // features/Dashboard.jsx
 export function Dashboard() {
     // rough waiver board data until this is wired to the backend
@@ -29,53 +36,49 @@ export function Dashboard() {
     ];
 
     return (
-        <div className='app'>
-            {/* simple top nav so I can bounce back to the homepage */}
-            <nav className='top-nav'>
-                <button className='btn tiny' onClick={() => (window.location.href = '/')}>
-                    ← Back to home
-                </button>
-            </nav>
-
+        <>
             {/* top section */}
-            <header className='section'>
-                <h1 className='logo'>WaiverWarrior</h1>
-                <p className='tagline'>Dashboard (early build)</p>
-                <p className='subtext'>
-                    Spot where I&apos;m going to plug in live stats, matchup tracking, and AI calls from the backend.
-                </p>
-            </header>
+            <Header>
+                <Header.TopNav>
+                    <BackButton>Home</BackButton>
+                </Header.TopNav>
+                <Header.Logo>WaiverWarrior</Header.Logo>
+                <Header.Tagline>Dashboard (early build)</Header.Tagline>
+                <Header.Subtext>
+                    Spot where I'm going to plug in live stats, matchup tracking, and AI calls from the backend.
+                </Header.Subtext>
+            </Header>
 
             {/* main grid */}
-            <section className='section grid-2'>
-                <div className='card'>
-                    <div className='card-header'>
-                        <h2>Today&apos;s Games</h2>
+            <Section className='grid-2'>
+                <Card>
+                    <Card.Header>
+                        <h2>Today's Games</h2>
                         <span className='card-badge'>schedule</span>
-                    </div>
-                    <p className='section-sub'>This card will pull in upcoming games once the API is hooked up.</p>
-                </div>
+                    </Card.Header>
+                    <Section.Sub>This card will pull in upcoming games once the API is hooked up.</Section.Sub>
+                </Card>
 
-                <div className='card'>
-                    <div className='card-header'>
+                <Card>
+                    <Card.Header>
                         <h2>Category Tracker</h2>
-                        <span className='card-badge secondary'>beta</span>
-                    </div>
-                    <p className='section-sub'>Placeholder for charts showing how my team is doing in each cat.</p>
-                </div>
-            </section>
+                        <Card.Badge className='secondary'>beta</Card.Badge>
+                    </Card.Header>
+                    <Section.Sub>Placeholder for charts showing how my team is doing in each cat.</Section.Sub>
+                </Card>
+            </Section>
 
             {/* waiver board preview */}
-            <section className='section'>
-                <div className='card'>
-                    <div className='card-header'>
+            <Section>
+                <Card>
+                    <Card.Header>
                         <h2>Waiver Board</h2>
-                        <span className='card-badge'>my notes</span>
-                    </div>
-                    <p className='section-sub'>
-                        Early version of my waiver list. I&apos;ll swap this out for real data once the backend is
-                        plugged in.
-                    </p>
+                        <Card.Badge>my notes</Card.Badge>
+                    </Card.Header>
+                    <Section.Sub>
+                        Early version of my waiver list. I'll swap this out for real data once the backend is plugged
+                        in.
+                    </Section.Sub>
 
                     <ul className='list'>
                         {waiverBoard.map((p) => (
@@ -91,15 +94,15 @@ export function Dashboard() {
                         ))}
                     </ul>
 
-                    <button className='btn fullwidth' onClick={() => (window.location.href = '/waiver')}>
-                        Open Full Waiver Board
-                    </button>
-                </div>
-            </section>
+                    <Link to='/waiver'>
+                        <button className='btn fullwidth'>Open Full Waiver Board</button>
+                    </Link>
+                </Card>
+            </Section>
 
-            <footer className='footer'>
+            <Footer>
                 <p>WaiverWarrior · dashboard v0.1</p>
-            </footer>
-        </div>
+            </Footer>
+        </>
     );
 }
