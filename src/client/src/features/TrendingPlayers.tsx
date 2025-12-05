@@ -1,8 +1,10 @@
 import { Card } from '@/components/Card';
 import { Section } from '@/components/Section';
+import type { ContainerProps } from '@/components/types/ContainerProps';
 import { useTrendingFilter } from '@/hooks/useActiveTrend';
 import { useTrendingplayers } from '@/hooks/useTrendingPlayers';
 import type { ProjectedPlayer } from '@/services/types/ProjectedPlayer';
+import { css } from '@/util/css';
 import { Link } from '@tanstack/react-router';
 
 /**
@@ -18,20 +20,20 @@ const trendFilters = [
 ];
 
 // Prop type
-type TrendingPlayersProps = {
+interface TrendingPlayersProps extends ContainerProps {
     limit: number;
-};
+}
 
 /**
  * Renders list of trending players from backend service (placeholder data for now)
  * @returns
  */
-export function TrendingPlayers({ limit }: TrendingPlayersProps) {
+export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
     const [trendingFilter, setTrendingFilter] = useTrendingFilter();
     const { data, isLoading, isAllData } = useTrendingplayers(trendingFilter, limit);
 
     return (
-        <Section>
+        <Section className={css('trending-players', className)}>
             <Card className='trending-card'>
                 <Card.Header>
                     <h2>Trending Players</h2>

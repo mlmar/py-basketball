@@ -2,6 +2,7 @@
 
 .flex {
     display: flex;
+    .flex-fill;
 }
 
 .flex-col {
@@ -36,8 +37,8 @@
 /* app */
 
 #root {
-    height: 100%;
-    width: 100%;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
     overflow: auto;
     background: var(--bg-gradient);
 }
@@ -215,6 +216,12 @@
     h2 {
         margin: 0 0 0.25em;
         font-size: 1.1rem;
+    }
+
+    &.flex {
+        .card {
+            .flex-col;
+        }
     }
 }
 

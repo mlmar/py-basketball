@@ -17,7 +17,9 @@ function RouteComponent() {
                 </Header.TopNav>
                 <Header.Logo>WaiverWarrior</Header.Logo>
             </Header>
-            <TrendingPlayers limit={20} />
+            <article className='flex flex-fill'>
+                <TrendingPlayers className='flex flex-fill' limit={20} />
+            </article>
         </>
     );
 }
