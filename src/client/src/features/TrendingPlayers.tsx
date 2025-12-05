@@ -2,7 +2,7 @@ import { Card } from '@/components/Card';
 import { Section } from '@/components/Section';
 import { useTrendingplayers } from '@/hooks/useTrendingPlayers';
 import type { ProjectedPlayer } from '@/services/types/ProjectedPlayer';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 /**
  * Placeholder data
@@ -37,10 +37,7 @@ export function TrendingPlayers({ limit }: TrendingPlayersProps) {
                     <h2>Trending Players (mock)</h2>
                     <Card.Badge className='trending-badge'>trending</Card.Badge>
                 </Card.Header>
-                <Section.Sub>
-                    Quick look at players on a heater. Eventually this will pull from recent game logs and your league
-                    settings.
-                </Section.Sub>
+                <Card.Sub>Quick look at players on a heater.</Card.Sub>
 
                 <div className='filter-block trending-filter-row'>
                     <div className='filter-row-line'>

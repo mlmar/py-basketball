@@ -80,10 +80,10 @@ export function WaiverBoard() {
                         <h2>All Waiver Targets (mock)</h2>
                         <Card.Badge>early version</Card.Badge>
                     </Card.Header>
-                    <Section.Sub>
+                    <Card.Sub>
                         Right now this is just hardcoded. Plan is to swap this for real backend results and add proper
                         filters (team, position, categories).
-                    </Section.Sub>
+                    </Card.Sub>
 
                     <div className='filter-block'>
                         {/* positions */}

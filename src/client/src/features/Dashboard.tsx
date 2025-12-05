@@ -56,7 +56,7 @@ export function Dashboard() {
                         <h2>Today's Games</h2>
                         <span className='card-badge'>schedule</span>
                     </Card.Header>
-                    <Section.Sub>This card will pull in upcoming games once the API is hooked up.</Section.Sub>
+                    <Card.Sub>This card will pull in upcoming games once the API is hooked up.</Card.Sub>
                 </Card>
 
                 <Card>
@@ -64,7 +64,7 @@ export function Dashboard() {
                         <h2>Category Tracker</h2>
                         <Card.Badge className='secondary'>beta</Card.Badge>
                     </Card.Header>
-                    <Section.Sub>Placeholder for charts showing how my team is doing in each cat.</Section.Sub>
+                    <Card.Sub>Placeholder for charts showing how my team is doing in each cat.</Card.Sub>
                 </Card>
             </Section>
 
@@ -75,10 +75,10 @@ export function Dashboard() {
                         <h2>Waiver Board</h2>
                         <Card.Badge>my notes</Card.Badge>
                     </Card.Header>
-                    <Section.Sub>
+                    <Card.Sub>
                         Early version of my waiver list. I'll swap this out for real data once the backend is plugged
                         in.
-                    </Section.Sub>
+                    </Card.Sub>
 
                     <ul className='list'>
                         {waiverBoard.map((p) => (

@@ -43,7 +43,7 @@ export function HomePage() {
             {/* categories */}
             <Section>
                 <h2>Category Snapshot</h2>
-                <Section.Sub>A quick glance at the matchups you're aiming to control.</Section.Sub>
+                <Card.Sub>A quick glance at the matchups you're aiming to control.</Card.Sub>
 
                 <div className='chips-row'>
                     {categories.map((cat) => (
@@ -62,7 +62,7 @@ export function HomePage() {
                         <h2>Waiver Targets</h2>
                         <Card.Badge>trending</Card.Badge>
                     </Card.Header>
-                    <Section.Sub>Players worth monitoring or adding based on recent performance.</Section.Sub>
+                    <Card.Sub>Players worth monitoring or adding based on recent performance.</Card.Sub>
 
                     <ul className='list'>
                         {waiverTargets.map((p) => (
@@ -88,7 +88,7 @@ export function HomePage() {
                         <h2>My Squad</h2>
                         <Card.Badge className='secondary'>overview</Card.Badge>
                     </Card.Header>
-                    <Section.Sub>Quick look at your roster.</Section.Sub>
+                    <Card.Sub>Quick look at your roster.</Card.Sub>
 
                     <ul className='list'>
                         {mySquad.map((name) => (

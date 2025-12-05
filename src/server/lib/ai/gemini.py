@@ -100,7 +100,7 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
         "Efficient big: 64% FG, solid boards"
         "Injury replacement getting starter run"
 
-    tags = Include applicable tags from the following:
+    tags = List of applicable player tags where:
         "minutes_up" = "Increase in minutes",
         "stocks" = "High number of steals or blocks"
 

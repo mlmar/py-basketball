@@ -1,7 +1,9 @@
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
-import tanstackRouter from '@tanstack/router-plugin/vite'
-import path from 'path'
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import tanstackRouter from '@tanstack/router-plugin/vite';
+import path from 'path';
+// @ts-ignore
+import eslint from 'vite-plugin-eslint';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -18,7 +20,8 @@ export default defineConfig({
             target: 'react',
             autoCodeSplitting: true,
         }),
-        react()
+        react(),
+        eslint()
     ],
     test: {
         environment: 'jsdom',

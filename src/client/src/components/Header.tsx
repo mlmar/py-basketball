@@ -1,9 +1,7 @@
 import type { ContainerProps } from '@/components/types/ContainerProps';
 import { css } from '@/util/css';
 
-interface HeaderProps extends ContainerProps {}
-
-export function Header({ className, ...rest }: HeaderProps) {
+export function Header({ className, ...rest }: ContainerProps) {
     return <header className={css('header', className)} {...rest}></header>;
 }
 
