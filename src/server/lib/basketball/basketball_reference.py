@@ -183,3 +183,37 @@ def get_all_stars() -> list[str]:
         driver.quit()
 
     return result;
+
+
+def __parse_top_player_table_rows(driver: WebDriver, limit) -> list[str]:
+    """Parses table rows into a list of player names from basketball reference"""
+
+    rows = driver.find_elements(By.CSS_SELECTOR, 'tbody > tr:not(.thead) > td[data-stat=name_display] > a')
+    if len(rows) == 0:
+        return []
+    
+    print(f'Queried {len(rows)} rows from stats table')
+    results = []
+    for i in range(0, limit):
+        results.append(rows[i].get_attribute('innerText'))
+
+    return results
+
+def get_top_players(num_players: int = 150) -> list[str]:
+    """Gets list of top N players from the current season"""
+    url = 'https://www.basketball-reference.com/leagues/NBA_2026_per_game.html'
+
+    # Fetch data for range of dates
+    print(f'------ Fetching top {num_players} players from {url} ------')
+
+    driver = __create_driver()
+    try:
+        wait = WebDriverWait(driver, 10)
+        driver.get(url)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-stat=name-display]'))) # Wait until top 20 rows of table are loaded
+    except TimeoutException:
+        print(f'No data found for {url}')
+
+    print(f'Querying data from table rows')
+    player_names = __parse_top_player_table_rows(driver, num_players)
+    return player_names

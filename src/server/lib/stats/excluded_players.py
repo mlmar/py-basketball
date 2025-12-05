@@ -1,5 +1,5 @@
 from lib.db.database_table import DatabaseTable
-from lib.basketball.basketball_reference import get_all_stars
+from lib.basketball.basketball_reference import get_top_players
 import unicodedata
 import config
 
@@ -8,7 +8,7 @@ def get_excluded_players() -> list[str]:
     """Fetches list of excluded players if it does not exist in the db"""
     excluded_players_response = excluded_players_table.get_table().select('name').execute()
     if excluded_players_response.data is None or len(excluded_players_response.data) == 0:
-        player_names = get_all_stars()
+        player_names = get_top_players()
         excluded_players_table.insert([{ 'name': __normalize(name) } for name in player_names])
         return player_names
     
