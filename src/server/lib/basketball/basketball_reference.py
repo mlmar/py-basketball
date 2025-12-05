@@ -99,7 +99,7 @@ def __parse_stat_table_rows(driver: WebDriver, current_date: date) -> list[Playe
     return players
 
 # Fetch page at base url
-def get_data(dates: list[date] = []) -> Generator[Tuple[date, list[Player]]]:
+def get_data(dates: list[date] = []) -> Generator[Tuple[date, list[Player]], None, None]:
     """Fetches data from basketball reference for a range of dates"""
 
     if len(dates) == 0:

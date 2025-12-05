@@ -1,7 +1,7 @@
 from typing import Generator
 from datetime import date, timedelta
 
-def range_of_dates(start_date: date, end_date: date) -> Generator[date]:
+def range_of_dates(start_date: date, end_date: date) -> Generator[date, None, None]:
     if start_date > end_date: # Switch dates
         temp_date = start_date
         start_date = end_date
