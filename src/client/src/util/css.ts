@@ -8,7 +8,7 @@ type CSSValue = null | undefined | string | string[] | {
  * @returns {string}
  */
 export function css(...values: CSSValue[]): string {
-    return values.reduce(cssReducer, '');
+    return values.reduce(cssReducer, '').trim();
 }
 
 /**

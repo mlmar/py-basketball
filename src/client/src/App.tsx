@@ -5,7 +5,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GlobalStoreProvider } from '@/store/useGlobalStore';
 
 // Create a new router instance
-const router = createRouter({ routeTree, scrollRestoration: false });
+const router = createRouter({
+    routeTree,
+    scrollRestoration: true,
+    scrollToTopSelectors: ['#root']
+});
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
