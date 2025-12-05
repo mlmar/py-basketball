@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 type UseTrendingPlayersResult = {
     data: Awaited<ReturnType<typeof StatsService.getTrendingAnalysis>>,
     isLoading: boolean,
-    isError: boolean
+    isError: boolean,
+    isAllData: boolean
 }
 
 /**
@@ -15,21 +16,20 @@ type UseTrendingPlayersResult = {
  * @return {TrendingPlayer[]}
  */
 export function useTrendingplayers(trendingFilter: string | null, limit: number = 20): UseTrendingPlayersResult {
-    const { data = [], isLoading, isError } = useQuery({
+    const { data = [], isLoading, isError, } = useQuery({
         queryKey: ['stats-analysis', limit],
         queryFn: async () => await StatsService.getTrendingAnalysis(),
         staleTime: Infinity,
         placeholderData: (previousData) => previousData,
-        refetchOnMount: false,
-        select: (data) => {
-            return data.filter((player: TrendingPlayer) => {
-                if (trendingFilter) {
-                    return player.tags.includes(trendingFilter)
-                }
-                return true;
-            }).slice(0, limit)
-        }
+        refetchOnMount: false
     });
 
-    return { data, isLoading, isError }
+    const _data = data.filter((player: TrendingPlayer) => {
+        if (trendingFilter) {
+            return player.tags.includes(trendingFilter)
+        }
+        return true;
+    }).slice(0, limit)
+
+    return { data: _data, isLoading, isError, isAllData: data.length === _data.length }
 }

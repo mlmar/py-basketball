@@ -7,7 +7,7 @@ export type GlobalStore = {
 
 export const [GlobalStoreProvider, useGlobalStore] = createStoreInstance<GlobalStore>((set) => {
     return {
-        trendingFilter: '',
+        trendingFilter: null,
         setTrendingFilter: (trendingFilter: string | null = null) => {
             set({ trendingFilter });
         }

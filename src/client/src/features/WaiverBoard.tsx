@@ -64,7 +64,7 @@ export function WaiverBoard() {
             <Header className='section'>
                 <Header.TopNav>
                     <BackButton>Home</BackButton>
-                    <span className='tiny-text'>Waiver board – placeholder build</span>
+                    <span className='tiny-text'>Waiver board - placeholder build</span>
                 </Header.TopNav>
 
                 <Header.Logo>WaiverWarrior</Header.Logo>

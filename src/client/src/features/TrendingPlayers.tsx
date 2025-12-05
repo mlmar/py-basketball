@@ -3,6 +3,7 @@ import { Section } from '@/components/Section';
 import { useTrendingFilter } from '@/hooks/useActiveTrend';
 import { useTrendingplayers } from '@/hooks/useTrendingPlayers';
 import type { ProjectedPlayer } from '@/services/types/ProjectedPlayer';
+import { Link } from '@tanstack/react-router';
 
 /**
  * Placeholder data
@@ -27,7 +28,7 @@ type TrendingPlayersProps = {
  */
 export function TrendingPlayers({ limit }: TrendingPlayersProps) {
     const [trendingFilter, setTrendingFilter] = useTrendingFilter();
-    const { data, isLoading } = useTrendingplayers(trendingFilter, limit);
+    const { data, isLoading, isAllData } = useTrendingplayers(trendingFilter, limit);
 
     return (
         <Section>
@@ -66,11 +67,18 @@ export function TrendingPlayers({ limit }: TrendingPlayersProps) {
                                     <p className='list-note'> {projectedPlayer.player.player} </p>
                                     <p className='list-title'> {projectedPlayer.analysis} </p>
                                 </section>
-                                <button className='btn tiny'>Watch</button>
+                                <button className='btn tiny' onClick={() => alert('TODO')}>
+                                    Watch
+                                </button>
                             </li>
                         );
                     })}
                 </ul>
+                {!isAllData && (
+                    <Link to='/trending'>
+                        <button className='btn fullwidth'>View Full Trending List</button>
+                    </Link>
+                )}
             </Card>
         </Section>
     );

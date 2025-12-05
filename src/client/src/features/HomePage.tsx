@@ -75,7 +75,9 @@ export function HomePage() {
                                     </p>
                                     <p className='list-note'>{p.note}</p>
                                 </div>
-                                <button className='btn tiny'>Watch</button>
+                                <button className='btn tiny' onClick={() => alert('TODO')}>
+                                    Watch
+                                </button>
                             </li>
                         ))}
                     </ul>

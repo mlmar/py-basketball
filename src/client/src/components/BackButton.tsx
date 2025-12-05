@@ -5,7 +5,7 @@ import { Link } from '@tanstack/react-router';
 export function BackButton({ className, children, ...rest }: ContainerProps) {
     return (
         <Link to='..'>
-            <button className={css('btn tiny', className)} {...rest}>
+            <button id='back-btn' className={css('btn tiny', className)} {...rest}>
                 ← {children}
             </button>
         </Link>
