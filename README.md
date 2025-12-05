@@ -11,16 +11,16 @@ Objectives
         -   [@tanstack/query](https://tanstack.com/query/latest) - Data retrieval
         -   [zustand](https://github.com/pmndrs/zustand) - Global state
     -   Features
-        -   [ ] Sign up page
-        -   [ ] Login page
-        -   [ ] Home page
+        -   Users
+            -   [ ] Sign up page
+            -   [ ] Login page
+            -   [ ] Home page
         -   Generic features
             -   [ ] Watching players (tracking trends for specific players)
                 -   [ ] Render playerlist
                 -   [ ] Call backend service for updating watchlist
-            -   [ ] List of trending players in the NBA
-                -   [ ] Filter selector
-                -   [ ] Call backend service for updating filters
+            -   [x] List of trending players in the NBA
+                -   [x] Filter tag selector
         -   Yahoo API
             -   [ ] Prompt user to connect Yahoo account
             -   [ ] Show current matchup
@@ -57,8 +57,8 @@ Objectives
             -   [ ] Add parameters for filters
             -   [ ] Player tags
                 -   [ ] Injury
-                -   [ ] Minutes Up
-                -   [ ] Stocks
+                -   [x] Minutes Up
+                -   [x] Stocks
                 -   [ ] Usage
         -   [x] Incorporate upcoming NBA schedule
             -   [x] Get number of games for next N days
