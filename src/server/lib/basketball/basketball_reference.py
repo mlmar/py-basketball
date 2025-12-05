@@ -1,7 +1,7 @@
 # https://www.selenium.dev/documentation/
 # File for scraping data from https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=11&day=17&year=2025
 
-from typing import Generator
+from typing import Generator, Tuple
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -99,7 +99,7 @@ def __parse_stat_table_rows(driver: WebDriver, current_date: date) -> list[Playe
     return players
 
 # Fetch page at base url
-def get_data(dates: list[date] = []) -> Generator[(date, list[Player])]:
+def get_data(dates: list[date] = []) -> Generator[Tuple[date, list[Player]]]:
     """Fetches data from basketball reference for a range of dates"""
 
     if len(dates) == 0:

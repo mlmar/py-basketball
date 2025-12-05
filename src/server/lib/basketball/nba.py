@@ -1,7 +1,7 @@
 from nba_api.stats.endpoints import LeagueGameLog, BoxScoreTraditionalV3
 import time
 from lib.basketball.player import Player, print_player
-from typing import Generator
+from typing import Generator, Tuple
 from datetime import date
 
 SEASON = '2025-26'
@@ -78,7 +78,7 @@ def __parse_table_row(row, current_date: date) -> Player:
     return player;
 
 # Fetch page at base url
-def get_data(dates: list[date] = []) -> Generator[(date, list[Player])]:
+def get_data(dates: list[date] = []) -> Generator[Tuple[date, list[Player]]]:
     """Fetches data from basketball reference for a range of dates"""
 
     if len(dates) == 0:
