@@ -103,4 +103,4 @@ def __filter_excluded_players(data: Player) -> list[Player]:
             is_excluded_results[name] = len(list(filter(name.startswith, excluded_players))) > 0
         return is_excluded_results[name]
     
-    return [row for row in data if not is_excluded(row['player'])]
+    return [row for row in data if not is_excluded(row['player'])] 
