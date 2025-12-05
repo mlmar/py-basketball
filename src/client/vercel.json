@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/:path((?!.*\\..*).*)",
-            "destination": "/dist/index.html"
+            "destination": "/index.html"
         }
     ]
 }
