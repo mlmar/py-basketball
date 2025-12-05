@@ -100,7 +100,10 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
         "Efficient big: 64% FG, solid boards"
         "Injury replacement getting starter run"
 
-    tags = List of player tags where 'minutes_up' = an increase in minutes, 'stocks' = an high steal and/or block total
+    tags = Include applicable tags from the following:
+        "minutes_up" = "Increase in minutes",
+        "stocks" = "High number of steals or blocks"
+
 
     Respond in minified JSON format without spaces and new lines.
     """
