@@ -1,6 +1,5 @@
 import { BackButton } from '@/components/BackButton';
 import { Card } from '@/components/Card';
-import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Section } from '@/components/Section';
 import { Link } from '@tanstack/react-router';
@@ -99,10 +98,6 @@ export function Dashboard() {
                     </Link>
                 </Card>
             </Section>
-
-            <Footer>
-                <p>WaiverWarrior · dashboard v0.1</p>
-            </Footer>
         </>
     );
 }

@@ -1,18 +1,18 @@
 import { Card } from '@/components/Card';
 import { Section } from '@/components/Section';
+import { useTrendingFilter } from '@/hooks/useActiveTrend';
 import { useTrendingplayers } from '@/hooks/useTrendingPlayers';
 import type { ProjectedPlayer } from '@/services/types/ProjectedPlayer';
-import { useState } from 'react';
 
 /**
  * Placeholder data
  */
 // trending area – mock data + trend filters
 const trendFilters = [
-    { label: 'All', value: 'ALL' },
+    { label: 'All', value: null },
     { label: '+ Minutes', value: 'minutes_up' },
-    { label: 'Usage bump', value: 'usage' },
-    { label: 'Injury fill-in', value: 'injury' },
+    // { label: 'Usage bump', value: 'usage' },
+    // { label: 'Injury fill-in', value: 'injury' },
     { label: 'Hot stocks (STL/BLK)', value: 'stocks' }
 ];
 
@@ -26,15 +26,14 @@ type TrendingPlayersProps = {
  * @returns
  */
 export function TrendingPlayers({ limit }: TrendingPlayersProps) {
-    const [activeTrend, setActiveTrend] = useState<string>('ALL');
-
-    const { data, isLoading } = useTrendingplayers(limit);
+    const [trendingFilter, setTrendingFilter] = useTrendingFilter();
+    const { data, isLoading } = useTrendingplayers(trendingFilter, limit);
 
     return (
         <Section>
             <Card className='trending-card'>
                 <Card.Header>
-                    <h2>Trending Players (mock)</h2>
+                    <h2>Trending Players</h2>
                     <Card.Badge className='trending-badge'>trending</Card.Badge>
                 </Card.Header>
                 <Card.Sub>Quick look at players on a heater.</Card.Sub>
@@ -47,9 +46,9 @@ export function TrendingPlayers({ limit }: TrendingPlayersProps) {
                                 <button
                                     key={f.value}
                                     className={
-                                        'filter-pill' + (activeTrend === f.value ? ' filter-pill-active-trend' : '')
+                                        'filter-pill' + (trendingFilter === f.value ? ' filter-pill-active-trend' : '')
                                     }
-                                    onClick={() => setActiveTrend(f.value)}
+                                    onClick={() => setTrendingFilter(f.value)}
                                 >
                                     {f.label}
                                 </button>

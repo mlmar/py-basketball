@@ -5,5 +5,6 @@ export interface TrendingPlayer {
     opponents: string[]
     game_dates: string[]
     analysis: string
-    player: BasePlayer
+    player: BasePlayer,
+    tags: string[]
 }

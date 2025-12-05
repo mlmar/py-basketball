@@ -1,7 +1,8 @@
 import { StatsService } from "@/services/StatsService";
+import type { TrendingPlayer } from "@/services/types/TrendingPlayer";
 import { useQuery } from "@tanstack/react-query";
 
-type useTrendingPlayersResult = {
+type UseTrendingPlayersResult = {
     data: Awaited<ReturnType<typeof StatsService.getTrendingAnalysis>>,
     isLoading: boolean,
     isError: boolean
@@ -9,9 +10,11 @@ type useTrendingPlayersResult = {
 
 /**
  * Retrieves most recent trending player analysis 
- * @returns 
+ * @param {string | null} trendingFilter -- tag to filter by
+ * @param {number} limit -- limit number of returned players
+ * @return {TrendingPlayer[]}
  */
-export function useTrendingplayers(limit: number = 20): useTrendingPlayersResult {
+export function useTrendingplayers(trendingFilter: string | null, limit: number = 20): UseTrendingPlayersResult {
     const { data = [], isLoading, isError } = useQuery({
         queryKey: ['stats-analysis', limit],
         queryFn: async () => await StatsService.getTrendingAnalysis(),
@@ -19,7 +22,12 @@ export function useTrendingplayers(limit: number = 20): useTrendingPlayersResult
         placeholderData: (previousData) => previousData,
         refetchOnMount: false,
         select: (data) => {
-            return data.slice(0, limit)
+            return data.filter((player: TrendingPlayer) => {
+                if (trendingFilter) {
+                    return player.tags.includes(trendingFilter)
+                }
+                return true;
+            }).slice(0, limit)
         }
     });
 

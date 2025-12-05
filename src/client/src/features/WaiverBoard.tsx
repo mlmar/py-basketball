@@ -1,7 +1,6 @@
 // features/WaiverBoard.jsx
 import { BackButton } from '@/components/BackButton';
 import { Card } from '@/components/Card';
-import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Section } from '@/components/Section';
 import { TrendingPlayers } from '@/features/TrendingPlayers';
@@ -137,10 +136,6 @@ export function WaiverBoard() {
 
             {/* trending section */}
             <TrendingPlayers limit={5} />
-
-            <Footer>
-                <p>WaiverWarrior · full board mock v0.1</p>
-            </Footer>
         </>
     );
 }

@@ -10,11 +10,7 @@ Header.TopNav = function ({ className, ...rest }: ContainerProps) {
 };
 
 Header.Logo = function ({ className, ...rest }: ContainerProps) {
-    return (
-        <h1 className={css('logo', className)} {...rest}>
-            WaiverWarrior
-        </h1>
-    );
+    return <h1 className={css('logo', className)} {...rest}></h1>;
 };
 
 Header.Subtext = function ({ className, ...rest }: ContainerProps) {

@@ -1,15 +1,15 @@
 import { createStoreInstance } from '@/store/createStoreInstance';
 
-type GlobalStore = {
-    example: string,
-    setExample: (prop: string) => void
+export type GlobalStore = {
+    trendingFilter: string | null,
+    setTrendingFilter: (prop: string | null) => void
 }
 
 export const [GlobalStoreProvider, useGlobalStore] = createStoreInstance<GlobalStore>((set) => {
     return {
-        example: '',
-        setExample: (prop) => {
-            set({ example: prop });
+        trendingFilter: '',
+        setTrendingFilter: (trendingFilter: string | null = null) => {
+            set({ trendingFilter });
         }
     }
 })

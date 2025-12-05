@@ -1,9 +1,9 @@
 // features/HomePage.jsx
 import { Card } from '@/components/Card';
-import { Footer } from '@/components/Footer';
 import { Hero } from '@/components/Hero';
 import { Section } from '@/components/Section';
 import { Matchup } from '@/features/Matchup';
+import { TrendingPlayers } from '@/features/TrendingPlayers';
 import { Link } from '@tanstack/react-router';
 
 export function HomePage() {
@@ -39,6 +39,8 @@ export function HomePage() {
 
                 <Matchup />
             </Hero>
+
+            <TrendingPlayers limit={5} />
 
             {/* categories */}
             <Section>
@@ -100,10 +102,6 @@ export function HomePage() {
                     </ul>
                 </Card>
             </Section>
-
-            <Footer>
-                <p>WaiverWarrior.</p>
-            </Footer>
         </>
     );
 }
