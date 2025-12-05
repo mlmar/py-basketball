@@ -1,5 +1,5 @@
-import { StatsService } from "@/services/StatsService";
 import { useQuery } from "@tanstack/react-query";
+import { StatsService } from "@/services/StatsService";
 
 type UseProjectedAnalysisResult = {
     data: Awaited<ReturnType<typeof StatsService.getProjectedAnalysis>> | undefined,
@@ -14,10 +14,7 @@ type UseProjectedAnalysisResult = {
 export function useProjectedAnalysis(): UseProjectedAnalysisResult {
     const { data = [], isLoading, isError } = useQuery({
         queryKey: ['stats-analysis'],
-        queryFn: async () => await StatsService.getProjectedAnalysis(),
-        staleTime: Infinity,
-        placeholderData: (previousData) => previousData,
-        refetchOnMount: false
+        queryFn: async () => await StatsService.getProjectedAnalysis()
     });
 
     return { data, isLoading, isError }

@@ -15,7 +15,15 @@ declare module '@tanstack/react-router' {
 }
 
 // Query client instance
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: Infinity,
+            refetchOnMount: false,
+            retry: false
+        }
+    }
+});
 
 /**
  * Base app component for providers
