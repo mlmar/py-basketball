@@ -93,5 +93,14 @@ def get_totals(days: int, exclude: bool = False):
     return response.data
 
 def __filter_excluded_players(data: Player) -> list[Player]:
+    """Filter excluded player names from data set"""
     excluded_players = get_excluded_players()
-    return [row for row in data if row['player'] not in excluded_players]
+    
+    is_excluded_results: dict[str, bool] = {} # cache results for whether a player name is excluded or not
+    def is_excluded(name: str):
+        # checks if player starts with the excluded player name (workaround for players like Jimmy Butler III)
+        if name not in is_excluded_results: # cache results once
+            is_excluded_results[name] = len(list(filter(name.startswith, excluded_players))) > 0
+        return is_excluded_results[name]
+    
+    return [row for row in data if not is_excluded(row['player'])]
