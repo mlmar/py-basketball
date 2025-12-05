@@ -1,4 +1,5 @@
 """Routes for retrieving player statistics"""
+from typing import Optional
 from fastapi import APIRouter, Depends
 from api.auth import get_current_user
 from lib.stats import stats, analysis
@@ -23,6 +24,16 @@ async def get_projected_analysis():
     return analysis.get_projected_analysis()
 
 #  current_user: dict = Depends(get_current_user)
+@router.get('/projected-analysis/{date_str}')
+async def get_projected_analysis(date_str: str):
+    return analysis.get_projected_analysis(date_str)
+
+#  current_user: dict = Depends(get_current_user)
 @router.get('/trending-analysis')
 async def get_trending_analysis():
     return analysis.get_trending_analysis()
+
+#  current_user: dict = Depends(get_current_user)
+@router.get('/trending-analysis/{date_str}')
+async def get_trending_analysis(date_str: str):
+    return analysis.get_trending_analysis(date_str)

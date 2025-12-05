@@ -104,7 +104,6 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
         "minutes_up" = "Increase in minutes",
         "stocks" = "High number of steals or blocks"
 
-
     Respond in minified JSON format without spaces and new lines.
     """
 
