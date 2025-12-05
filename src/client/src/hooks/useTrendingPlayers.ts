@@ -21,12 +21,14 @@ export function useTrendingplayers(trendingFilter: string | null, limit: number 
         queryFn: async () => await StatsService.getTrendingAnalysis()
     });
 
-    const _data = data.filter((player: TrendingPlayer) => {
+    const filteredData = data.filter((player: TrendingPlayer) => {
         if (trendingFilter) {
             return player.tags.includes(trendingFilter)
         }
         return true;
-    }).slice(0, limit)
+    });
 
-    return { data: _data, isLoading, isError, isAllData: data.length === _data.length }
+    const limitedData = filteredData.slice(0, limit);
+
+    return { data: limitedData, isLoading, isError, isAllData: filteredData.length === limitedData.length }
 }
