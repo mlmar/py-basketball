@@ -4,18 +4,12 @@ import { Hero } from '@/components/Hero';
 import { Section } from '@/components/Section';
 import { Matchup } from '@/features/Matchup';
 import { TrendingPlayers } from '@/features/TrendingPlayers';
+import { WaiverTargets } from '@/features/WaiverTargets';
 import { Link } from '@tanstack/react-router';
 
 export function HomePage() {
     // placeholder data
     const categories = ['PTS', 'REB', 'AST', 'STL', 'BLK', '3PM', 'FG%', 'FT%'];
-
-    const waiverTargets = [
-        { name: 'Player A', team: 'MIA', note: 'Trending upward • strong 3PM' },
-        { name: 'Player B', team: 'OKC', note: 'Good streamer for stocks' },
-        { name: 'Player C', team: 'NYK', note: 'Reliable rebounds + efficiency' }
-    ];
-
     const mySquad = ['Tyler Herro', 'Darius Garland', 'Steven Nguyen', 'Grayson Allen', 'Ajay Mitchell'];
 
     return (
@@ -59,33 +53,7 @@ export function HomePage() {
 
             {/* waiver + roster */}
             <Section className='grid-2'>
-                <Card>
-                    <Card.Header>
-                        <h2>Waiver Targets</h2>
-                        <Card.Badge>trending</Card.Badge>
-                    </Card.Header>
-                    <Card.Sub>Players worth monitoring or adding based on recent performance.</Card.Sub>
-
-                    <ul className='list'>
-                        {waiverTargets.map((p) => (
-                            <li key={p.name} className='list-item'>
-                                <div>
-                                    <p className='list-title'>
-                                        {p.name} <span className='list-team'>• {p.team}</span>
-                                    </p>
-                                    <p className='list-note'>{p.note}</p>
-                                </div>
-                                <button className='btn tiny' onClick={() => alert('TODO')}>
-                                    Watch
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-
-                    <Link to='/waiver'>
-                        <button className='btn fullwidth'>View Full Waiver Board</button>
-                    </Link>
-                </Card>
+                <WaiverTargets />
 
                 <Card>
                     <Card.Header>

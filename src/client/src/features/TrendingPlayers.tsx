@@ -2,6 +2,7 @@ import { Card } from '@/components/Card';
 import { Section } from '@/components/Section';
 import type { ContainerProps } from '@/components/types/ContainerProps';
 import { useTrendingFilter } from '@/hooks/useActiveTrend';
+import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
 import { useTrendingplayers } from '@/hooks/useTrendingPlayers';
 import type { ProjectedPlayer } from '@/services/types/ProjectedPlayer';
 import { css } from '@/util/css';
@@ -29,6 +30,7 @@ interface TrendingPlayersProps extends ContainerProps {
  * @returns
  */
 export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
+    const isLoggedIn = useIsLoggedIn();
     const [trendingFilter, setTrendingFilter] = useTrendingFilter();
     const { data, isLoading, isAllData } = useTrendingplayers(trendingFilter, limit);
 
@@ -69,9 +71,11 @@ export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
                                     <p className='list-note'> {projectedPlayer.player.player} </p>
                                     <p className='list-title'> {projectedPlayer.analysis} </p>
                                 </section>
-                                <button className='btn tiny' onClick={() => alert('TODO')}>
-                                    Watch
-                                </button>
+                                {isLoggedIn && (
+                                    <button className='btn tiny' onClick={() => alert('TODO')}>
+                                        Watch
+                                    </button>
+                                )}
                             </li>
                         );
                     })}
