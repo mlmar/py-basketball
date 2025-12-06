@@ -34,7 +34,7 @@ Objectives
     -   Selenium
         -   [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=11&day=17&year=2025) for player stats
         -   [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/allstar/202502162NBA.html) for list of all stars
-    -   xternal Services
+    -   External Services
         -   [x] Retrieve upcoming NBA schedule for the next N days
         -   [x] Retrieve player stats from NBA API
     -   Supabase
@@ -93,7 +93,7 @@ pip install
 npm install --prefix ./src/client
 ```
 
-Create an .env file in the server directory with the folllowing contents:
+Create an .env file in the root directory with the folllowing contents:
 
 ```properties
 SUPABASE_URL=YOUR_SUPABASE_URL_HERE
