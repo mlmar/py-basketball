@@ -25,14 +25,18 @@ app.add_middleware(
 app.include_router(auth_routes.router, prefix='/api')
 app.include_router(stats_routes.router, prefix='/api')
 
-frontend_path = Path(__file__).parent / 'static'
-# Serve index.html for all other non-API routes
-@app.get('/{full_path:path}')
-async def serve_frontend(full_path: str):
-    if full_path and full_path.startswith('api'):
-        # If static file exists then return it, otherwise raise 404 error
-        if (frontend_path / full_path).exists():
-            return FileResponse(frontend_path / full_path)
-        else:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='File not found')
-    return FileResponse(frontend_path / 'index.html')
+# Override routes for static files if production
+if not config.DEV:
+    frontend_path = Path(__file__).parent / 'static'
+    app.mount('/static', StaticFiles(directory=frontend_path, html=True), name='static')
+
+    # Serve index.html for all other non-API routes
+    @app.get('/{full_path:path}')
+    async def serve_frontend(full_path: str):
+        if full_path and full_path.startswith('api'):
+            # If static file exists then return it, otherwise raise 404 error
+            if (frontend_path / full_path).exists():
+                return FileResponse(frontend_path / full_path)
+            else:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='File not found')
+        return FileResponse(frontend_path / 'index.html')
