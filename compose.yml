@@ -6,6 +6,12 @@ services:
         ports:
             - "3300:3300"
         restart: unless-stopped
-secrets:
-    env:
-        external: true
+        environment:
+            - VITE_CLIENT_URL
+            - VITE_SERVER_URL
+            - SUPABASE_KEY
+            - SUPABASE_JWT_SECRET
+            - GEMINI_API_KEY
+            - YAHOO_CLIENT_ID
+            - YAHOO_CLIENT_SECRET
+            - PYTHONPATH
