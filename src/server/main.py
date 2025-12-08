@@ -24,5 +24,5 @@ app.include_router(auth_routes.router)
 app.include_router(stats_routes.router)
 
 # Mount static path
-if not config.DEV:
-    app.mount("/", StaticFiles(directory="static", html=True), name="static")
+# if not config.DEV:
+#     app.mount("/static", StaticFiles(directory="static", html=True), name="static")
