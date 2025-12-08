@@ -29,8 +29,8 @@ frontend_path = Path(__file__).parent / 'static'
 # Serve index.html for all other non-API routes
 @app.get('/{full_path:path}')
 async def serve_frontend(full_path: str):
-    if full_path and (full_path.startswith('api') or (frontend_path / full_path).exists()):
-        # Let FastAPI handle API or static files
+    if full_path and full_path.startswith('api'):
+        # If static file exists then return it, otherwise raise 404 error
         if (frontend_path / full_path).exists():
             return FileResponse(frontend_path / full_path)
         else:
