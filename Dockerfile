@@ -25,10 +25,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend source
 COPY src/server ./server
 
-# Copy frontend build into server static directory
-RUN mkdir -p /app/server/static
-COPY --from=frontend-build /app/client/dist /app/server/static
-
 
 # -----------------------------
 # 3) PRODUCTION IMAGE
