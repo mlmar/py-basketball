@@ -1,3 +1,12 @@
+ARG VITE_CLIENT_URL
+ARG VITE_SERVER_URL
+ARG SUPABASE_KEY
+ARG SUPABASE_JWT_SECRET
+ARG GEMINI_API_KEY
+ARG YAHOO_CLIENT_ID
+ARG YAHOO_CLIENT_SECRET
+ARG PYTHONPATH
+
 # -----------------------------
 # 1) BACKEND BUILD (FastAPI)
 # -----------------------------
@@ -16,6 +25,9 @@ COPY src/server .
 # 2) FRONTEND BUILD (Vite)
 # -----------------------------
 FROM node:18 AS frontend-build
+
+ENV VITE_CLIENT_URL=$VITE_CLIENT_URL
+ENV VITE_SERVER_URL=$VITE_SERVER_URL
 
 WORKDIR /app/client
 COPY src/client/package.json src/client/package-lock.json ./
