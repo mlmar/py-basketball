@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from pathlib import Path
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from api.routes import stats_routes, auth_routes
 from api.auth import auth_middleware
@@ -20,9 +22,17 @@ app.add_middleware(
 
 
 # app.middleware('http')(auth_middleware) # Commenting out middleware for now
-app.include_router(auth_routes.router)
-app.include_router(stats_routes.router)
+app.include_router(auth_routes.router, prefix='/api')
+app.include_router(stats_routes.router, prefix='/api')
 
-# Mount static path
-# if not config.DEV:
-#     app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+frontend_path = Path(__file__).parent / 'static'
+# Serve index.html for all other non-API routes
+@app.get('/{full_path:path}')
+async def serve_frontend(full_path: str):
+    if full_path and (full_path.startswith('api') or (frontend_path / full_path).exists()):
+        # Let FastAPI handle API or static files
+        if (frontend_path / full_path).exists():
+            return FileResponse(frontend_path / full_path)
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='File not found')
+    return FileResponse(frontend_path / 'index.html')

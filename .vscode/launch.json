@@ -1,29 +1,29 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Vite: React",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/src/client"
-    },
-    {
-      "name": "Python: FastAPI",
-      "type": "debugpy",
-      "request": "launch",
-      "module": "uvicorn",
-      "args": ["main:app", "--reload", "--port", "3300"],
-      "console": "integratedTerminal",
-      "justMyCode": true
-    },
-    {
-      "name": "Python: main.py",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/src/server/main.py",
-      "console": "integratedTerminal",
-      "justMyCode": true
-    }
-  ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Vite: React",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/src/client"
+        },
+        {
+            "name": "Python: FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": ["main:app", "--reload", "--port", "3300"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: main.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/server/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
 }

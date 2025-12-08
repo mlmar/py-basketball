@@ -33,7 +33,7 @@ COPY --from=frontend-build /app/client/dist /app/server/static
 # -----------------------------
 # 3) PRODUCTION IMAGE
 # -----------------------------
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 
