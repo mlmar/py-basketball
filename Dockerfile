@@ -35,8 +35,11 @@ WORKDIR /app/server
 COPY src/server/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend source (including built frontend)
+# Copy backend source 
 COPY --from=backend-build /app/server .
+
+# Copy built front end
+COPY --from=frontend-build /app/server/static ./static
 
 EXPOSE 3300
 
