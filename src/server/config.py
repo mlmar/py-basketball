@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+DEV: str = os.environ.get('DEV')
 SUPABASE_URL: str = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY: str = os.environ.get('SUPABASE_KEY')
 SUPABASE_JWT_SECRET: str = os.environ.get('SUPABASE_JWT_SECRET')
