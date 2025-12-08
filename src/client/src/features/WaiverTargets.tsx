@@ -15,7 +15,7 @@ export function WaiverTargets(props: ContainerProps) {
     return (
         <Card {...props}>
             <Card.Header>
-                <h2>Waiver Targets</h2>
+                <h2>Waiver Targets (Mock)</h2>
                 <Card.Badge>trending</Card.Badge>
             </Card.Header>
             <Card.Sub>Players worth monitoring or adding based on recent performance.</Card.Sub>

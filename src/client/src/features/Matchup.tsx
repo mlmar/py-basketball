@@ -3,7 +3,7 @@ import { Hero } from '@/components/Hero';
 export function Matchup() {
     return (
         <Hero.Card>
-            <h2>This Week's Matchup</h2>
+            <h2>This Week's Matchup (Mock)</h2>
             <p className='matchup-label'>Overview</p>
 
             <div className='matchup-score'>

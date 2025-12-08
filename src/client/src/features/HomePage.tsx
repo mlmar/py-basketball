@@ -17,7 +17,7 @@ export function HomePage() {
             {/* hero section */}
             <Hero>
                 <div>
-                    <h1 className='logo'>WaiverWarrior</h1>
+                    <h1 className='logo'>WaiverWarrior (Mock)</h1>
                     <p className='tagline'>Dominate the wire. Win the week.</p>
                     <p className='subtext'>
                         Your centralized hub for lineup decisions, category tracking, and waiver intel.
@@ -38,7 +38,7 @@ export function HomePage() {
 
             {/* categories */}
             <Section>
-                <h2>Category Snapshot</h2>
+                <h2>Category Snapshot (Mock)</h2>
                 <Card.Sub>A quick glance at the matchups you're aiming to control.</Card.Sub>
 
                 <div className='chips-row'>
@@ -57,7 +57,7 @@ export function HomePage() {
 
                 <Card>
                     <Card.Header>
-                        <h2>My Squad</h2>
+                        <h2>My Squad (Mock)</h2>
                         <Card.Badge className='secondary'>overview</Card.Badge>
                     </Card.Header>
                     <Card.Sub>Quick look at your roster.</Card.Sub>
