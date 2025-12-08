@@ -16,6 +16,9 @@ function RouteComponent() {
                     <span className='tiny-text'> Trending Players </span>
                 </Header.TopNav>
                 <Header.Logo>WaiverWarrior</Header.Logo>
+                <Header.Tagline>
+                    View trending and underrated players from the last 10 days. Updates once per day.
+                </Header.Tagline>
             </Header>
             <article className='flex flex-fill'>
                 <TrendingPlayers className='flex flex-fill' limit={20} />
