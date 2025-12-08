@@ -35,7 +35,7 @@ if not config.DEV:
     async def serve_frontend(full_path: str):
         index_html = FileResponse(frontend_path / 'index.html')
         if full_path or full_path.startswith('api'):
-            # If static file exists then return it, otherwise raise 404 error
+            # If static file exists then return it, otherwise return index
             if (frontend_path / full_path).exists():
                 return FileResponse(frontend_path / full_path)
             else:
