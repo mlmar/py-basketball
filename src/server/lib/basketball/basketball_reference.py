@@ -11,6 +11,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import TimeoutException
 from datetime import date
+import config
 from lib.basketball.player import Player
 
 # Types matching
@@ -199,7 +200,7 @@ def __parse_top_player_table_rows(driver: WebDriver, limit) -> list[str]:
 
     return results
 
-def get_top_players(num_players: int = 130) -> list[str]:
+def get_top_players(num_players: int = config.TOP_PLAYERS_LIMIT) -> list[str]:
     """Gets list of top N players from the current season"""
     url = 'https://www.basketball-reference.com/leagues/NBA_2026_per_game.html'
 

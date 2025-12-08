@@ -1,7 +1,7 @@
 from fastapi import Request, HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import jwt
-from config import SUPABASE_JWT_SECRET
+import config
 
 security = HTTPBearer()
 
@@ -19,7 +19,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     """Retrieves current user if token is valid"""
     try:
         token = __strip_bearer(credentials.credentials)
-        payload = jwt.decode(token, SUPABASE_JWT_SECRET, algorithms=['HS256'], options={ 'verify_aud': False })
+        payload = jwt.decode(token, config.SUPABASE_JWT_SECRET, algorithms=['HS256'], options={ 'verify_aud': False })
         user_id = payload.get('sub')
         if user_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid credentials')

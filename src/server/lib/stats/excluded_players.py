@@ -12,7 +12,7 @@ def get_excluded_players() -> list[str]:
         refresh_top_players = True
         if len(excluded_players_response.data) > 0:
             delta = date.today() - __str_to_date(excluded_players_response.data[0]['created_at'])
-            refresh_top_players = delta.days > 3
+            refresh_top_players = delta.days > config.EXCLUDED_PLAYERS_REFRESH_DAYS
             
         if refresh_top_players:
             player_names = get_top_players()
