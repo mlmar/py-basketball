@@ -1,8 +1,10 @@
 from datetime import date
 from functools import partial
+from typing import List
 
 from fastapi import HTTPException, status
-from lib.basketball.player import Player
+from pydantic import BaseModel
+from lib.basketball.player import Player, ProjectedPlayer, TrendingPlayer
 from lib.db.database_table import DatabaseTable
 from lib.ai import gemini
 from lib.stats import stats 
@@ -11,13 +13,23 @@ import json
 import asyncio
 import traceback
 
+from util.date_util import get_today_pst
+
 projected_analysis_status_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE)
 projected_analysis_data_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE)
 trending_analysis_status_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE)
 trending_analysis_data_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE)
 
+class ProjectedAnalysisResult(BaseModel):
+    result: List[ProjectedPlayer] = []
+    status: str = 'PROCESSING'
+
+class TrendingAnalysisResult(BaseModel):
+    result: List[TrendingPlayer] = []
+    status: str = 'PROCESSING'
+
 # PROJECTED ANALYSIS
-def get_projected_analysis(date_str: str = None) -> list[Player]:
+def get_projected_analysis(date_str: str = None) -> ProjectedAnalysisResult:
     """Gets most recent analysis and runs today's if it does not exist"""
     target_date = __validate_date_str(date_str)
     result = __get_result(projected_analysis_status_table, projected_analysis_data_table, target_date if date_str else None)
@@ -31,7 +43,10 @@ def get_projected_analysis(date_str: str = None) -> list[Player]:
         func = partial(run_projected_analysis, target_date)
         asyncio.get_running_loop().run_in_executor(None, func)
         
-    return result
+    return {
+        'result': result,
+        'status': status if status else 'PROCESSING'
+    }
     
 def run_projected_analysis(target_date: str) -> list[Player]:
     """Runs projected analysis and updates today's status"""
@@ -64,7 +79,7 @@ def run_projected_analysis(target_date: str) -> list[Player]:
     return result
 
 # TRENDING ANALYSIS
-def get_trending_analysis(date_str: str = None) -> list[Player]:
+def get_trending_analysis(date_str: str = None) -> TrendingAnalysisResult:
     target_date = __validate_date_str(date_str)
     result = __get_result(trending_analysis_status_table, trending_analysis_data_table, target_date if date_str else None)
     status = __get_status(trending_analysis_status_table, target_date)
@@ -77,7 +92,10 @@ def get_trending_analysis(date_str: str = None) -> list[Player]:
         func = partial(run_trending_analysis, target_date)
         asyncio.get_running_loop().run_in_executor(None, func)
     
-    return result
+    return {
+        'result': result,
+        'status': status if status else 'PROCESSING'
+    }
     
 def run_trending_analysis(target_date: str) -> list[Player]:
     """Runs trending analysis and updates today's status"""
@@ -138,7 +156,7 @@ def __validate_date_str(date_str: str) -> str:
             y, m, d = date_str.split('-')
             return str(date(int(y), int(m), int(d)))
         else:
-            return str(date.today())
+            return str(get_today_pst())
     except Exception as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Invaid date format. Use format YYYY-MM-DD')

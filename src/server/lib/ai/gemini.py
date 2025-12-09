@@ -5,12 +5,13 @@ from lib.ai.client import get_client
 from lib.basketball.player import Player, ProjectedPlayerList, print_projected_player, TrendingPlayerList, print_trending_player
 from service.nba_cdn_service import get_nba_schedule
 from google.genai import types
+from util.date_util import get_today_pst
 
 def get_projected_analysis(data: list[Player], past_days: int, num_players: int = 10, future_days: int = 7):
     """Projects stats for underrated players for the next N days"""
     
     prompt = f"""
-    Today is {str(date.today())}.
+    Today is {str(get_today_pst())}.
     Here are 2 data sets:
         The first data set contains NBA players and their statlines from the last {past_days} days. 
         The second data set contains the NBA game schedule for the next {future_days} days.
@@ -55,7 +56,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
 
     print(prompt)
     client = get_client()
-    nba_schedule = get_nba_schedule(date.today(), future_days)
+    nba_schedule = get_nba_schedule(get_today_pst(), future_days)
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[
@@ -81,7 +82,7 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
     """Determines the top trending players from the last N, calcualtes their average stats and determines their game schedule for the next X days"""
 
     prompt = f"""
-    Today is {str(date.today())}.
+    Today is {str(get_today_pst())}.
     Here are 2 data sets:
         The first data set contains NBA players and their statlines from the last {past_days} days. 
         The second data set contains the NBA game schedule for the next {future_days} days.
@@ -110,7 +111,7 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
     print(prompt)
 
     client = get_client()
-    nba_schedule = get_nba_schedule(date.today(), future_days)
+    nba_schedule = get_nba_schedule(get_today_pst(), future_days)
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[

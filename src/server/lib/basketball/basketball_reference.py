@@ -147,7 +147,6 @@ def __parse_all_star_table_rows(driver: WebDriver) -> list[str]:
 
 def get_all_stars() -> list[str]:
     """Gets list of all stars from the past N years"""
-    today = date.today();
     result: list[str] = []
 
     urls = [

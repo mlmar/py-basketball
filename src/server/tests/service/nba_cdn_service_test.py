@@ -2,6 +2,8 @@ import unittest
 from service.nba_cdn_service import get_nba_schedule, __game_date_from_str
 from datetime import date, datetime
 
+from util.date_util import get_today_pst
+
 class TestNBACDNService(unittest.TestCase):
     def test_get_nba_schedule_all(self):
         """get_nba_schedule() returns list of NBA games for the season"""
@@ -10,7 +12,7 @@ class TestNBACDNService(unittest.TestCase):
 
     def test_get_nba_schedule_future(self):
         """get_nba_schedule() returns list of NBA games for the rest of the season"""
-        today = date.today()
+        today = get_today_pst()
         schedule = get_nba_schedule(today)
         for game_day in schedule:
             self.assertGreaterEqual(date_from_str(game_day['date']), today)

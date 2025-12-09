@@ -16,7 +16,7 @@ function RouteComponent() {
             <h1> Analysis: </h1>
             {isLoading && 'Loading'}
             {isError && 'An error occurred'}
-            {data?.map((projectedPlayer) => {
+            {data.result?.map((projectedPlayer) => {
                 return <p key={projectedPlayer.player.player}> {JSON.stringify(projectedPlayer)} </p>;
             })}
         </main>

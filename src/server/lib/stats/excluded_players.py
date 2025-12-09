@@ -4,6 +4,7 @@ from lib.basketball.basketball_reference import get_top_players
 import unicodedata
 import config
 import lib.stats.stats as stats
+from util.date_util import get_today_pst
 
 excluded_players_table = DatabaseTable(config.SUPABASE_EXCLUDED_PLAYERS_TABLE)
 def get_excluded_players() -> list[str]:
@@ -12,7 +13,7 @@ def get_excluded_players() -> list[str]:
     if excluded_players_response:
         refresh_top_players = True
         if len(excluded_players_response.data) > 0:
-            delta = date.today() - __str_to_date(excluded_players_response.data[0]['created_at'])
+            delta = get_today_pst() - __str_to_date(excluded_players_response.data[0]['created_at'])
             refresh_top_players = delta.days > config.EXCLUDED_PLAYERS_REFRESH_DAYS
             
         if refresh_top_players:

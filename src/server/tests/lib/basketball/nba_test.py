@@ -3,7 +3,7 @@ import csv
 from datetime import date
 from lib.basketball.player import Player
 from lib.basketball.nba import get_data
-from util.date_util import range_of_dates
+from util.date_util import get_today_pst, range_of_dates
 
 class TestNBA(unittest.TestCase):
     def test_get_data(self):
@@ -16,7 +16,7 @@ class TestNBA(unittest.TestCase):
     def test_data_to_csv(self):
         assert True # skip this test
         
-        dates = list(range_of_dates(date(2025,10,21), date.today()))
+        dates = list(range_of_dates(date(2025,10,21), get_today_pst()))
         with open('data.csv', 'w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow({

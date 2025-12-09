@@ -20,20 +20,20 @@ def get_totals(days: int,):
 
 #  current_user: dict = Depends(get_current_user)
 @router.get('/projected-analysis')
-async def get_projected_analysis():
+async def get_projected_analysis() -> analysis.ProjectedAnalysisResult:
     return analysis.get_projected_analysis()
 
 #  current_user: dict = Depends(get_current_user)
 @router.get('/projected-analysis/{date_str}')
-async def get_projected_analysis(date_str: str):
+async def get_projected_analysis(date_str: str) -> analysis.ProjectedAnalysisResult:
     return analysis.get_projected_analysis(date_str)
 
 #  current_user: dict = Depends(get_current_user)
 @router.get('/trending-analysis')
-async def get_trending_analysis():
+async def get_trending_analysis() -> analysis.TrendingAnalysisResult:
     return analysis.get_trending_analysis()
 
 #  current_user: dict = Depends(get_current_user)
 @router.get('/trending-analysis/{date_str}')
-async def get_trending_analysis(date_str: str):
+async def get_trending_analysis(date_str: str) -> analysis.TrendingAnalysisResult:
     return analysis.get_trending_analysis(date_str)

@@ -64,7 +64,7 @@ export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
 
                 <ul className='list'>
                     {isLoading && 'Trending players are loading'}
-                    {data.map((projectedPlayer) => {
+                    {data.result.map((projectedPlayer) => {
                         return (
                             <li className='list-item' key={projectedPlayer.player.player}>
                                 <section>

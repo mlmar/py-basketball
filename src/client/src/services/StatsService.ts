@@ -1,5 +1,6 @@
 import { Config } from "@/services/Config";
 import { HTTPService } from "@/services/HTTPService";
+import type { AnalysisResult } from "@/services/types/AnalysisResult";
 import type { ProjectedPlayer } from "@/services/types/ProjectedPlayer";
 import type { TrendingPlayer } from "@/services/types/TrendingPlayer";
 
@@ -22,8 +23,8 @@ export class StatsService {
      * Retrieves most recent analysis
      * @returns 
      */
-    static async getProjectedAnalysis(): Promise<ProjectedPlayer[]> {
-        const response = await HTTPService.get<{ days: number }, ProjectedPlayer[]>(STATS_SERVICE_URL + '/projected-analysis');
+    static async getProjectedAnalysis(): Promise<AnalysisResult<ProjectedPlayer>> {
+        const response = await HTTPService.get<{ days: number }, AnalysisResult<ProjectedPlayer>>(STATS_SERVICE_URL + '/projected-analysis');
         return response;
     }
 
@@ -31,8 +32,8 @@ export class StatsService {
      * Retrieves most recent trending analysis
      * @returns 
      */
-    static async getTrendingAnalysis(): Promise<TrendingPlayer[]> {
-        const response = await HTTPService.get<{ days: number }, TrendingPlayer[]>(STATS_SERVICE_URL + '/trending-analysis');
+    static async getTrendingAnalysis(): Promise<AnalysisResult<TrendingPlayer>> {
+        const response = await HTTPService.get<{ days: number }, AnalysisResult<TrendingPlayer>>(STATS_SERVICE_URL + '/trending-analysis');
         return response;
     }
 }

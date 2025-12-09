@@ -4,14 +4,14 @@ from lib.db.client import get_client
 from lib.basketball.player import Player
 from lib.basketball.nba import get_data
 from lib.stats.excluded_players import get_excluded_players
-from util.date_util import range_of_dates
+from util.date_util import get_today_pst, range_of_dates
 import config
 
 saved_dates_table = DatabaseTable[Player](config.SUPABASE_SAVED_DATES_TABLE)
 player_data_table = DatabaseTable[Player](config.SUPABASE_PLAYER_DATA_TABLE)
 
 def __get_start_end_dates(days: int) -> tuple[date, date]:
-    end_date = date.today() - timedelta(1)
+    end_date = get_today_pst() - timedelta(1)
     start_date = end_date - timedelta(days - 1)
     return (start_date, end_date)
 
