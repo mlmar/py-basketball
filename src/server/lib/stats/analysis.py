@@ -35,7 +35,7 @@ def get_projected_analysis(date_str: str = None) -> list[Player]:
     
 def run_projected_analysis(target_date: str) -> list[Player]:
     """Runs projected analysis and updates today's status"""
-    days = 10
+    days = config.ANAYLSIS_DAYS
     result = []
 
     try:
@@ -81,7 +81,7 @@ def get_trending_analysis(date_str: str = None) -> list[Player]:
     
 def run_trending_analysis(target_date: str) -> list[Player]:
     """Runs trending analysis and updates today's status"""
-    days = 10
+    days = config.ANAYLSIS_DAYS
     result = []
 
     try:

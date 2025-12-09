@@ -1,5 +1,6 @@
 from pydantic import BaseModel, RootModel, Field
 from typing import Optional, Literal
+import config
 
 class BasePlayer(BaseModel):
     """ Player class for storing stats"""
@@ -7,6 +8,13 @@ class BasePlayer(BaseModel):
     player: Optional[str] = Field(description='Player Name')
     team_id: Optional[str] = Field(description='Current Team Abbreviation (3 Letters)')
     opp_id: Optional[str] = Field(description='Opponent Team Abbreviation (3 Letters)')
+
+def get_fantasy_score_formula() -> str:
+    """Returns fantasy score formula as string"""
+    formula: list[str] = []
+    for key in config.FANTASY_SCORE_WEIGHTS:
+        formula.append(f'({key} * {config.FANTASY_SCORE_WEIGHTS[key]})')
+    return ' + '.join(formula)
 
 class Player(BasePlayer):
     """ Player class for storing stats"""
@@ -30,12 +38,19 @@ class Player(BasePlayer):
     pts: Optional[float] = Field(description='Points')
     plus_minus: Optional[float] = Field(description='Plus Minus')
     date: Optional[str] = None
+    fantasy_score: Optional[str] = Field(description=f'Fantasy score based off the following formula: {get_fantasy_score_formula()}')
+
+def calculate_fantasy_score(player: Player) -> float:
+    """Calculates fantasy score based off configured weights"""
+    score = 0
+    for key in config.FANTASY_SCORE_WEIGHTS:
+        score += player[key] * config.FANTASY_SCORE_WEIGHTS[key]
+    return score
 
 def print_player(player: Player) -> str:
     """Print Player with format 'NAME (PTS/AST/TRB)'"""
     print(f"{player['player']} ({player['pts']}/{player['ast']}/{player['trb']})")
-
-
+    
 # Projection
 class ProjectedPlayer(BaseModel):
     player: Player = Field(description='Player class for projected NBA player stats')

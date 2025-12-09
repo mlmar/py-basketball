@@ -39,7 +39,7 @@ def refresh_stats(days: int):
                 saved_dates_table.insert({ 'date': str(current_date) }) # Save the date
             print()
 
-def get_all(days: int, exclude: bool = False):
+def get_all(days: int, exclude: bool = False) -> list:
     """Fetches all player stats from the last N days"""
     print(f'Fetching all player stats from the last {days} days')
     if days <= 0:
@@ -54,7 +54,7 @@ def get_all(days: int, exclude: bool = False):
         return __filter_excluded_players(response.data)
     return response.data
 
-def get_averages(days: int, exclude: bool = False):
+def get_averages(days: int, exclude: bool = False) -> list:
     """Fetches all player averages from the last N days"""
     print(f'Fetching all player averages from the last {days} days')
     if days <= 0:

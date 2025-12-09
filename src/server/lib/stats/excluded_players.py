@@ -3,6 +3,7 @@ from lib.db.database_table import DatabaseTable
 from lib.basketball.basketball_reference import get_top_players
 import unicodedata
 import config
+import lib.stats.stats as stats
 
 excluded_players_table = DatabaseTable(config.SUPABASE_EXCLUDED_PLAYERS_TABLE)
 def get_excluded_players() -> list[str]:
@@ -15,7 +16,9 @@ def get_excluded_players() -> list[str]:
             refresh_top_players = delta.days > config.EXCLUDED_PLAYERS_REFRESH_DAYS
             
         if refresh_top_players:
-            player_names = get_top_players()
+            player_data = stats.get_averages(config.ANALYSIS_DAYS)
+            player_data.sort(key=lambda player:player['fantasy_score'], reverse=True)
+            player_names = [player['player'] for player in player_data[0:config.TOP_PLAYERS_LIMIT]]
             excluded_players_table.insert([{ 'name': __normalize(name) } for name in player_names])
             return player_names
     

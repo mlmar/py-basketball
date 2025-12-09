@@ -18,5 +18,21 @@ SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE: str = 'trending_analysis_status'
 SUPABASE_TRENDING_ANALYSIS_DATA_TABLE: str = 'trending_analysis_data'
 SUPABASE_EXCLUDED_PLAYERS_TABLE: str = 'excluded_players'
 
+ANALYSIS_DAYS = 10
+EXCLUDED_PLAYERS_DAYS = 30
 EXCLUDED_PLAYERS_REFRESH_DAYS = 1
 TOP_PLAYERS_LIMIT = 130
+
+FANTASY_SCORE_WEIGHTS: dict[str, float] = {
+    'pts': 1,
+    'fg3': 1,
+    'fga': -1,
+    'fg': 2,
+    'fta': -1,
+    'ft': 1,
+    'trb': 1,
+    'ast': 2,
+    'stl': 4,
+    'blk': 4,
+    'tov': -2
+}

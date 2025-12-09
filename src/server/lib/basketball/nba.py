@@ -1,6 +1,6 @@
 from nba_api.stats.endpoints import LeagueGameLog, BoxScoreTraditionalV3
 import time
-from lib.basketball.player import Player, print_player
+from lib.basketball.player import Player, calculate_fantasy_score, print_player
 from typing import Generator, Tuple
 from datetime import date
 
@@ -75,6 +75,7 @@ def __parse_table_row(row, current_date: date) -> Player:
     player['plus_minus'] = row['plusMinusPoints']
     player['date'] = str(current_date)
     player['id'] = f'{str(player['date'])}_{player['player']}'
+    player['fantasy_score'] = calculate_fantasy_score(player)
     return player;
 
 # Fetch page at base url
