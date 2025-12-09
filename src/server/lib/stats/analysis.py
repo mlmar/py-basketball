@@ -35,7 +35,7 @@ def get_projected_analysis(date_str: str = None) -> list[Player]:
     
 def run_projected_analysis(target_date: str) -> list[Player]:
     """Runs projected analysis and updates today's status"""
-    days = config.ANAYLSIS_DAYS
+    days = config.ANALYSIS_DAYS
     result = []
 
     try:
@@ -45,7 +45,7 @@ def run_projected_analysis(target_date: str) -> list[Player]:
             projected_analysis_data_table.insert({
                 'date': target_date,
                 'player': json.dumps(projectedPlayer)
-            }) # Save anaylsis data
+            }) # Save analysis data
 
         projected_analysis_status_table.insert({
             'date': target_date,
@@ -81,7 +81,7 @@ def get_trending_analysis(date_str: str = None) -> list[Player]:
     
 def run_trending_analysis(target_date: str) -> list[Player]:
     """Runs trending analysis and updates today's status"""
-    days = config.ANAYLSIS_DAYS
+    days = config.ANALYSIS_DAYS
     result = []
 
     try:
@@ -91,7 +91,7 @@ def run_trending_analysis(target_date: str) -> list[Player]:
             trending_analysis_data_table.insert({
                 'date': target_date,
                 'player': json.dumps(projectedPlayer)
-            }) # Save anaylsis data
+            }) # Save analysis data
 
         trending_analysis_status_table.insert({
             'date': target_date,

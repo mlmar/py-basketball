@@ -31,7 +31,7 @@ Objectives
                 -   [ ] Category tracker
 
 -   Backend
-    -   Selenium
+    -   Selenium (Proof of concept, will not be used in production)
         -   [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/friv/dailyleaders.fcgi?month=11&day=17&year=2025) for player stats
         -   [x] Scrape data from [basketball-reference](https://www.basketball-reference.com/allstar/202502162NBA.html) for list of all stars
     -   External Services
@@ -74,6 +74,8 @@ Objectives
             -   [x] Player averages from last N days
             -   [x] ProjectedAnalysis for the next N days
             -   [x] Trending players from last N days
+            -   [x] Fantasy score calculation
+                -   [x] Create exclusion list based off fantasy scores
         -   [ ] Passing specific criteria for analysis (Dependent on API rate limits (Too much data?))
         -   [ ] Personalized analysis for current user
             -   [ ] Watch list
