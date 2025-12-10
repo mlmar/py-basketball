@@ -42,7 +42,10 @@ export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
                     <h2>Trending Players</h2>
                     <Card.Badge className='trending-badge'>trending</Card.Badge>
                 </Card.Header>
-                <Card.Sub>Quick look at players on a heater.</Card.Sub>
+                <Card.Sub>
+                    Quick look at players on a heater.
+                    {data.status === 'PROCESSING' && ' Processing new daily analysis - check back in a few minutes.'}
+                </Card.Sub>
 
                 <div className='filter-block trending-filter-row'>
                     <div className='filter-row-line'>
