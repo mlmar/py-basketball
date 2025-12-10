@@ -12,46 +12,54 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
     
     prompt = f"""
     Today is {str(get_today_pst())}.
-    Here are 2 data sets:
-        The first data set contains NBA players and their statlines from the last {past_days} days. 
-        The second data set contains the NBA game schedule for the next {future_days} days.
+    You are given two data sets:
+    1) DataSetA: NBA player statlines from the last {past_days} days.
+    2) DataSetB: NBA game schedule for the next {future_days} days.
 
-    Determine a list of the {num_players} most underrated players based on these data sets,
-    and accurately project their average stats over the next {future_days} days.
-    Accurately generate new data based on these requirements. Do not simply take the average of the last 10 days.
-    Consider the statlines of each player from the last {past_days} days from the first data set in comparison to their career stats.
-    Consider their number upcoming of games and the difficulty of upcoming opponents from the second data set.
+    Task:
+    - Identify the {num_players} most underrated players based on both data sets.
+    - Generate NEW projected averages for each player over the next {future_days} days.
+    - Do NOT simply average recent stats. Instead:
+        • Compare recent performance to career norms.
+        • Factor in pace, usage, role/minutes changes, and efficiency trends.
+        • Consider schedule difficulty and number of games from DataSetB.
 
-    Format the upcoming games for the next {future_days} days as follows:
-        num_games = Based on the provided NBA game schedule data set, the number of upcoming games for this player's team.
-        opponents = Based on the provided NBA game schedule data set, the exact list of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym.
-        game_dates = Based on the provided NBA game schedule data set, the exact list of dates for this player's upcoming games
+    Upcoming Games (from DataSetB):
+    - num_games: Number of games their team plays in the next {future_days}.
+    - opponents: Opponent team abbreviations.
+    - game_dates: Exact dates of those games.
 
-    The newly generated stats should be formatted as follows:
-        mp = Minutes played
-        fg = Field Goals Made
-        fga = Field Goals Attempted
-        fg_pct = Field Goal Percentage in decimal format
-        fg3 = Three Pointers Made
-        fg3a = Three Pointers Attempted
-        fg3_pct = Three Pointers Percentage in decimal format
-        ft = Free Throws Made
-        fta = Free Throws Attempted
-        ft_pct = Free Throw Percentage in decimal format
-        orb = Offensive Rebounds
-        drb = Defensive Rebounds
-        trb = Total Rebounds (Offensive Rebounds + Defensive Rebounds)
-        ast = Assists
-        stl = Steals
-        blk = Blocks
-        tov = Turnovers
-        pts = Points
-        plus_minus = Plus Minus 
+    Projected Stats (averages over next {future_days} days), with meanings:
+    mp = Minutes played
+    fg = Field goals made
+    fga = Field goals attempted
+    fg_pct = FG% (decimal)
+    fg3 = 3-pointers made
+    fg3a = 3-pointers attempted
+    fg3_pct = 3P% (decimal)
+    ft = Free throws made
+    fta = Free throws attempted
+    ft_pct = FT% (decimal)
+    orb = Offensive rebounds
+    drb = Defensive rebounds
+    trb = Total rebounds
+    ast = Assists
+    stl = Steals
+    blk = Blocks
+    tov = Turnovers
+    pts = Points
+    plus_minus = Plus/minus
 
-    analysis = 1-3 sentences describing the why the predicted stat line is accurate and recent trends
-    tags = List of player tags where 'minutes_up' = an increase in minutes, 'stocks' = an high steal and/or block total
+    analysis:
+    1-3 concise sentences explaining why the projection is realistic (recent trends, minutes/role changes, efficiency, schedule difficulty).
 
-    Respond in minified JSON format without spaces and new lines.
+    tags:
+    Include all applicable tags:
+    - "minutes_up" = increased minutes expected
+    - "stocks" = high steals or blocks
+
+    Output:
+    Return ONLY minified JSON with no spaces or new lines.
     """
 
     print(prompt)
@@ -83,29 +91,34 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
 
     prompt = f"""
     Today is {str(get_today_pst())}.
-    Here are 2 data sets:
-        The first data set contains NBA players and their statlines from the last {past_days} days. 
-        The second data set contains the NBA game schedule for the next {future_days} days.
+    Here are two data sets:
+    1) DataSetA: NBA player statlines from the last {past_days} days.
+    2) DataSetB: NBA game schedule for the next {future_days} days.
 
-    Determine a list of the top {num_players} performing players from the last {past_days} days.
+    Task:
+    - Identify the top {num_players} performers from DataSetA based on recent production over the last {past_days} days.
 
-    Format the upcoming games for the next {future_days} days as follows:
-        num_games = Based on the provided NBA game schedule data set, the number of upcoming games for this player's team.
-        opponents = Based on the provided NBA game schedule data set, the exact list of team names of upcoming opponents for this player's team. Use the team name abbreviation or acronym.
-        game_dates = Based on the provided NBA game schedule data set, the exact list of dates for this player's upcoming games
+    For each selected player, use DataSetB to determine:
+    - num_games: Number of upcoming games for the player's team.
+    - opponents: List of opponent team abbreviations for those games.
+    - game_dates: List of game dates for those matchups.
 
-    analysis = 2-3 quick and short phrases describing why the player is trending (less than 10 words, comma separated, may include average or notable stats)
-    Here are 4 examples of ways to phrase the analysis:
-        "Last 3: 22 PTS, 4 REB, 3.7 3PM",
-        "Stuffing stocks: 2.2 STL, 1.5 BLK recently"
-        "Efficient big: 64% FG, solid boards"
-        "Injury replacement getting starter run"
+    analysis:
+    - Provide 2-3 short phrases (<10 words each, comma-separated) explaining why the player is trending.
+    - Can include averages, notable stats, role changes, etc.
+    Examples:
+    - "Last 3: 22 PTS, 4 REB, 3.7 3PM",
+    - "Stuffing stocks: 2.2 STL, 1.5 BLK recently",
+    - "Efficient big: 64% FG, solid boards",
+    - "Injury replacement getting starter run"
 
-    tags = List of applicable player tags where:
-        "minutes_up" = "Increase in minutes",
-        "stocks" = "High number of steals or blocks"
+    tags:
+    Include all applicable tags:
+    - "minutes_up" = Increase in minutes
+    - "stocks" = High steals or blocks
 
-    Respond in minified JSON format without spaces and new lines.
+    Output:
+    Return ONLY minified JSON with no spaces or new lines.
     """
 
     print(prompt)
