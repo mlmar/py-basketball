@@ -1,0 +1,28 @@
+.spinner {
+    height: 100%;
+    width: 100%;
+
+    > span {
+        height: 1.8em;
+        width: 1.8em;
+        border: 0.1em solid white;
+        border-color: var(--spinner-color);
+        border-radius: 100%;
+        border-right-width: 0;
+        border-bottom-width: 0;
+
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        70% {
+            transform: rotate(180deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import { Card } from '@/components/Card';
 import { Section } from '@/components/Section';
+import { Spinner } from '@/components/Spinner';
 import type { ContainerProps } from '@/components/types/ContainerProps';
 import { useTrendingFilter } from '@/hooks/useActiveTrend';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
@@ -62,8 +63,8 @@ export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
                     </div>
                 </div>
 
+                {isLoading && <Spinner />}
                 <ul className='list'>
-                    {isLoading && 'Trending players are loading'}
                     {data.result.map((projectedPlayer) => {
                         return (
                             <li className='list-item' key={projectedPlayer.player.player}>
@@ -80,7 +81,7 @@ export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
                         );
                     })}
                 </ul>
-                {!isAllData && (
+                {!isAllData && !isLoading && (
                     <Link to='/trending'>
                         <button className='btn fullwidth'>View Full Trending List</button>
                     </Link>

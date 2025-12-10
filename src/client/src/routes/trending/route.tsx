@@ -1,6 +1,7 @@
 import { BackButton } from '@/components/BackButton';
 import { Header } from '@/components/Header';
 import { TrendingPlayers } from '@/features/TrendingPlayers';
+import { useTrendingplayers } from '@/hooks/useTrendingPlayers';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/trending')({
@@ -8,6 +9,8 @@ export const Route = createFileRoute('/trending')({
 });
 
 function RouteComponent() {
+    const { data } = useTrendingplayers(null, 0);
+
     return (
         <>
             <Header className='section'>
@@ -17,7 +20,8 @@ function RouteComponent() {
                 </Header.TopNav>
                 <Header.Logo>WaiverWarrior</Header.Logo>
                 <Header.Tagline>
-                    View trending and underrated players from the last 10 days. Updates once per day.
+                    View trending and underrated players from the last 10 days.
+                    {data.status === 'PROCESSING' && 'Processing new daily analysis - check back in a few minutes.'}
                 </Header.Tagline>
             </Header>
             <article className='flex flex-fill'>

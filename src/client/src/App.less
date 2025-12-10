@@ -11,7 +11,7 @@
 }
 
 .flex-align-middle {
-    align-items: middle;
+    align-items: center;
 }
 
 .flex-align-end {
@@ -35,6 +35,10 @@
 }
 
 /* app */
+
+:root {
+    --trending-color: rgba(251, 146, 60, 0.7);
+}
 
 #root {
     height: -webkit-fill-available;
@@ -413,14 +417,15 @@
 /* --- trending section styling --- */
 
 .trending-card {
+    --spinner-color: var(--trending-color);
     background: radial-gradient(circle at top, #1f2937, #020617 70%);
-    border-color: rgba(251, 146, 60, 0.7);
+    border-color: var(--trending-color);
     box-shadow: 0 1.125em 2.5em rgba(0, 0, 0, 0.7);
 }
 
 .trending-badge {
     background: rgba(251, 146, 60, 0.18);
-    border-color: rgba(251, 146, 60, 0.7);
+    border-color: var(--trending-color);
     color: #fed7aa;
 }
 
