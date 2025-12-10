@@ -20,9 +20,9 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
     - Identify the {num_players} most underrated players based on both data sets.
     - Generate NEW projected averages for each player over the next {future_days} days.
     - Do NOT simply average recent stats. Instead:
-        • Compare recent performance to career norms.
-        • Factor in pace, usage, role/minutes changes, and efficiency trends.
-        • Consider schedule difficulty and number of games from DataSetB.
+        - Compare recent performance to career norms.
+        - Factor in pace, usage, role/minutes changes, and efficiency trends.
+        - Consider schedule difficulty and number of games from DataSetB.
 
     Upcoming Games (from DataSetB):
     - num_games: Number of games their team plays in the next {future_days}.
@@ -55,8 +55,8 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
 
     tags:
     Include all applicable tags:
-    - "minutes_up" = increased minutes expected
-    - "stocks" = high steals or blocks
+    - "minutes_up" = Increased in minutes expected
+    - "stocks" = High steals or blocks expected
 
     Output:
     Return ONLY minified JSON with no spaces or new lines.
