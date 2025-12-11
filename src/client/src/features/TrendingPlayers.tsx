@@ -33,7 +33,7 @@ interface TrendingPlayersProps extends ContainerProps {
 export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
     const isLoggedIn = useIsLoggedIn();
     const [trendingFilter, setTrendingFilter] = useTrendingFilter();
-    const { data, isLoading, isAllData } = useTrendingplayers(trendingFilter, limit);
+    const { data, isLoading } = useTrendingplayers(trendingFilter, limit);
 
     return (
         <Section className={css('trending-players', className)}>
@@ -84,7 +84,7 @@ export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
                         );
                     })}
                 </ul>
-                {!isAllData && !isLoading && (
+                {!data.is_all_records && !isLoading && (
                     <Link to='/trending'>
                         <button className='btn fullwidth'>View Full Trending List</button>
                     </Link>

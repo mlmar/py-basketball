@@ -5,8 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 type UseTrendingPlayersResult = {
     data: Awaited<ReturnType<typeof StatsService.getTrendingAnalysis>>,
     isLoading: boolean,
-    isError: boolean,
-    isAllData: boolean
+    isError: boolean
 }
 
 /**
@@ -16,25 +15,21 @@ type UseTrendingPlayersResult = {
  * @return {UseTrendingPlayersResult}
  */
 export function useTrendingplayers(trendingFilter: string | null, limit: number = 20): UseTrendingPlayersResult {
-    const { data, isLoading, isError, } = useQuery({
+    const { data = { result: [], status: 'PROCESSING', is_all_records: true }, isLoading, isError } = useQuery({
         queryKey: ['stats-analysis', limit],
-        queryFn: async () => await StatsService.getTrendingAnalysis()
-    });
-
-    const filteredResult = data?.result?.filter((player: TrendingPlayer) => {
-        if (trendingFilter) {
-            return player.tags.includes(trendingFilter)
+        queryFn: async () => await StatsService.getTrendingAnalysis(limit),
+        select: (data) => {
+            return {
+                ...data,
+                result: data.result?.filter((player: TrendingPlayer) => {
+                    if (trendingFilter) {
+                        return player.tags.includes(trendingFilter)
+                    }
+                    return true;
+                })
+            }
         }
-        return true;
     });
 
-    const limitedResult = filteredResult?.slice(0, limit) ?? [];
-
-    const finalData = {
-        ...data,
-        status: data?.status,
-        result: limitedResult ?? []
-    }
-
-    return { data: finalData, isLoading, isError, isAllData: filteredResult?.length === limitedResult?.length }
+    return { data, isLoading, isError }
 }

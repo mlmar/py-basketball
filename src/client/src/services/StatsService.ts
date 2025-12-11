@@ -23,8 +23,8 @@ export class StatsService {
      * Retrieves most recent analysis
      * @returns 
      */
-    static async getProjectedAnalysis(): Promise<AnalysisResult<ProjectedPlayer>> {
-        const response = await HTTPService.get<{ days: number }, AnalysisResult<ProjectedPlayer>>(STATS_SERVICE_URL + '/projected-analysis');
+    static async getProjectedAnalysis(limit: number = -1): Promise<AnalysisResult<ProjectedPlayer>> {
+        const response = await HTTPService.get<{ limit: number }, AnalysisResult<ProjectedPlayer>>(STATS_SERVICE_URL + '/projected-analysis', { limit });
         return response;
     }
 
@@ -32,8 +32,8 @@ export class StatsService {
      * Retrieves most recent trending analysis
      * @returns 
      */
-    static async getTrendingAnalysis(): Promise<AnalysisResult<TrendingPlayer>> {
-        const response = await HTTPService.get<{ days: number }, AnalysisResult<TrendingPlayer>>(STATS_SERVICE_URL + '/trending-analysis');
+    static async getTrendingAnalysis(limit: number = -1): Promise<AnalysisResult<TrendingPlayer>> {
+        const response = await HTTPService.get<{ limit: number }, AnalysisResult<TrendingPlayer>>(STATS_SERVICE_URL + '/trending-analysis', { limit });
         return response;
     }
 }
