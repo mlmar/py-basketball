@@ -1,6 +1,7 @@
 import json
 # from unicodedata import normalize
 from datetime import date
+import config
 from lib.ai.client import get_client
 from lib.basketball.player import Player, ProjectedPlayerList, print_projected_player, TrendingPlayerList, print_trending_player
 from service.nba_cdn_service import get_nba_schedule
@@ -23,6 +24,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
         - Compare recent performance to career norms.
         - Factor in pace, usage, role/minutes changes, and efficiency trends.
         - Consider schedule difficulty and number of games from DataSetB.
+    - Order and rank the resulting players from 1 to {num_players} where 1 is the best player
 
     Upcoming Games (from DataSetB):
     - num_games: Number of games their team plays in the next {future_days}.
@@ -58,6 +60,9 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
     - "minutes_up" = Increased in minutes expected
     - "stocks" = High steals or blocks expected
 
+    rank:
+    - Order and rank the resulting players from 1 to {num_players} where 1 is the best player
+
     Output:
     Return ONLY minified JSON with no spaces or new lines.
     """
@@ -86,7 +91,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
         print()
     return result
 
-def get_trending_analysis(data: list[Player], past_days: int, num_players: int = 20, future_days: int = 7):
+def get_trending_analysis(data: list[Player], past_days: int, num_players: int = config.ANALYSIS_PLAYER_LIMIT, future_days: int = 7):
     """Determines the top trending players from the last N, calcualtes their average stats and determines their game schedule for the next X days"""
 
     prompt = f"""
@@ -117,6 +122,9 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
     - "minutes_up" = Increase in minutes
     - "stocks" = High steals or blocks
 
+    rank:
+    - Order and rank the resulting players from 1 to {num_players} where 1 is the best player
+    
     Output:
     Return ONLY minified JSON with no spaces or new lines.
     """

@@ -59,6 +59,7 @@ class ProjectedPlayer(BaseModel):
     game_dates: list[str] = Field(description="List of dates for this player's upcoming games")
     analysis: str = Field(description="1-3 sentences describing the why the predicted stat line is accurate and recent trends")
     tags: list[str] = Field(description="List of applicable player tags", examples=["['minutes_up', 'stocks']", "['minutes_up']"])
+    rank: int = Field(description="Player rank within list")
 
 class ProjectedPlayerList(RootModel[list[ProjectedPlayer]]):
     pass
@@ -93,6 +94,7 @@ class TrendingPlayer(BaseModel):
     game_dates: list[str] = Field(description="List of dates for this player's upcoming games")
     analysis: str = Field(description="1-3 sentences describing the why the predicted stat line is accurate and recent trends")
     tags: list[Literal['minutes_up', 'stocks']] = Field(description="List of applicable player tags where 'minutes_up' = an increase in minutes, 'stocks' = high steal and/or block total")
+    rank: int = Field(description="Player rank within list")
     
 class TrendingPlayerList(RootModel[list[TrendingPlayer]]):
     pass

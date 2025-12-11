@@ -23,16 +23,18 @@ trending_analysis_data_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_D
 class ProjectedAnalysisResult(BaseModel):
     result: List[ProjectedPlayer] = []
     status: str = 'PROCESSING'
+    is_all_records: bool = True
 
 class TrendingAnalysisResult(BaseModel):
     result: List[TrendingPlayer] = []
     status: str = 'PROCESSING'
+    is_all_records: bool = True
 
 # PROJECTED ANALYSIS
-def get_projected_analysis(date_str: str = None) -> ProjectedAnalysisResult:
+def get_projected_analysis(date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT) -> ProjectedAnalysisResult:
     """Gets most recent analysis and runs today's if it does not exist"""
     target_date = __validate_date_str(date_str)
-    result = __get_result(projected_analysis_status_table, projected_analysis_data_table, target_date if date_str else None)
+    result = __get_result(projected_analysis_status_table, projected_analysis_data_table, target_date if date_str else None, limit)
     status = __get_status(projected_analysis_status_table, target_date)
     if status not in ['PROCESSING','COMPLETE']:
         # If today has not been processed, then start processing the data
@@ -45,7 +47,8 @@ def get_projected_analysis(date_str: str = None) -> ProjectedAnalysisResult:
         
     return {
         'result': result,
-        'status': status if status else 'PROCESSING'
+        'status': status if status else 'PROCESSING',
+        'is_all_records': limit == -1 or limit >= config.ANALYSIS_PLAYER_LIMIT
     }
     
 def run_projected_analysis(target_date: str) -> list[Player]:
@@ -79,9 +82,9 @@ def run_projected_analysis(target_date: str) -> list[Player]:
     return result
 
 # TRENDING ANALYSIS
-def get_trending_analysis(date_str: str = None) -> TrendingAnalysisResult:
+def get_trending_analysis(date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT) -> TrendingAnalysisResult:
     target_date = __validate_date_str(date_str)
-    result = __get_result(trending_analysis_status_table, trending_analysis_data_table, target_date if date_str else None)
+    result = __get_result(trending_analysis_status_table, trending_analysis_data_table, target_date if date_str else None, limit)
     status = __get_status(trending_analysis_status_table, target_date)
     if status not in ['PROCESSING','COMPLETE']:
         # If today has not been processed, then start processing the data
@@ -94,7 +97,8 @@ def get_trending_analysis(date_str: str = None) -> TrendingAnalysisResult:
     
     return {
         'result': result,
-        'status': status if status else 'PROCESSING'
+        'status': status if status else 'PROCESSING',
+        'is_all_records': limit >= config.ANALYSIS_PLAYER_LIMIT
     }
     
 def run_trending_analysis(target_date: str) -> list[Player]:
@@ -134,7 +138,7 @@ def __get_status(status_table: DatabaseTable, current_date: str):
         return None
     return status_response.data[0]['status']
     
-def __get_result(status_table: DatabaseTable, data_table: str, date_str: str = None):
+def __get_result(status_table: DatabaseTable, data_table: DatabaseTable, date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT):
     # If day has been processsed or completed then pull from the most recent data set
     date_response = None
     if date_str: # pull response for specific date
@@ -144,7 +148,7 @@ def __get_result(status_table: DatabaseTable, data_table: str, date_str: str = N
 
     if date_response and date_response.data is not None and len(date_response.data) > 0:
         target_date = date_response.data[0]['date']
-        results = data_table.get_table().select('*').eq('date', target_date).execute()
+        results = data_table.get_table().select('*').eq('date', target_date).order('player->>rank').limit(limit if limit > -1 else config.ANALYSIS_PLAYER_LIMIT).execute()
         return [json.loads(row['player']) for row in results.data]
     else:
         return []
