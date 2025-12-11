@@ -32,7 +32,7 @@ export function useTrendingplayers(trendingFilter: string | null, limit: number 
 
     const finalData = {
         ...data,
-        status: null,
+        status: data?.status,
         result: limitedResult ?? []
     }
 
