@@ -1,5 +1,11 @@
-import { useGlobalStore } from "@/store/useGlobalStore";
+import { AuthService } from "@/services/AuthService";
+import { useQuery } from "@tanstack/react-query";
 
 export function useIsLoggedIn(): boolean {
-    return useGlobalStore(state => state.isLoggedIn);
+    const { data, isError } = useQuery({
+        queryKey: [],
+        queryFn: AuthService.validateUser
+    });
+
+    return Boolean(data) && !isError;
 }

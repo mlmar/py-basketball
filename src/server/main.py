@@ -21,7 +21,7 @@ app.add_middleware(
 )
 
 
-# app.middleware('http')(auth_middleware) # Commenting out middleware for now
+app.middleware('http')(auth_middleware) # Commenting out middleware for now
 app.include_router(auth_routes.router, prefix='/api')
 app.include_router(stats_routes.router, prefix='/api')
 

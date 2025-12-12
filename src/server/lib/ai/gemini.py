@@ -53,7 +53,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
     plus_minus = Plus/minus
 
     analysis:
-    1-3 concise sentences explaining why the projection is realistic (recent trends, minutes/role changes, efficiency, schedule difficulty).
+    1-3 concise sentences explaining why the projection is realistic (recent trends, minutes/role changes, efficiency, schedule difficulty, do NOT mention fantasy points).
 
     tags:
     Include all applicable tags:

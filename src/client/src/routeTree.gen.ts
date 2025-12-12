@@ -13,6 +13,7 @@ import { Route as WaiverRouteRouteImport } from './routes/waiver/route'
 import { Route as TrendingRouteRouteImport } from './routes/trending/route'
 import { Route as TestRouteRouteImport } from './routes/test/route'
 import { Route as SignupRouteRouteImport } from './routes/signup/route'
+import { Route as LogoutRouteRouteImport } from './routes/logout/route'
 import { Route as LoginRouteRouteImport } from './routes/login/route'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as AnalysisRouteRouteImport } from './routes/analysis/route'
@@ -37,6 +38,11 @@ const SignupRouteRoute = SignupRouteRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LogoutRouteRoute = LogoutRouteRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRouteRoute = LoginRouteRouteImport.update({
   id: '/login',
   path: '/login',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/analysis': typeof AnalysisRouteRoute
   '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
+  '/logout': typeof LogoutRouteRoute
   '/signup': typeof SignupRouteRoute
   '/test': typeof TestRouteRoute
   '/trending': typeof TrendingRouteRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/analysis': typeof AnalysisRouteRoute
   '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
+  '/logout': typeof LogoutRouteRoute
   '/signup': typeof SignupRouteRoute
   '/test': typeof TestRouteRoute
   '/trending': typeof TrendingRouteRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/analysis': typeof AnalysisRouteRoute
   '/dashboard': typeof DashboardRouteRoute
   '/login': typeof LoginRouteRoute
+  '/logout': typeof LogoutRouteRoute
   '/signup': typeof SignupRouteRoute
   '/test': typeof TestRouteRoute
   '/trending': typeof TrendingRouteRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/analysis'
     | '/dashboard'
     | '/login'
+    | '/logout'
     | '/signup'
     | '/test'
     | '/trending'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/analysis'
     | '/dashboard'
     | '/login'
+    | '/logout'
     | '/signup'
     | '/test'
     | '/trending'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/analysis'
     | '/dashboard'
     | '/login'
+    | '/logout'
     | '/signup'
     | '/test'
     | '/trending'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   AnalysisRouteRoute: typeof AnalysisRouteRoute
   DashboardRouteRoute: typeof DashboardRouteRoute
   LoginRouteRoute: typeof LoginRouteRoute
+  LogoutRouteRoute: typeof LogoutRouteRoute
   SignupRouteRoute: typeof SignupRouteRoute
   TestRouteRoute: typeof TestRouteRoute
   TrendingRouteRoute: typeof TrendingRouteRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnalysisRouteRoute: AnalysisRouteRoute,
   DashboardRouteRoute: DashboardRouteRoute,
   LoginRouteRoute: LoginRouteRoute,
+  LogoutRouteRoute: LogoutRouteRoute,
   SignupRouteRoute: SignupRouteRoute,
   TestRouteRoute: TestRouteRoute,
   TrendingRouteRoute: TrendingRouteRoute,

@@ -1,14 +1,18 @@
 // features/HomePage.jsx
 import { Card } from '@/components/Card';
 import { Hero } from '@/components/Hero';
+import { LoginButton } from '@/components/LoginButton';
+import { LogoutButton } from '@/components/LogoutButton';
 import { Section } from '@/components/Section';
 import { Matchup } from '@/features/Matchup';
 import { TrendingPlayers } from '@/features/TrendingPlayers';
 import { WaiverTargets } from '@/features/WaiverTargets';
+import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
 import { Link } from '@tanstack/react-router';
 
 export function HomePage() {
     // placeholder data
+    const isLoggedIn = useIsLoggedIn();
     const categories = ['PTS', 'REB', 'AST', 'STL', 'BLK', '3PM', 'FG%', 'FT%'];
     const mySquad = ['Tyler Herro', 'Darius Garland', 'Steven Nguyen', 'Grayson Allen', 'Ajay Mitchell'];
 
@@ -31,7 +35,11 @@ export function HomePage() {
                     </div>
                 </div>
 
-                <Matchup />
+                <aside className='flex-col flex-align-end'>
+                    {!isLoggedIn && <LoginButton />}
+                    {isLoggedIn && <LogoutButton />}
+                    <Matchup />
+                </aside>
             </Hero>
 
             <TrendingPlayers limit={5} />
