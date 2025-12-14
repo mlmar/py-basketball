@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useIsLoggedIn(): boolean {
     const { data, isError } = useQuery({
-        queryKey: [],
+        queryKey: ['validate-user'],
         queryFn: AuthService.validateUser
     });
 

@@ -92,6 +92,25 @@ def get_totals(days: int, exclude: bool = False):
         return __filter_excluded_players(response.data)
     return response.data
 
+def get_top_players(days: int, min_mp: int, min_fantasy_score: int):
+    """Fetches top players from the last N days"""
+    print(f'Fetching top players from the last {days} days')
+    if days <= 0:
+        return []
+    
+    refresh_stats(days)
+    
+    start_date, end_date = __get_start_end_dates(days)
+    response = get_client().rpc('get_top_players', {
+        'start_date': str(start_date),
+        'end_date': str(end_date),
+        'min_mp': min_mp,
+        'min_fantasy_score': min_fantasy_score
+    }).execute()
+    print(f'Successfully queried database for player totals from {str(start_date)} to {str(end_date)}')
+
+    return response.data
+
 def __filter_excluded_players(data: Player) -> list[Player]:
     """Filter excluded player names from data set"""
     excluded_players = get_excluded_players()

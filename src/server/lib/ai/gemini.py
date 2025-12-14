@@ -3,12 +3,12 @@ import json
 from datetime import date
 import config
 from lib.ai.client import get_client
-from lib.basketball.player import Player, ProjectedPlayerList, print_projected_player, TrendingPlayerList, print_trending_player
+from lib.basketball.player import Player, ProjectedPlayer, ProjectedPlayerList, TrendingPlayer, print_projected_player, TrendingPlayerList, print_trending_player
 from service.nba_cdn_service import get_nba_schedule
 from google.genai import types
 from util.date_util import get_today_pst
 
-def get_projected_analysis(data: list[Player], past_days: int, num_players: int = 10, future_days: int = 7):
+def get_projected_analysis(data: list[Player], past_days: int, num_players: int = 10, future_days: int = 7) -> list[ProjectedPlayer]:
     """Projects stats for underrated players for the next N days"""
     
     prompt = f"""
@@ -91,7 +91,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
         print()
     return result
 
-def get_trending_analysis(data: list[Player], past_days: int, num_players: int = config.ANALYSIS_PLAYER_LIMIT, future_days: int = 7):
+def get_trending_analysis(data: list[Player], past_days: int, num_players: int = config.ANALYSIS_PLAYER_LIMIT, future_days: int = 7) -> list[TrendingPlayer]:
     """Determines the top trending players from the last N, calcualtes their average stats and determines their game schedule for the next X days"""
 
     prompt = f"""

@@ -17,10 +17,10 @@ def get_excluded_players() -> list[str]:
             refresh_top_players = delta.days > config.EXCLUDED_PLAYERS_REFRESH_DAYS
             
         if refresh_top_players:
-            player_data = stats.get_averages(config.ANALYSIS_DAYS)
-            player_data.sort(key=lambda player:player['fantasy_score'], reverse=True)
-            player_names = [player['player'] for player in player_data[0:config.TOP_PLAYERS_LIMIT]]
-            excluded_players_table.insert([{ 'name': __normalize(name) } for name in player_names])
+            excluded_players_table.get_table().delete().neq('name', '').execute() # clear all data
+            player_data = stats.get_top_players(config.ANALYSIS_DAYS, min_mp=config.TOP_PLAYERS_MIN_MP, min_fantasy_score=config.TOP_PLAYERS_MIN_FANTASY_SCORE)
+            player_names = [player['player'] for player in player_data]
+            excluded_players_table.insert([{ 'name': name } for name in player_names])
             return player_names
     
     return [row['name'] for row in excluded_players_response.data]

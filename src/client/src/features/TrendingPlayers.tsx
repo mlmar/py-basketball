@@ -5,7 +5,7 @@ import type { ContainerProps } from '@/components/types/ContainerProps';
 import { useTrendingFilter } from '@/hooks/useActiveTrend';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
 import { useTrendingplayers } from '@/hooks/useTrendingPlayers';
-import type { ProjectedPlayer } from '@/services/types/ProjectedPlayer';
+import type { TrendingPlayer } from '@/services/types/TrendingPlayer';
 import { css } from '@/util/css';
 import { Link } from '@tanstack/react-router';
 
@@ -68,19 +68,13 @@ export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
 
                 {isLoading && <Spinner />}
                 <ul className='list'>
-                    {data.result.map((projectedPlayer) => {
+                    {data.result.map((trendingPlayer) => {
                         return (
-                            <li className='list-item' key={projectedPlayer.player.player}>
-                                <section>
-                                    <p className='list-note'> {projectedPlayer.player.player} </p>
-                                    <p className='list-title'> {projectedPlayer.analysis} </p>
-                                </section>
-                                {isLoggedIn && (
-                                    <button className='btn tiny' onClick={() => alert('TODO')}>
-                                        Watch
-                                    </button>
-                                )}
-                            </li>
+                            <TrendingPlayerItem
+                                trendingPlayer={trendingPlayer}
+                                isLoggedIn={isLoggedIn}
+                                key={trendingPlayer.player.player}
+                            />
                         );
                     })}
                 </ul>
@@ -94,15 +88,30 @@ export function TrendingPlayers({ className, limit }: TrendingPlayersProps) {
     );
 }
 
-type ProjectedPlayerItemProps = {
-    projectedPlayer: ProjectedPlayer;
+type TrendingPlayerItemProps = {
+    trendingPlayer: TrendingPlayer;
+    isLoggedIn: boolean;
 };
 
-export function ProjectedPlayerItem({ projectedPlayer }: ProjectedPlayerItemProps) {
-    <li>
-        <details>
-            <p className='list-note'> {projectedPlayer.player.player} </p>
-            <p className='list-title'> {projectedPlayer.analysis} </p>
-        </details>
-    </li>;
+export function TrendingPlayerItem({ trendingPlayer, isLoggedIn }: TrendingPlayerItemProps) {
+    let icon = <></>;
+    if (trendingPlayer.prev_rank && trendingPlayer.prev_rank != trendingPlayer.rank) {
+        icon = trendingPlayer.prev_rank < trendingPlayer.rank ? <>&#8593;</> : <> &#8595; </>;
+    }
+
+    return (
+        <li className='list-item trending-player-item' key={trendingPlayer.player.player}>
+            <label className='flex flex-fit trending-player-rank'>{trendingPlayer.rank}.</label>
+            <span className='trending-player-icon'>{icon}</span>
+            <section className='flex flex-col flex-fill'>
+                <p className='list-note'> {trendingPlayer.player.player} </p>
+                <p className='list-title'> {trendingPlayer.analysis} </p>
+            </section>
+            {isLoggedIn && (
+                <button className='btn tiny' onClick={() => alert('TODO')}>
+                    Watch
+                </button>
+            )}
+        </li>
+    );
 }
