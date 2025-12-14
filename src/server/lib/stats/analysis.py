@@ -62,7 +62,7 @@ def run_projected_analysis(target_date: str) -> list[Player]:
         for projectedPlayer in result:
             projected_analysis_data_table.insert({
                 'date': target_date,
-                'player': json.dumps(projectedPlayer)
+                'player': projectedPlayer
             }) # Save analysis data
 
         projected_analysis_status_table.insert({
@@ -112,7 +112,7 @@ def run_trending_analysis(target_date: str) -> list[Player]:
         for projectedPlayer in result:
             trending_analysis_data_table.insert({
                 'date': target_date,
-                'player': json.dumps(projectedPlayer)
+                'player': projectedPlayer
             }) # Save analysis data
 
         trending_analysis_status_table.insert({
@@ -149,7 +149,7 @@ def __get_result(status_table: DatabaseTable, data_table: DatabaseTable, date_st
     if date_response and date_response.data is not None and len(date_response.data) > 0:
         target_date = date_response.data[0]['date']
         results = data_table.get_table().select('*').eq('date', target_date).order('player->>rank').limit(limit if limit > -1 else config.ANALYSIS_PLAYER_LIMIT).execute()
-        return [json.loads(row['player']) for row in results.data]
+        return [row['player'] for row in results.data]
     else:
         return []
     
