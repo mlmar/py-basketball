@@ -119,6 +119,9 @@ make run
 Or
 
 ```bash
+python3 -m venv .venv
+.venv/Scripts/activate
+
 cd src/server
 pip install -r requirements.txt
 fastapi dev main.py --port 3300
