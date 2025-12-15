@@ -76,7 +76,7 @@ export function WaiverBoard() {
             <Section>
                 <Card className='waiver-card'>
                     <Card.Header>
-                        <h2>All Waiver Targets (mock)</h2>
+                        <h2>All Waiver Targets (Mock)</h2>
                         <Card.Badge>early version</Card.Badge>
                     </Card.Header>
                     <Card.Sub>

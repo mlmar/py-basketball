@@ -28,6 +28,8 @@ export function HomePage() {
                     </p>
 
                     <div className='hero-buttons'>
+                        {!isLoggedIn && <LoginButton />}
+                        {isLoggedIn && <LogoutButton />}
                         <Link to='/dashboard'>
                             <button className='btn primary'>Open Dashboard</button>
                         </Link>
@@ -35,11 +37,7 @@ export function HomePage() {
                     </div>
                 </div>
 
-                <aside className='flex-col flex-align-end'>
-                    {!isLoggedIn && <LoginButton />}
-                    {isLoggedIn && <LogoutButton />}
-                    <Matchup />
-                </aside>
+                <Matchup />
             </Hero>
 
             <TrendingPlayers limit={5} />

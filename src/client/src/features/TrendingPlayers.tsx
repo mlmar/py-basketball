@@ -93,10 +93,13 @@ type TrendingPlayerItemProps = {
     isLoggedIn: boolean;
 };
 
+const upArrow = <>&#8593;</>;
+const downArrow = <>&#8595;</>;
+
 export function TrendingPlayerItem({ trendingPlayer, isLoggedIn }: TrendingPlayerItemProps) {
     let icon = <></>;
     if (trendingPlayer.prev_rank && trendingPlayer.prev_rank != trendingPlayer.rank) {
-        icon = trendingPlayer.prev_rank < trendingPlayer.rank ? <>&#8593;</> : <> &#8595; </>;
+        icon = trendingPlayer.prev_rank > trendingPlayer.rank ? upArrow : downArrow;
     }
 
     return (
