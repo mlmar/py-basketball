@@ -41,9 +41,11 @@ class TrendingAnalysisResult(BaseModel):
 # PROJECTED ANALYSIS
 def get_projected_analysis(date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT) -> ProjectedAnalysisResult:
     """Gets most recent projected analysis"""
-    target_date = __validate_date_str(date_str)
+    target_date = __validate_date_str(date_str) if date_str else None
+
+
     try:
-        result = __get_result(projected_analysis_status_table, projected_analysis_data_method, target_date if date_str else None, limit)
+        result = __get_result(projected_analysis_status_table, projected_analysis_data_method, target_date, limit)
         status = __get_status(projected_analysis_status_table, target_date)
         # is_processing = __is_status_processing(projected_analysis_status_table) # Prevent run if anything is currently processing
         # if not is_processing and status not in [Status.PROCESSING.value, Status.COMPLETE.value]:
@@ -110,10 +112,10 @@ def run_projected_analysis(target_date: str) -> list[ProjectedPlayer]:
 # TRENDING ANALYSIS
 def get_trending_analysis(date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT) -> TrendingAnalysisResult:
     """Gets most recent trending analysis"""
-    target_date = __validate_date_str(date_str)
+    target_date = __validate_date_str(date_str) if date_str else None
 
     try:
-        result = __get_result(trending_analysis_status_table, trending_analysis_data_method, target_date if date_str else None, limit)
+        result = __get_result(trending_analysis_status_table, trending_analysis_data_method, target_date, limit)
         status = __get_status(trending_analysis_status_table, target_date)
         # is_processing = __is_status_processing(trending_analysis_status_table)  # Prevent run if anything is currently processing
         # if not is_processing and status not in [Status.PROCESSING.value, Status.COMPLETE.value]:
@@ -179,7 +181,13 @@ def run_trending_analysis(target_date: str) -> list[TrendingPlayer]:
 # HELEPRS
 def __get_status(status_table: DatabaseTable, current_date: str) -> str | None:
     """Gets status for specific date from status table"""
-    status_response = status_table.get_table().select('status').eq('date', current_date).execute()
+    
+    status_response = None
+    if current_date: # get status for current date
+        status_response = status_table.get_table().select('status').eq('date', current_date).execute()
+    else: # get status for latest date
+        status_response = status_table.get_table().select('status').order('date', desc=True).limit(1).execute()
+
     if status_response.data is None or len(status_response.data) == 0:
         return None
     return status_response.data[0]['status']
