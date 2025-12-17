@@ -4,6 +4,7 @@ from datetime import date
 import config
 from lib.ai.client import get_client
 from lib.basketball.player import Player, ProjectedPlayer, ProjectedPlayerList, TrendingPlayer, print_projected_player, TrendingPlayerList, print_trending_player
+from service.service import Service
 from service.nba_cdn_service import get_nba_schedule
 from google.genai import types
 from util.date_util import get_today_pst
@@ -69,7 +70,7 @@ def get_projected_analysis(data: list[Player], past_days: int, num_players: int 
 
     print(prompt)
     client = get_client()
-    nba_schedule = get_nba_schedule(get_today_pst(), future_days)
+    nba_schedule = __get_nba_schedule(get_today_pst(), future_days)
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[
@@ -132,7 +133,7 @@ def get_trending_analysis(data: list[Player], past_days: int, num_players: int =
     print(prompt)
 
     client = get_client()
-    nba_schedule = get_nba_schedule(get_today_pst(), future_days)
+    nba_schedule = __get_nba_schedule(get_today_pst(), future_days)
     response_stream = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=[
@@ -174,3 +175,13 @@ def __parse_response_stream(response_stream) -> tuple[dict, str]:
                         print(f'{part.text}', end='', flush=True)
 
     return (json.loads(final_answer), final_answer)
+
+server_service = Service(config.SERVER_URL)
+def __get_nba_schedule(target_date: date, future_days: int):
+    if config.DEV:
+        return get_nba_schedule(target_date, future_days)
+    else:
+        return server_service.get('/nba-schedule', {
+            'date': str(target_date),
+            'futrue_days': future_days
+        })

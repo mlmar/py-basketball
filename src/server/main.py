@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from api.routes import stats_routes, auth_routes
+from api.routes import nba_routes, stats_routes, auth_routes
 from api.auth import auth_middleware
 import config
 
@@ -24,6 +24,7 @@ app.add_middleware(
 app.middleware('http')(auth_middleware) # Commenting out middleware for now
 app.include_router(auth_routes.router, prefix='/api')
 app.include_router(stats_routes.router, prefix='/api')
+app.include_router(nba_routes.router, prefix='/api')
 
 # Override routes for static files if production
 if not config.DEV:

@@ -23,3 +23,9 @@ def get_today_pst() -> date:
     today = date.today()
     aware_datetime = datetime(today.year, today.month, today.day, tzinfo=tzinfo)
     return date(aware_datetime.year, aware_datetime.month, aware_datetime.day)
+
+def str_to_date(date_str: str) -> date:
+    """Converts date str YYYY-MM-DDTimestamp to date"""
+    date_str_arr = date_str.split('T')
+    y, m, d = date_str_arr[0].split('-')
+    return date(int(y), int(m), int(d))
