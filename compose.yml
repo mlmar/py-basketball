@@ -19,7 +19,7 @@ services:
             context: .
             dockerfile: ./Daily.Dockerfile
         environment:
-            - VITE_SERVER_URL
+            - VITE_DAILY_SERVER_URL
             - SUPABASE_URL
             - SUPABASE_KEY
             - SUPABASE_JWT_SECRET
