@@ -40,20 +40,16 @@ class TrendingAnalysisResult(BaseModel):
 
 # PROJECTED ANALYSIS
 def get_projected_analysis(date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT) -> ProjectedAnalysisResult:
-    """Gets most recent analysis and runs today's if it does not exist"""
+    """Gets most recent projected analysis"""
     target_date = __validate_date_str(date_str)
     try:
         result = __get_result(projected_analysis_status_table, projected_analysis_data_method, target_date if date_str else None, limit)
         status = __get_status(projected_analysis_status_table, target_date)
-        is_processing = __is_status_processing(projected_analysis_status_table) # Prevent run if anything is currently processing
-        if not is_processing and status not in [Status.PROCESSING.value, Status.COMPLETE.value]:
-            # If today has not been processed, then start processing the data
-            projected_analysis_status_table.insert({
-                'date': target_date,
-                'status': Status.PROCESSING.value
-            })
-            func = partial(run_projected_analysis, target_date)
-            asyncio.get_running_loop().run_in_executor(None, func)
+        # is_processing = __is_status_processing(projected_analysis_status_table) # Prevent run if anything is currently processing
+        # if not is_processing and status not in [Status.PROCESSING.value, Status.COMPLETE.value]:
+        #     # If today has not been processed, then start processing the data
+        #     func = partial(run_projected_analysis, target_date)
+        #     asyncio.get_running_loop().run_in_executor(None, func)
             
         return {
             'result': result,
@@ -75,6 +71,11 @@ def run_projected_analysis(target_date: str) -> list[ProjectedPlayer]:
     result = []
 
     try:
+        projected_analysis_status_table.insert({
+            'date': target_date,
+            'status': Status.PROCESSING.value
+        })
+
         data = stats.get_all(days, True)
         result = gemini.get_projected_analysis(data, days)
         for projected_player in result:
@@ -108,20 +109,16 @@ def run_projected_analysis(target_date: str) -> list[ProjectedPlayer]:
 
 # TRENDING ANALYSIS
 def get_trending_analysis(date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT) -> TrendingAnalysisResult:
+    """Gets most recent trending analysis"""
     target_date = __validate_date_str(date_str)
 
     try:
         result = __get_result(trending_analysis_status_table, trending_analysis_data_method, target_date if date_str else None, limit)
         status = __get_status(trending_analysis_status_table, target_date)
-        is_processing = __is_status_processing(trending_analysis_status_table)  # Prevent run if anything is currently processing
-        if not is_processing and status not in [Status.PROCESSING.value, Status.COMPLETE.value]:
-            # If today has not been processed, then start processing the data
-            trending_analysis_status_table.insert({
-                'date': target_date,
-                'status': Status.PROCESSING.value
-            })
-            func = partial(run_trending_analysis, target_date)
-            asyncio.get_running_loop().run_in_executor(None, func)
+        # is_processing = __is_status_processing(trending_analysis_status_table)  # Prevent run if anything is currently processing
+        # if not is_processing and status not in [Status.PROCESSING.value, Status.COMPLETE.value]:
+        #     func = partial(run_trending_analysis, target_date)
+        #     asyncio.get_running_loop().run_in_executor(None, func)
         
         return {
             'result': result,
@@ -143,6 +140,11 @@ def run_trending_analysis(target_date: str) -> list[TrendingPlayer]:
     result = []
 
     try:
+        trending_analysis_status_table.insert({
+            'date': target_date,
+            'status': Status.PROCESSING.value
+        })
+
         data = stats.get_all(days, True)
         result = gemini.get_trending_analysis(data, days)
         for trending_player in result:

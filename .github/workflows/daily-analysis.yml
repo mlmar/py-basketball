@@ -1,0 +1,19 @@
+name: Docker Image CI
+
+on:
+    schedule:
+        - cron: "0 8 * * *" # Runs at 12am PST every day
+    workflow_dispatch: # Allows you to run it manually for testing
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+            - name: Build the Docker image
+              env:
+                  SUPABASE_JWT_SECRET: ${{secrets.SUPABASE_JWT_SECRET}}
+                  GEMINI_API_KEY: ${{secrets.GEMINI_API_KEY}}
+                  PYTHONPATH: ${{secrets.PYTHONPATH}}
+              run: docker compose up daily
