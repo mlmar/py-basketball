@@ -8,7 +8,7 @@ def run_daily_trending_analysis():
     today_date_str = str(get_today_pst())
 
     server_service = Service(config.SERVER_URL)
-    server_service.get('/totals/31')
+    server_service.get(f'/totals/{config.ANALYSIS_DAYS}')
 
     run_trending_analysis(today_date_str)
 
