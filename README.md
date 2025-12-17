@@ -63,10 +63,10 @@ Objectives
         -   [x] Incorporate upcoming NBA schedule
             -   [x] Get number of games for next N days
             -   [x] Get list of opponents for next N days
-    -   [ ] Automation
-        -   [ ] Automate daily/weekly analysis for N days
+    -   [x] Automation
         -   [x] Pull data once per day and cache pervious analysis results
-            -   [x] Run analysis as background process background
+        -   [x] Run analysis daily at midnight with GitHub actions
+            -   [x] Create dockerfile and actions workflow for calling process_daily_players.py
     -   [ ] fastapi routes for:
         -   [ ] Authentication - require Supabase JWT token to access routes
         -   [ ] Accessing player statistics

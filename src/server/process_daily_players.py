@@ -7,5 +7,5 @@ def run_daily_trending_analysis():
     today_date_str = str(get_today_pst())
     run_trending_analysis(today_date_str)
 
-if __name__ == 'main':
+if __name__ == '__main__':
     run_daily_trending_analysis()
