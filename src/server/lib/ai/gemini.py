@@ -4,7 +4,7 @@ from datetime import date
 import config
 from lib.ai.client import get_client
 from lib.basketball.player import Player, ProjectedPlayer, ProjectedPlayerList, TrendingPlayer, print_projected_player, TrendingPlayerList, print_trending_player
-from service import daily_service
+from service.daily_service import daily_service
 from service.service import Service
 from service.nba_cdn_service import get_nba_schedule
 from google.genai import types

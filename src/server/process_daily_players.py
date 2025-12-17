@@ -1,7 +1,6 @@
 import config
 from lib.stats.analysis import run_trending_analysis
-from service import daily_service
-from service.service import Service
+from service.daily_service import daily_service
 from util.date_util import get_today_pst
 
 def run_daily_trending_analysis():
