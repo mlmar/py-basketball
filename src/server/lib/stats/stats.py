@@ -4,6 +4,7 @@ from lib.db.client import get_client
 from lib.basketball.player import Player
 from lib.basketball.nba import get_data
 from lib.stats.excluded_players import get_excluded_players
+from service import daily_service
 from util.date_util import get_today_pst, range_of_dates
 import config
 
@@ -20,6 +21,11 @@ def refresh_stats(days: int):
     Retrieves stats for the last N days.
     If necessary, scrape data from basketball reference and inserts to Supabase db.
     """
+    if config.DAILY_SERVER_URL: # Workaround for github actions since NBA API is blocked
+        print('Daily server url exists, ignoring procedure and calling proxy instead')
+        daily_service.get(f'/totals/{config.ANALYSIS_DAYS}')
+        return
+
     start_date, end_date = __get_start_end_dates(days)
 
     # Filter out existing dates
