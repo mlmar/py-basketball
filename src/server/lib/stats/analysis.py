@@ -43,6 +43,10 @@ def get_projected_analysis(date_str: str = None, limit: int = config.ANALYSIS_PL
     """Gets most recent projected analysis"""
     target_date = __validate_date_str(date_str) if date_str else None
 
+    # Prevent processing existing date
+    status = __get_status(projected_analysis_status_table, target_date)
+    if status in (Status.PROCESSING.value, Status.COMPLETE.value):
+        return []
 
     try:
         result = __get_result(projected_analysis_status_table, projected_analysis_data_method, target_date, limit)
@@ -140,6 +144,11 @@ def run_trending_analysis(target_date: str) -> list[TrendingPlayer]:
     """Runs trending analysis and updates today's status"""
     days = config.ANALYSIS_DAYS
     result = []
+
+    # Prevent processing existing date
+    status = __get_status(trending_analysis_status_table, target_date)
+    if status in (Status.PROCESSING.value, Status.COMPLETE.value):
+        return []
 
     try:
         trending_analysis_status_table.insert({

@@ -6,14 +6,14 @@ from lib.stats import stats, analysis
 router = APIRouter()
 
 @router.get('/averages/{days}')
-def get_averages(days: int,):
+def get_averages(days: int, exclude: bool = False):
     days = min(days, 10)
-    return stats.get_averages(days)
+    return stats.get_averages(days, exclude)
 
 @router.get('/totals/{days}')
-def get_totals(days: int,):
+def get_totals(days: int, exclude: bool = False):
     days = min(days, 10)
-    return stats.get_totals(days)
+    return stats.get_totals(days, exclude)
 
 @router.get('/top-players')
 def get_totals(days: int = 30, min_mp: int = 0, min_fantasy_score: int = 0):
