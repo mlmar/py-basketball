@@ -17,7 +17,7 @@ services:
     daily:
         build:
             context: .
-            dockerfile: ./daily.dockerfile
+            dockerfile: ./Daily.Dockerfile
         environment:
             - SUPABASE_URL
             - SUPABASE_KEY
