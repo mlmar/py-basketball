@@ -6,10 +6,6 @@ from util.date_util import get_today_pst
 def run_daily_trending_analysis():
     """Inserts status to db, runs trending analysis, and inserts result to db"""
     today_date_str = str(get_today_pst())
-
-    server_service = Service(config.SERVER_URL)
-    server_service.get(f'/totals/{config.ANALYSIS_DAYS}')
-
     run_trending_analysis(today_date_str)
 
 if __name__ == '__main__':
