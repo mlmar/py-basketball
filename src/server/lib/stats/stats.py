@@ -4,7 +4,7 @@ from lib.db.client import get_client
 from lib.basketball.player import Player
 from lib.basketball.nba import get_data
 from lib.stats.excluded_players import get_excluded_players
-from service import daily_service
+from service.daily_service import daily_service
 from util.date_util import get_today_pst, range_of_dates
 import config
 
