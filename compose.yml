@@ -1,5 +1,36 @@
 services:
-    app:
+    server: # Local development
+        build: ./src/server
+        ports:
+            - "3300:3300"
+            - "5678:5678"
+        volumes:
+            - "./src/server:/app"
+        environment:
+            - DEV
+            - VITE_SERVER_URL
+            - VITE_CLIENT_URL
+            - SUPABASE_URL
+            - SUPABASE_KEY
+            - SUPABASE_JWT_SECRET
+            - GEMINI_API_KEY
+            - YAHOO_CLIENT_ID
+            - YAHOO_CLIENT_SECRET
+    client: # Local development
+        build: ./src/client
+        ports:
+            - "3000:3000"
+        volumes:
+            - "./src/client:/app"
+            - "/app/node_modules"
+        depends_on:
+            - server
+        environment:
+            - DEV
+            - VITE_SERVER_URL
+            - VITE_CLIENT_URL
+
+    app: # Production build
         build: ./
         ports:
             - "3300:3300"
@@ -13,7 +44,7 @@ services:
             - GEMINI_API_KEY
             - YAHOO_CLIENT_ID
             - YAHOO_CLIENT_SECRET
-            - PYTHONPATH
+
     daily:
         build:
             context: .

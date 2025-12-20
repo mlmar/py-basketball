@@ -87,14 +87,11 @@ Objectives
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install.
+Install the following
 
-```bash
-python -m venv .venv
-.venv/Scripts/activate
-pip install -r src/server/requirements.txt
-npm install --prefix ./src/client
-```
+-   [Node Package Manager](https://www.npmjs.com/)
+-   [Python package manager](https://pip.pypa.io/en/stable/)
+-   [Docker Desktop](https://www.docker.com/)
 
 Create an .env file in the root directory with the folllowing contents:
 
@@ -109,31 +106,47 @@ GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
 PYTHONPATH=./src/server
 ```
 
-Supabase connection strings are required for authentication and data retrieval.
-
-## Run Server
-
-Makefile Support
+Run the following in the `py-basketball` directory
 
 ```bash
-cd src/server
+git clone https://github.com/mlmar/py-basketball
+cd py-basketball
+
+make install
+```
+
+## Development and Debugging in VSCode
+
+In the `py-basketball` directory, run the following in the terminal:
+
+```bash
 make run
 ```
 
-Or
+This will launch the Docker container for both the server and client.
+All dependencies should be installed. Ignore frozen module warnings.
 
-```bash
-python3 -m venv .venv
-.venv/Scripts/activate
+While development Docker container is running, navigate to the Run and Debug panel.
 
-cd src/server
-pip install -r requirements.txt
-fastapi dev main.py --port 3300
+**Attach to the Python FastAPI server to run it.**
+
+![Python FastAPI Debugger](readme/fastapi.png)
+
+Attach to the React Vite server:
+
+![React Vite Debugger](readme/vite.png)
+
+## Production
+
+Set the following env properties
+
+```properties
+VITE_CLIENT_URL=https://PRODUCTION_URL.com
+VITE_SERVER_URL=https://PRODUCTION_URL.com/api
 ```
 
-## Run Client
+Production
 
 ```bash
-cd src/client
-npm run dev
+docker build .
 ```

@@ -9,6 +9,11 @@ import eslint from 'vite-plugin-eslint';
 export default defineConfig({
     server: {
         port: 3000,
+        watch: {
+            usePolling: true, // Required for Docker to detect file changes
+        },
+        host: '0.0.0.0',
+        strictPort: true
     },
     resolve: {
         alias: {
@@ -27,10 +32,6 @@ export default defineConfig({
         environment: 'jsdom',
         globals: true, // Enables global access to Vitest APIs like `describe`, `it`, `expect`
         setupFiles: ['./src/test/setupTests.ts', './src/test/mocks.ts'],
-    },
-    build: {
-        outDir: '../server/static',
-        emptyOutDir: true
     },
     envDir: '../../'
 })

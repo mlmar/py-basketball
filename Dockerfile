@@ -1,7 +1,7 @@
 # -----------------------------
 # 1) BACKEND BUILD (FastAPI)
 # -----------------------------
-FROM python:3.13-slim AS backend-build
+FROM python:3.13-slim AS server-build
 
 WORKDIR /app/server
 
@@ -15,7 +15,7 @@ COPY src/server .
 # -----------------------------
 # 2) FRONTEND BUILD (Vite)
 # -----------------------------
-FROM node:18 AS frontend-build
+FROM node:24 AS client-build
 
 ARG VITE_CLIENT_URL
 ARG VITE_SERVER_URL
@@ -41,10 +41,10 @@ COPY src/server/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend source 
-COPY --from=backend-build /app/server .
+COPY --from=server-build /app/server .
 
 # Copy built front end
-COPY --from=frontend-build /app/server/static ./static
+COPY --from=client-build /app/client/dist ./static
 
 EXPOSE 3300
 

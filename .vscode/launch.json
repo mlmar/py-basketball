@@ -4,17 +4,24 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Vite: React",
+            "name": "Vite: React (Docker)",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/src/client"
+            "webRoot": "${workspaceFolder}/app/client"
         },
         {
-            "name": "Python: FastAPI",
+            "name": "FastAPI (Docker)",
             "type": "debugpy",
-            "request": "launch",
-            "module": "uvicorn",
-            "args": ["main:app", "--reload", "--port", "3300"],
-            "console": "integratedTerminal",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/app/server",
+                    "remoteRoot": "/app"
+                }
+            ],
             "justMyCode": true
         }
     ]
