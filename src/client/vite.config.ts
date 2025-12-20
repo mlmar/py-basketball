@@ -33,5 +33,9 @@ export default defineConfig({
         globals: true, // Enables global access to Vitest APIs like `describe`, `it`, `expect`
         setupFiles: ['./src/test/setupTests.ts', './src/test/mocks.ts'],
     },
+    build: {
+        outDir: '../server/static',
+        emptyOutDir: true
+    },
     envDir: '../../'
 })
