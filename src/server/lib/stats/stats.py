@@ -8,8 +8,8 @@ from service.daily_service import daily_service
 from util.date_util import get_today_pst, range_of_dates
 import config
 
-saved_dates_table = DatabaseTable[Player](config.SUPABASE_SAVED_DATES_TABLE)
-player_data_table = DatabaseTable[Player](config.SUPABASE_PLAYER_DATA_TABLE)
+saved_dates_table = DatabaseTable[Player](config.SUPABASE_SAVED_DATES_TABLE, config.SUPABASE_SCHEMA)
+player_data_table = DatabaseTable[Player](config.SUPABASE_PLAYER_DATA_TABLE, config.SUPABASE_SCHEMA)
 
 def __get_start_end_dates(days: int) -> tuple[date, date]:
     end_date = get_today_pst() - timedelta(1)
