@@ -5,11 +5,14 @@ class DatabaseTable[T]():
     table_name: str = None
     table = None
 
-    def __init__(self, table_name: str):
+    def __init__(self, table_name: str, schema: str = None):
         self.table_name = table_name
         
         client = get_client()
-        self.table = client.table(self.table_name)
+        if schema:
+            self.table = client.schema(schema).table(self.table_name)
+        else:
+            self.table = client.table(self.table_name)
 
     def get_table(self):
         return self.table

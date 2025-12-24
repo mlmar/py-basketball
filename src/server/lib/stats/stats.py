@@ -69,7 +69,7 @@ def get_averages(days: int, exclude: bool = False) -> list:
     refresh_stats(days)
 
     start_date, end_date = __get_start_end_dates(days)
-    response = get_client().rpc('get_averages', {
+    response = get_client().schema(config.SUPABASE_SCHEMA).rpc('get_averages', {
         'start_date': str(start_date),
         'end_date': str(end_date)
     }).execute()
@@ -88,7 +88,7 @@ def get_totals(days: int, exclude: bool = False):
     refresh_stats(days)
     
     start_date, end_date = __get_start_end_dates(days)
-    response = get_client().rpc('get_totals', {
+    response = get_client().schema(config.SUPABASE_SCHEMA).rpc('get_totals', {
         'start_date': str(start_date),
         'end_date': str(end_date)
     }).execute()
@@ -107,7 +107,7 @@ def get_top_players(days: int, min_mp: int, min_fantasy_score: int):
     refresh_stats(days)
     
     start_date, end_date = __get_start_end_dates(days)
-    response = get_client().rpc('get_top_players', {
+    response = get_client().schema(config.SUPABASE_SCHEMA).rpc('get_top_players', {
         'start_date': str(start_date),
         'end_date': str(end_date),
         'min_mp': min_mp,

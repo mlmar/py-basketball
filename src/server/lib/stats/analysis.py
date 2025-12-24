@@ -16,11 +16,11 @@ import traceback
 
 from util.date_util import get_today_pst
 
-projected_analysis_status_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE)
-projected_analysis_data_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE)
+projected_analysis_status_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
+projected_analysis_data_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
 projected_analysis_data_method = 'get_projected_analysis_data'
-trending_analysis_status_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE)
-trending_analysis_data_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE)
+trending_analysis_status_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
+trending_analysis_data_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
 trending_analysis_data_method = 'get_trending_analysis_data'
 
 class Status(Enum):
@@ -218,7 +218,7 @@ def __get_result(status_table: DatabaseTable, method: str, date_str: str = None,
 
     if date_response and date_response.data is not None and len(date_response.data) > 0:
         target_date = date_response.data[0]['date']
-        results = get_client().rpc(method, {
+        results = get_client().schema(config.SUPABASE_SCHEMA).rpc(method, {
             'target_date': str(target_date),
             'row_limit': limit if limit > -1 else config.ANALYSIS_PLAYER_LIMIT
         }).execute()
