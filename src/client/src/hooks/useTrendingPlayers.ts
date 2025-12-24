@@ -16,7 +16,7 @@ type UseTrendingPlayersResult = {
  */
 export function useTrendingplayers(trendingFilter: string | null, limit: number = 20): UseTrendingPlayersResult {
     const { data = { result: [], status: 'PROCESSING', is_all_records: true }, isLoading, isError } = useQuery({
-        queryKey: ['stats-analysis', limit],
+        queryKey: ['trending-analysis', limit],
         queryFn: async () => await StatsService.getTrendingAnalysis(limit),
         select: (data) => {
             return {

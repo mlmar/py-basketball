@@ -9,7 +9,11 @@ export class AuthService {
      * @returns current user
      */
     static async validateUser(): Promise<boolean> {
-        const response = await HTTPService.get<null, boolean>(AUTH_SERVICE_URL + '/validate');
-        return response;
+        try {
+            const response = await HTTPService.get<null, boolean>(AUTH_SERVICE_URL + '/validate');
+            return response;
+        } catch {
+            return false;
+        }
     }
 }

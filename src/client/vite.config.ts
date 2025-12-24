@@ -11,6 +11,7 @@ export default defineConfig({
         port: 3000,
         watch: {
             usePolling: true, // Required for Docker to detect file changes
+            ignored: ['./src/routeTree.gen.ts']
         },
         host: '0.0.0.0',
         strictPort: true

@@ -29,55 +29,63 @@ export function HomePage() {
 
                     <div className='hero-buttons'>
                         {!isLoggedIn && <LoginButton />}
-                        {isLoggedIn && <LogoutButton />}
-                        <Link to='/dashboard'>
-                            <button className='btn primary'>Open Dashboard</button>
-                        </Link>
-                        <button className='btn ghost'>Add Matchup</button>
+                        {isLoggedIn && (
+                            <>
+                                <LogoutButton />
+                                <Link to='/dashboard'>
+                                    <button className='btn primary'>Open Dashboard</button>
+                                </Link>
+                                <button className='btn ghost'>Add Matchup</button>
+                            </>
+                        )}
                     </div>
                 </div>
 
-                <Matchup />
+                {isLoggedIn && <Matchup />}
             </Hero>
 
             <TrendingPlayers limit={5} />
 
             {/* categories */}
-            <Section>
-                <h2>Category Snapshot (Mock)</h2>
-                <Card.Sub>A quick glance at the matchups you're aiming to control.</Card.Sub>
+            {isLoggedIn && (
+                <Section>
+                    <h2>Category Snapshot (Mock)</h2>
+                    <Card.Sub>A quick glance at the matchups you're aiming to control.</Card.Sub>
 
-                <div className='chips-row'>
-                    {categories.map((cat) => (
-                        <div key={cat} className='chip'>
-                            <span className='chip-title'>{cat}</span>
-                            <span className='chip-status'>in play</span>
-                        </div>
-                    ))}
-                </div>
-            </Section>
+                    <div className='chips-row'>
+                        {categories.map((cat) => (
+                            <div key={cat} className='chip'>
+                                <span className='chip-title'>{cat}</span>
+                                <span className='chip-status'>in play</span>
+                            </div>
+                        ))}
+                    </div>
+                </Section>
+            )}
 
             {/* waiver + roster */}
-            <Section className='grid-2'>
-                <WaiverTargets />
+            {isLoggedIn && (
+                <Section className='grid-2'>
+                    <WaiverTargets />
 
-                <Card>
-                    <Card.Header>
-                        <h2>My Squad (Mock)</h2>
-                        <Card.Badge className='secondary'>overview</Card.Badge>
-                    </Card.Header>
-                    <Card.Sub>Quick look at your roster.</Card.Sub>
+                    <Card>
+                        <Card.Header>
+                            <h2>My Squad (Mock)</h2>
+                            <Card.Badge className='secondary'>overview</Card.Badge>
+                        </Card.Header>
+                        <Card.Sub>Quick look at your roster.</Card.Sub>
 
-                    <ul className='list'>
-                        {mySquad.map((name) => (
-                            <li key={name} className='list-item'>
-                                <p className='list-title'>{name}</p>
-                                <p className='list-note light'>performance notes coming soon</p>
-                            </li>
-                        ))}
-                    </ul>
-                </Card>
-            </Section>
+                        <ul className='list'>
+                            {mySquad.map((name) => (
+                                <li key={name} className='list-item'>
+                                    <p className='list-title'>{name}</p>
+                                    <p className='list-note light'>performance notes coming soon</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </Card>
+                </Section>
+            )}
         </>
     );
 }

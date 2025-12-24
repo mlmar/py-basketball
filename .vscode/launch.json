@@ -6,7 +6,7 @@
             "request": "launch",
             "name": "Vite: React (Docker)",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/app/client"
+            "webRoot": "${workspaceFolder}/src/client"
         },
         {
             "name": "FastAPI (Docker)",
@@ -18,7 +18,7 @@
             },
             "pathMappings": [
                 {
-                    "localRoot": "${workspaceFolder}/app/server",
+                    "localRoot": "${workspaceFolder}/src/server",
                     "remoteRoot": "/app"
                 }
             ],
