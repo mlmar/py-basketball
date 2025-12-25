@@ -30,3 +30,12 @@ class DatabaseTable[T]():
                 print(f'Successfully inserted 1 item to {self.table_name}')
         except:
             raise Exception(f'Failed to insert items to {self.table_name}')
+        
+__tables = {} # cache table connections
+def get_table(name: str, schema: str = None) -> DatabaseTable:
+    """Gets cached table connections"""
+    table_name = f'{name}_{schema}'
+    if table_name not in __tables:
+        __tables[table_name] = DatabaseTable(name, schema)
+    
+    return __tables[table_name]

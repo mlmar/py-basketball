@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from lib.db.database_table import DatabaseTable
+from lib.db.database_table import get_table
 from lib.db.client import get_client
 from lib.basketball.player import Player
 from lib.basketball.nba import get_data
@@ -8,8 +8,6 @@ from service.daily_service import daily_service
 from util.date_util import get_today_pst, range_of_dates
 import config
 
-saved_dates_table = DatabaseTable[Player](config.SUPABASE_SAVED_DATES_TABLE, config.SUPABASE_SCHEMA)
-player_data_table = DatabaseTable[Player](config.SUPABASE_PLAYER_DATA_TABLE, config.SUPABASE_SCHEMA)
 
 def __get_start_end_dates(days: int) -> tuple[date, date]:
     end_date = get_today_pst() - timedelta(1)
@@ -30,6 +28,8 @@ def refresh_stats(days: int):
 
     # Filter out existing dates
     all_dates: list[date] = list(range_of_dates(start_date, end_date))
+
+    saved_dates_table = get_table(config.SUPABASE_SAVED_DATES_TABLE, config.SUPABASE_SCHEMA)
     response = saved_dates_table.get_table().select('date').in_('date', [str(d) for d in all_dates]).execute()
     existing_dates: list[date] = [item['date'] for item in response.data]
     new_dates: list[date] = [new_date for new_date in all_dates if str(new_date) not in existing_dates]
@@ -39,6 +39,7 @@ def refresh_stats(days: int):
 
     # Insert data for newly saved dates
     if len(new_dates) > 0:
+        player_data_table = get_table(config.SUPABASE_PLAYER_DATA_TABLE, config.SUPABASE_SCHEMA)
         for (current_date, players) in get_data(new_dates):
             if players is not None and len(players) > 0:
                 player_data_table.insert(players) # Save new data
@@ -53,6 +54,7 @@ def get_all(days: int, exclude: bool = False) -> list:
     
     refresh_stats(days)
     start_date, end_date = __get_start_end_dates(days)
+    player_data_table = get_table(config.SUPABASE_PLAYER_DATA_TABLE, config.SUPABASE_SCHEMA)
     response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).order('player').execute()
     print(f'Successfully queried database for player stats from {str(start_date)} to {str(end_date)}')
     

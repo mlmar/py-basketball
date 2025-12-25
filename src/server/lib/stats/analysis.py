@@ -1,26 +1,20 @@
 from datetime import date
 from enum import Enum
-from functools import partial
 from typing import List
 
 from fastapi import HTTPException, status
 from pydantic import BaseModel
 from lib.basketball.player import ProjectedPlayer, TrendingPlayer
 from lib.db.client import get_client
-from lib.db.database_table import DatabaseTable
+from lib.db.database_table import DatabaseTable, get_table
 from lib.ai import gemini
 from lib.stats import stats 
 import config
-import asyncio
 import traceback
 
 from util.date_util import get_today_pst
 
-projected_analysis_status_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
-projected_analysis_data_table = DatabaseTable(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
 projected_analysis_data_method = 'get_projected_analysis_data'
-trending_analysis_status_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
-trending_analysis_data_table = DatabaseTable(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
 trending_analysis_data_method = 'get_trending_analysis_data'
 
 class Status(Enum):
@@ -44,6 +38,7 @@ def get_projected_analysis(date_str: str = None, limit: int = config.ANALYSIS_PL
     target_date = __validate_date_str(date_str) if date_str else None
 
     # Prevent processing existing date
+    projected_analysis_status_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE)
     status = __get_status(projected_analysis_status_table, target_date)
     if status in (Status.PROCESSING.value, Status.COMPLETE.value):
         return []
@@ -77,6 +72,9 @@ def run_projected_analysis(target_date: str) -> list[ProjectedPlayer]:
     result = []
 
     try:
+        projected_analysis_status_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
+        projected_analysis_data_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
+
         projected_analysis_status_table.insert({
             'date': target_date,
             'status': Status.PROCESSING.value
@@ -119,6 +117,7 @@ def get_trending_analysis(date_str: str = None, limit: int = config.ANALYSIS_PLA
     target_date = __validate_date_str(date_str) if date_str else None
 
     try:
+        trending_analysis_status_table = get_table(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
         result = __get_result(trending_analysis_status_table, trending_analysis_data_method, target_date, limit)
         status = __get_status(trending_analysis_status_table, target_date)
         # is_processing = __is_status_processing(trending_analysis_status_table)  # Prevent run if anything is currently processing
@@ -151,6 +150,9 @@ def run_trending_analysis(target_date: str) -> list[TrendingPlayer]:
         return []
 
     try:
+        trending_analysis_status_table = get_table(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
+        trending_analysis_data_table = get_table(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
+
         trending_analysis_status_table.insert({
             'date': target_date,
             'status': Status.PROCESSING.value
