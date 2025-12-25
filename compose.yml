@@ -6,6 +6,7 @@ services:
             - "5678:5678"
         volumes:
             - "./src/server:/app"
+            - "./src/server/certs:/certs:ro"
         environment:
             - DEV
             - VITE_SERVER_URL
@@ -16,6 +17,7 @@ services:
             - GEMINI_API_KEY
             - YAHOO_CLIENT_ID
             - YAHOO_CLIENT_SECRET
+            - YAHOO_REDIRECT_URL
     client: # Local development
         build: ./src/client
         ports:
@@ -44,6 +46,7 @@ services:
             - GEMINI_API_KEY
             - YAHOO_CLIENT_ID
             - YAHOO_CLIENT_SECRET
+            - YAHOO_REDIRECT_URL
 
     daily:
         build:

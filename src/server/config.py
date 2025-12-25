@@ -46,3 +46,4 @@ FANTASY_SCORE_WEIGHTS: dict[str, float] = {
 # Yahoo OAuth credentials (set via environment or .env)
 YAHOO_CLIENT_ID: str = os.environ.get('YAHOO_CLIENT_ID')
 YAHOO_CLIENT_SECRET: str = os.environ.get('YAHOO_CLIENT_SECRET')
+YAHOO_REDIRECT_URL: str = os.environ.get('YAHOO_REDIRECT_URL')

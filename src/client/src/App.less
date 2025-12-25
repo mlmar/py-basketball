@@ -121,13 +121,14 @@
 /* --- buttons / pills --- */
 
 .btn {
+    --text-color: #f9fafb;
     border: none;
     border-radius: 62.438em;
     padding: 0.5em 1em;
     font-size: 0.9rem;
     cursor: pointer;
     background: #111827;
-    color: #f9fafb;
+    color: var(--text-color);
     outline: none;
     transition:
         transform 0.08s ease,
@@ -155,6 +156,7 @@
     }
 
     &:hover {
+        color: var(--text-color);
         transform: translateY(-0.063em);
         box-shadow: 0 0.5em 1.125em rgba(0, 0, 0, 0.35);
     }

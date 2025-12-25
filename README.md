@@ -98,7 +98,7 @@ Create an .env file in the root directory with the folllowing contents:
 ```properties
 DEV=True
 VITE_CLIENT_URL=http://localhost:3000/
-VITE_SERVER_URL=http://localhost:3300/api
+VITE_SERVER_URL=https://localhost:3300/api
 SUPABASE_URL=YOUR_SUPABASE_URL_HERE
 SUPABASE_KEY=YOUR_SUPABASE_KEY_HERE
 SUPABASE_JWT_SECRET=YOUR_SUPABASE_JWT_SECRET_HERE

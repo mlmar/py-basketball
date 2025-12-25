@@ -8,6 +8,7 @@ import { Matchup } from '@/features/Matchup';
 import { TrendingPlayers } from '@/features/TrendingPlayers';
 import { WaiverTargets } from '@/features/WaiverTargets';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
+import { Config } from '@/services/Config';
 import { Link } from '@tanstack/react-router';
 
 export function HomePage() {
@@ -32,6 +33,9 @@ export function HomePage() {
                         {isLoggedIn && (
                             <>
                                 <LogoutButton />
+                                <a className='btn primary' href={Config.SERVER_URL + '/yahoo/login'}>
+                                    Connect to Yahoo
+                                </a>
                                 <Link to='/dashboard'>
                                     <button className='btn primary'>Open Dashboard</button>
                                 </Link>

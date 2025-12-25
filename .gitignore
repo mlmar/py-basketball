@@ -29,3 +29,5 @@ static
 *.njsproj
 *.sln
 *.sw?
+
+certs
