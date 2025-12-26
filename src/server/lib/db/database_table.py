@@ -1,41 +1,16 @@
+from postgrest import SyncRequestBuilder
 from lib.db.client import get_client
-
-class DatabaseTable[T]():
-    """Class for connecting to Supabase Table and performing modifications"""
-    table_name: str = None
-    table = None
-
-    def __init__(self, table_name: str, schema: str = None):
-        self.table_name = table_name
-        
-        client = get_client()
-        if schema:
-            self.table = client.schema(schema).table(self.table_name)
-        else:
-            self.table = client.table(self.table_name)
-
-    def get_table(self):
-        return self.table
-
-    def insert(self, items: list[T] | T):
-        """Inserts a list of items or a single item to the table"""
-        try:
-            if isinstance(items, list):
-                print(f'Inserting {len(items)} items to {self.table_name}')
-                self.table.upsert(items).execute()
-                print(f'Successfully inserted {len(items)} items to {self.table_name}')
-            else:
-                print(f'Inserting 1 item to {self.table_name}')
-                self.table.upsert(items).execute()
-                print(f'Successfully inserted 1 item to {self.table_name}')
-        except:
-            raise Exception(f'Failed to insert items to {self.table_name}')
         
 __tables = {} # cache table connections
-def get_table(name: str, schema: str = None) -> DatabaseTable:
+def get_table(table_name: str, schema: str = None) -> SyncRequestBuilder:
     """Gets cached table connections"""
-    table_name = f'{name}_{schema}'
-    if table_name not in __tables:
-        __tables[table_name] = DatabaseTable(name, schema)
+    key = f'{table_name}_{schema}'
+    global __tables
+    if key not in __tables:
+        client = get_client()
+        if schema:
+            __tables[key] = client.schema(schema).table(table_name)
+        else:
+            __tables[key] = client.table(table_name)
     
-    return __tables[table_name]
+    return __tables[key]

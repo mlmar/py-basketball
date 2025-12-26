@@ -3,10 +3,11 @@ from enum import Enum
 from typing import List
 
 from fastapi import HTTPException, status
+from postgrest import SyncRequestBuilder
 from pydantic import BaseModel
 from lib.basketball.player import ProjectedPlayer, TrendingPlayer
 from lib.db.client import get_client
-from lib.db.database_table import DatabaseTable, get_table
+from lib.db.database_table import get_table
 from lib.ai import gemini
 from lib.stats import stats 
 import config
@@ -75,10 +76,10 @@ def run_projected_analysis(target_date: str) -> list[ProjectedPlayer]:
         projected_analysis_status_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
         projected_analysis_data_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
 
-        projected_analysis_status_table.insert({
+        projected_analysis_status_table.upsert({
             'date': target_date,
             'status': Status.PROCESSING.value
-        })
+        }).execute()
 
         data = stats.get_all(days, True)
         result = gemini.get_projected_analysis(data, days)
@@ -93,16 +94,16 @@ def run_projected_analysis(target_date: str) -> list[ProjectedPlayer]:
                 'analysis': projected_player['analysis'],
                 'tags': projected_player['tags'],
                 'rank': projected_player['rank'],
-            }) # Save analysis data
+            }).execute() # Save analysis data
 
-        projected_analysis_status_table.insert({
+        projected_analysis_status_table.upsert({
             'date': target_date,
             'status': Status.COMPLETE.value
-        })
+        }).execute()
     except:
         # Update status if failed
         error_str = traceback.format_exc()
-        projected_analysis_status_table.insert({
+        projected_analysis_status_table.upsert({
             'date': target_date,
             'status': Status.FAILED.value,
             'log': error_str
@@ -153,10 +154,10 @@ def run_trending_analysis(target_date: str) -> list[TrendingPlayer]:
         trending_analysis_status_table = get_table(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
         trending_analysis_data_table = get_table(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
 
-        trending_analysis_status_table.insert({
+        trending_analysis_status_table.upsert({
             'date': target_date,
             'status': Status.PROCESSING.value
-        })
+        }).execute()
 
         data = stats.get_all(days, True)
         result = gemini.get_trending_analysis(data, days)
@@ -173,50 +174,50 @@ def run_trending_analysis(target_date: str) -> list[TrendingPlayer]:
                 'rank': trending_player['rank']
             }) # Save analysis data
 
-        trending_analysis_status_table.insert({
+        trending_analysis_status_table.upsert({
             'date': target_date,
             'status': Status.COMPLETE.value
-        })
+        }).execute()
     except:
         # Update status if failed
         error_str = traceback.format_exc()
-        trending_analysis_status_table.insert({
+        trending_analysis_status_table.upsert({
             'date': target_date,
             'status': Status.FAILED.value,
             'log': error_str
-        })
+        }).execute()
         print(error_str)
 
     return result
     
 # HELEPRS
-def __get_status(status_table: DatabaseTable, current_date: str) -> str | None:
+def __get_status(status_table: SyncRequestBuilder, current_date: str) -> str | None:
     """Gets status for specific date from status table"""
     
     status_response = None
     if current_date: # get status for current date
-        status_response = status_table.get_table().select('status').eq('date', current_date).execute()
+        status_response = status_table.select('status').eq('date', current_date).execute()
     else: # get status for latest date
-        status_response = status_table.get_table().select('status').order('date', desc=True).limit(1).execute()
+        status_response = status_table.select('status').order('date', desc=True).limit(1).execute()
 
     if status_response.data is None or len(status_response.data) == 0:
         return None
     return status_response.data[0]['status']
 
-def __is_status_processing(status_table: DatabaseTable) -> bool:
+def __is_status_processing(status_table: SyncRequestBuilder) -> bool:
     """Checks if any dates are currently processing"""
-    status_response = status_table.get_table().select('status').eq('status', Status.PROCESSING.value).execute()
+    status_response = status_table.select('status').eq('status', Status.PROCESSING.value).execute()
     if status_response.data is None or len(status_response.data) == 0:
         return False
     return True
     
-def __get_result(status_table: DatabaseTable, method: str, date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT):
+def __get_result(status_table: SyncRequestBuilder, method: str, date_str: str = None, limit: int = config.ANALYSIS_PLAYER_LIMIT):
     # If day has been processsed or completed then pull from the most recent data set
     date_response = None
     if date_str: # pull response for specific date
-        date_response = status_table.get_table().select('date').eq('date', date_str).order('date', desc=True).limit(1).execute()
+        date_response = status_table.select('date').eq('date', date_str).order('date', desc=True).limit(1).execute()
     else: # pull response for latest date
-        date_response = status_table.get_table().select('date').eq('status', 'COMPLETE').order('date', desc=True).limit(1).execute()
+        date_response = status_table.select('date').eq('status', 'COMPLETE').order('date', desc=True).limit(1).execute()
 
     if date_response and date_response.data is not None and len(date_response.data) > 0:
         target_date = date_response.data[0]['date']

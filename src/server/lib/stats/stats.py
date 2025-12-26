@@ -30,7 +30,7 @@ def refresh_stats(days: int):
     all_dates: list[date] = list(range_of_dates(start_date, end_date))
 
     saved_dates_table = get_table(config.SUPABASE_SAVED_DATES_TABLE, config.SUPABASE_SCHEMA)
-    response = saved_dates_table.get_table().select('date').in_('date', [str(d) for d in all_dates]).execute()
+    response = saved_dates_table.select('date').in_('date', [str(d) for d in all_dates]).execute()
     existing_dates: list[date] = [item['date'] for item in response.data]
     new_dates: list[date] = [new_date for new_date in all_dates if str(new_date) not in existing_dates]
 
@@ -42,8 +42,8 @@ def refresh_stats(days: int):
         player_data_table = get_table(config.SUPABASE_PLAYER_DATA_TABLE, config.SUPABASE_SCHEMA)
         for (current_date, players) in get_data(new_dates):
             if players is not None and len(players) > 0:
-                player_data_table.insert(players) # Save new data
-                saved_dates_table.insert({ 'date': str(current_date) }) # Save the date
+                player_data_table.insert(players).execute() # Save new data
+                saved_dates_table.upsert({ 'date': str(current_date) }).execute() # Save the date
             print()
 
 def get_all(days: int, exclude: bool = False) -> list:
@@ -55,7 +55,7 @@ def get_all(days: int, exclude: bool = False) -> list:
     refresh_stats(days)
     start_date, end_date = __get_start_end_dates(days)
     player_data_table = get_table(config.SUPABASE_PLAYER_DATA_TABLE, config.SUPABASE_SCHEMA)
-    response = player_data_table.get_table().select('*').gte('date', str(start_date)).lte('date', str(end_date)).order('player').execute()
+    response = player_data_table.select('*').gte('date', str(start_date)).lte('date', str(end_date)).order('player').execute()
     print(f'Successfully queried database for player stats from {str(start_date)} to {str(end_date)}')
     
     if exclude:
