@@ -8,12 +8,15 @@ import { Matchup } from '@/features/Matchup';
 import { TrendingPlayers } from '@/features/TrendingPlayers';
 import { WaiverTargets } from '@/features/WaiverTargets';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
+import { useIsYahooConnected } from '@/hooks/useIsYahooConnected';
 import { Config } from '@/services/Config';
 import { Link } from '@tanstack/react-router';
 
 export function HomePage() {
-    // placeholder data
     const isLoggedIn = useIsLoggedIn();
+    const isYahooConnected = useIsYahooConnected();
+
+    // placeholder data
     const categories = ['PTS', 'REB', 'AST', 'STL', 'BLK', '3PM', 'FG%', 'FT%'];
     const mySquad = ['Tyler Herro', 'Darius Garland', 'Steven Nguyen', 'Grayson Allen', 'Ajay Mitchell'];
 
@@ -33,9 +36,11 @@ export function HomePage() {
                         {isLoggedIn && (
                             <>
                                 <LogoutButton />
-                                <a className='btn primary' href={Config.SERVER_URL + '/yahoo/login'}>
-                                    Connect to Yahoo
-                                </a>
+                                {!isYahooConnected && (
+                                    <a className='btn primary' href={Config.SERVER_URL + '/yahoo/login'}>
+                                        Connect to Yahoo
+                                    </a>
+                                )}
                                 <Link to='/dashboard'>
                                     <button className='btn primary'>Open Dashboard</button>
                                 </Link>

@@ -20,6 +20,7 @@ SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE: str = 'projected_analysis_data'
 SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE: str = 'trending_analysis_status'
 SUPABASE_TRENDING_ANALYSIS_DATA_TABLE: str = 'trending_analysis_data'
 SUPABASE_EXCLUDED_PLAYERS_TABLE: str = 'excluded_players'
+SUPABASE_TOKENS_TABLE: str = 'tokens'
 
 ANALYSIS_PLAYER_LIMIT: int = 20
 ANALYSIS_DAYS: int = 10

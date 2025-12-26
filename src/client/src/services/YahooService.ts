@@ -1,7 +1,7 @@
 import { Config } from "@/services/Config";
 import { HTTPService } from "@/services/HTTPService";
 
-const YAHOO_SERVICE_URL = Config.SERVER_URL
+const YAHOO_SERVICE_URL = Config.SERVER_URL + '/yahoo'
 
 export class YahooService {
     /**

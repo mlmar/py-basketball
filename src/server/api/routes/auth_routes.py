@@ -1,7 +1,7 @@
 """Routes for creating and authenticating users"""
 from fastapi import APIRouter, Depends, Form, HTTPException, status
 from fastapi.responses import RedirectResponse, Response
-from api.auth import get_current_user
+from api.auth import get_current_user, get_redirect_response
 import config
 from lib.db.client import get_client
 
@@ -18,16 +18,7 @@ async def signup(email: str = Form(), password: str = Form()):
             raise HTTPException(status_code=400, detail="Sign Up Failed")
         
         access_token = auth_response.session.access_token
-        redirect_response = RedirectResponse(url=config.CLIENT_URL, status_code=status.HTTP_303_SEE_OTHER)
-        redirect_response.set_cookie(
-            key='access_token', 
-            value=f'Bearer {access_token}', 
-            httponly=True,
-            secure=True if config.DEV else False,
-            samesite='none' if config.DEV else 'lax',
-        )
-        
-        return redirect_response
+        return get_redirect_response(access_token)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -42,23 +33,16 @@ async def login(response: Response, email: str = Form(), password: str = Form())
             raise HTTPException(status_code=400, detail="Login Failed")
         
         access_token = auth_response.session.access_token
-        redirect_response = RedirectResponse(url=config.CLIENT_URL, status_code=status.HTTP_303_SEE_OTHER)
-        redirect_response.set_cookie(
-            key='access_token', 
-            value=f'Bearer {access_token}', 
-            httponly=True,
-            secure=True if config.DEV else False,
-            samesite='none' if config.DEV else 'lax',
-        )
-            
-        return redirect_response
+        return get_redirect_response(access_token)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
 @router.get('/logout')
 async def logout(response: Response):
+    """Delete tokens and redirect to client"""
     redirect_response = RedirectResponse(url=config.CLIENT_URL, status_code=status.HTTP_303_SEE_OTHER)
     redirect_response.delete_cookie(key='access_token')
+    redirect_response.delete_cookie(key='yahoo_token')
     return redirect_response
 
 @router.get('/validate')

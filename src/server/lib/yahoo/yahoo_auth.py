@@ -54,7 +54,7 @@ def _basic_auth_header(client_id: str, client_secret: str) -> Dict[str, str]:
     return {"Authorization": f"Basic {b64}", "Content-Type": "application/x-www-form-urlencoded"}
 
 
-def exchange_code_for_token(code: str, redirect_uri: str) -> Dict[str, object]:
+def exchange_code_for_token(code: str, redirect_uri: str = 'oob') -> Dict[str, object]:
     """Exchange an authorization code for an access token + refresh token.
 
     Args:
