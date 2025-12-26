@@ -21,6 +21,7 @@ YAHOO_AUTH_BASE = "https://api.login.yahoo.com/oauth2/request_auth"
 YAHOO_TOKEN_PATH = "/oauth2/get_token"
 YAHOO_BASE = "https://api.login.yahoo.com"
 
+yahoo_service = Service(YAHOO_BASE)
 
 def build_authorization_url(redirect_uri: str, scope: Optional[str] = None, state: Optional[str] = None) -> str:
     """Builds an authorization URL for the Yahoo OAuth2 authorization code flow.
@@ -77,8 +78,7 @@ def exchange_code_for_token(code: str, redirect_uri: str = 'oob') -> Dict[str, o
         "redirect_uri": redirect_uri,
     }
 
-    svc = Service(YAHOO_BASE)
-    result = svc.post(YAHOO_TOKEN_PATH, data=data, headers=headers)
+    result = yahoo_service.post(YAHOO_TOKEN_PATH, data=data, headers=headers)
     if not result:
         raise RuntimeError("Yahoo token exchange failed: no response or non-200 status")
     return result
@@ -105,8 +105,8 @@ def refresh_token(refresh_token: str) -> Dict[str, object]:
         "refresh_token": refresh_token,
     }
 
-    svc = Service(YAHOO_BASE)
-    result = svc.post(YAHOO_TOKEN_PATH, data=data, headers=headers)
+    yahoo_service = Service(YAHOO_BASE)
+    result = yahoo_service.post(YAHOO_TOKEN_PATH, data=data, headers=headers)
     if not result:
         raise RuntimeError("Yahoo refresh token failed: no response or non-200 status")
     return result

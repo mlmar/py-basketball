@@ -16,7 +16,7 @@ async def auth_middleware(request: Request, call_next):
     response = await call_next(request)
     return response
 
-def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+def get_current_user(request: Request, credentials: HTTPAuthorizationCredentials = Depends(security)):
     """Retrieves current user if token is valid"""
     try:
         token = __strip_bearer(credentials.credentials)
@@ -28,7 +28,8 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         return {
             'email': payload['email'],
             'id': user_id,
-            'token': token
+            'token': token,
+            'yahoo_token': request.cookies.get('yahoo_token')
         }
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token has expired')

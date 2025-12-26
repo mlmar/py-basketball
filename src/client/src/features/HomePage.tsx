@@ -9,12 +9,14 @@ import { TrendingPlayers } from '@/features/TrendingPlayers';
 import { WaiverTargets } from '@/features/WaiverTargets';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
 import { useIsYahooConnected } from '@/hooks/useIsYahooConnected';
+import { useYahooLeagues } from '@/hooks/useYahooLeagues';
 import { Config } from '@/services/Config';
 import { Link } from '@tanstack/react-router';
 
 export function HomePage() {
     const isLoggedIn = useIsLoggedIn();
     const isYahooConnected = useIsYahooConnected();
+    useYahooLeagues();
 
     // placeholder data
     const categories = ['PTS', 'REB', 'AST', 'STL', 'BLK', '3PM', 'FG%', 'FT%'];

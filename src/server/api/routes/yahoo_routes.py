@@ -7,6 +7,7 @@ from api.auth import get_current_user, get_redirect_response
 import config
 from lib.db.database_table import get_table
 from lib.yahoo import yahoo_auth
+from lib.yahoo.yahoo_fantasy import get_leagues
 
 router = APIRouter(prefix='/yahoo')
 
@@ -38,8 +39,11 @@ def authenticate(code: str = None, state: str = None) -> RedirectResponse:
     return get_redirect_response(access_token=access_token, yahoo_token=tokens['access_token'])
 
 @router.get('/validate')
-def validate(request: Request, current_user = Depends(get_current_user)):
-    yahoo_token = request.cookies.get('yahoo_token')
-    if yahoo_token:
+def validate(current_user = Depends(get_current_user)):
+    if current_user['yahoo_token']:
         return True
     return False
+
+@router.get('/leagues')
+def leagues(current_user = Depends(get_current_user)):
+    return get_leagues(current_user['yahoo_token'])

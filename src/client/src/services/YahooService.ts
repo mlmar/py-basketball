@@ -16,4 +16,9 @@ export class YahooService {
             return false;
         }
     }
+
+    static async getLeagues() {
+        const response = await HTTPService.get<null, boolean>(YAHOO_SERVICE_URL + '/leagues');
+        return response;
+    }
 }
