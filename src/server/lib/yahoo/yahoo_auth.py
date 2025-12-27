@@ -10,6 +10,7 @@ It expects `YAHOO_CLIENT_ID` and `YAHOO_CLIENT_SECRET` to be available in
 from __future__ import annotations
 
 import base64
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Optional
 
 from service.service import Service
@@ -128,3 +129,6 @@ def build_authenticated_session(token: Dict[str, object]) -> requests.Session:
     s.headers.update({"Authorization": f"Bearer {access_token}"})
     s.headers.update({"Accept": "application/json"})
     return s
+
+def calculate_expires_at(expires_in: int, buffer_seconds: int = 300) -> datetime:
+    return datetime.now(timezone.utc) + timedelta(seconds=expires_in - buffer_seconds)

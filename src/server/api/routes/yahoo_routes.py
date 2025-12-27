@@ -33,7 +33,7 @@ def authenticate(code: str = None, state: str = None) -> RedirectResponse:
     tokens_table = get_table(config.SUPABASE_TOKENS_TABLE, config.SUPABASE_SCHEMA)
     tokens_table.update({
         'refresh_token': tokens['refresh_token'],
-        'expires_in': tokens['expires_in']
+        'expires_at': yahoo_auth.calculate_expires_at(tokens['expires_in'])
     }).eq('uid', uid).execute()
 
     return get_redirect_response(access_token=access_token, yahoo_token=tokens['access_token'])
