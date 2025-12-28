@@ -72,10 +72,14 @@ def run_projected_analysis(target_date: str) -> list[ProjectedPlayer]:
     days = config.ANALYSIS_DAYS
     result = []
 
-    try:
-        projected_analysis_status_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
-        projected_analysis_data_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
+    # Prevent processing existing date
+    projected_analysis_status_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
+    status = __get_status(projected_analysis_status_table, target_date)
+    if status in (Status.PROCESSING.value, Status.COMPLETE.value):
+        return []
 
+    try:
+        projected_analysis_data_table = get_table(config.SUPABASE_PROJECTED_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
         projected_analysis_status_table.upsert({
             'date': target_date,
             'status': Status.PROCESSING.value
@@ -146,14 +150,13 @@ def run_trending_analysis(target_date: str) -> list[TrendingPlayer]:
     result = []
 
     # Prevent processing existing date
+    trending_analysis_status_table = get_table(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
     status = __get_status(trending_analysis_status_table, target_date)
     if status in (Status.PROCESSING.value, Status.COMPLETE.value):
         return []
 
     try:
-        trending_analysis_status_table = get_table(config.SUPABASE_TRENDING_ANALYSIS_STATUS_TABLE, config.SUPABASE_SCHEMA)
         trending_analysis_data_table = get_table(config.SUPABASE_TRENDING_ANALYSIS_DATA_TABLE, config.SUPABASE_SCHEMA)
-
         trending_analysis_status_table.upsert({
             'date': target_date,
             'status': Status.PROCESSING.value
