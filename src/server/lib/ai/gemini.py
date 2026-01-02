@@ -179,7 +179,7 @@ def __parse_response_stream(response_stream) -> tuple[dict, str]:
 
 
 def __get_nba_schedule(target_date: date, future_days: int):
-    if config.DEV:
+    if not config.DAILY_SERVER_URL:
         return get_nba_schedule(target_date, future_days)
     else:
         return daily_service.get('/nba-schedule', {
