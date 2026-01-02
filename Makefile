@@ -1,5 +1,8 @@
 run: # Run development docker build
-	. dev.sh
+	. scripts/dev.sh
+
+daily:
+	. scripts/daily.sh
 
 install: # Set up python venv, install pip and npm dependencies
 	python3 -m venv .venv
